@@ -21,7 +21,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>LeetCode Hot 100</h1>
+        <h1>LeetCode Hot 100 ({items.length} / 100)</h1>
         <button onClick={shuffleItems} className="shuffle-button">
           随机排序
         </button>
