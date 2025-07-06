@@ -39,7 +39,7 @@ const data = [
     `,
     "difficulty": "中等",
     "hint": `
-思路一 (常规)
+思路一：常规
     - 新建一个数组，根据新的下标复制元素，然后把新数组的元素依次复制到旧数组
 思路二：翻转数组
     - 数组长度为 n ，数组轮转本质上是将数组后 k mod n 项移到开头
@@ -399,6 +399,52 @@ listB 中节点数目为 n
     - 两指针第一次相遇时即为第一个相交节点
 `,
     "link": "https://leetcode.cn/problems/intersection-of-two-linked-lists/description/?envType=study-plan-v2&envId=top-100-liked"
+  },
+  {
+    "id": 206,
+    "title": "反转链表 reverse-linked-list",
+    "category": "链表",
+    "content": `
+给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
+ 
+
+示例 1：
+
+输入：head = [1,2,3,4,5]
+输出：[5,4,3,2,1]
+
+示例 2：
+
+输入：head = [1,2]
+输出：[2,1]
+
+示例 3：
+
+输入：head = []
+输出：[]
+ 
+
+提示：
+
+链表中节点的数目范围是 [0, 5000]
+-5000 <= Node.val <= 5000
+ 
+
+进阶：链表可以选用迭代或递归方式完成反转。你能否用两种方法解决这道题？
+    `,
+    "difficulty": "简单",
+    "hint": `
+思路一：迭代（双指针）
+    - 一个指针指向头节点 head
+    - 另一个指针指向尾节点的后继（null），作为反转后的 dummy head 节点
+    - 依次遍历
+思路二：递归
+    - 定义一个辅助函数 recur(cur, pre)，以 cur 为当前节点、pre 为已反转部分的头，返回以这两者为起点最终反转好的链表的头节点
+    - 终止条件：当 cur 为空时，意味着我们已经越过原链表的最后一个节点，pre 正好指向全链表反转后的新头，直接返回
+    - 推进递归：把下一个节点 cur.next 当作新的当前节点，把当前节点 cur 当作新的“已反转”部分的头，继续递归。这样一路向下，直到 cur 为 null，开始回溯
+    - 回溯阶段反转指针
+`,
+    "link": "https://leetcode.cn/problems/reverse-linked-list/description/?envType=study-plan-v2&envId=top-100-liked"
   },
 ]
 
