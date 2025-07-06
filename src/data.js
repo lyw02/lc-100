@@ -162,7 +162,7 @@ n == matrix[0].length
         - 如果对应的第一行或第一列元素为0，则置零
         - 如果标记变量为true，则将第一列元素置零
 `,
-    "link": "https://leetcode.cn/problems/product-of-array-except-self/description/?envType=study-plan-v2&envId=top-100-liked"
+    "link": "https://leetcode.cn/problems/set-matrix-zeroes/description/?envType=study-plan-v2&envId=top-100-liked"
   },
 ]
 
