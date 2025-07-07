@@ -446,6 +446,45 @@ listB 中节点数目为 n
 `,
     "link": "https://leetcode.cn/problems/reverse-linked-list/description/?envType=study-plan-v2&envId=top-100-liked"
   },
+  {
+    "id": 234,
+    "title": "回文链表 palindrome-linked-list",
+    "category": "链表",
+    "content": `
+给你一个单链表的头节点 head ，请你判断该链表是否为回文链表。如果是，返回 true ；否则，返回 false 。
+
+ 
+示例 1：
+
+输入：head = [1,2,2,1]
+输出：true
+
+示例 2：
+
+输入：head = [1,2]
+输出：false
+
+
+提示：
+
+链表中节点数目在范围[1, 105] 内
+0 <= Node.val <= 9
+
+
+进阶：你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
+    `,
+    "difficulty": "简单",
+    "hint": `
+思路一：常规
+    - 将值复制到数组，使用头尾两个指针判断
+思路二：快慢指针
+    - 使用快慢指针找到中间节点
+    - 翻转后半段链表
+    - 使用两个指针判断回文
+    - 恢复链表（可选）
+`,
+    "link": "https://leetcode.cn/problems/palindrome-linked-list/description/?envType=study-plan-v2&envId=top-100-liked"
+  },
 ]
 
 export default data;
