@@ -734,6 +734,48 @@ l1 和 l2 均按 非递减顺序 排列
 `,
     "link": "https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/?envType=study-plan-v2&envId=top-100-liked"
   },
+  {
+    "id": 24,
+    "title": "两两交换链表中的节点 swap-nodes-in-pairs",
+    "category": "链表",
+    "content": `
+给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）。
+
+
+
+示例 1：
+
+输入：head = [1,2,3,4]
+输出：[2,1,4,3]
+
+示例 2：
+
+输入：head = []
+输出：[]
+
+示例 3：
+
+输入：head = [1]
+输出：[1]
+
+
+提示：
+
+链表中节点的数目在范围 [0, 100] 内
+0 <= Node.val <= 100
+    `,
+    "difficulty": "中等",
+    "hint": `
+思路一：递归
+    - 拆解子问题：先把链表看成「前两节点」+「后面剩余部分」，只关心如何交换前两节点；剩余部分交给递归去做
+    - 合并子结果：当前层交换完后，将递归返回的新头 swapPairs(newHead.next) 接回原来的第一个节点 head 之后
+    - 递归终止条件：当链表为空或只剩一个节点时，无需交换，直接返回
+思路二：迭代（空间更优）
+    - 使用 dummyHead 节点，因为如果头节点需要和下一阶段交换，就需要头节点的前驱节点
+    - 依次操作指针
+    `,
+    "link": "https://leetcode.cn/problems/swap-nodes-in-pairs/description/?envType=study-plan-v2&envId=top-100-liked"
+  },
 ]
 
 export default data;
