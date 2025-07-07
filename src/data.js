@@ -686,6 +686,54 @@ l1 和 l2 均按 非递减顺序 排列
 `,
     "link": "https://leetcode.cn/problems/add-two-numbers/description/?envType=study-plan-v2&envId=top-100-liked"
   },
+  {
+    "id": 19,
+    "title": "删除链表的倒数第 N 个结点 remove-nth-node-from-end-of-list",
+    "category": "链表",
+    "content": `
+给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+
+ 
+
+示例 1：
+
+输入：head = [1,2,3,4,5], n = 2
+输出：[1,2,3,5]
+
+示例 2：
+
+输入：head = [1], n = 1
+输出：[]
+
+示例 3：
+
+输入：head = [1,2], n = 1
+输出：[1]
+ 
+
+提示：
+
+链表中结点的数目为 sz
+1 <= sz <= 30
+0 <= Node.val <= 100
+1 <= n <= sz
+ 
+
+进阶：你能尝试使用一趟扫描实现吗？
+    `,
+    "difficulty": "中等",
+    "hint": `
+思路一：常规
+    - 遍历链表得到总长度 L ，那么 L - n + 1 就是需要删除的元素
+    - 再次遍历实现删除
+      - 需要使用 dummyHead 节点，因为删除节点需要知道前驱节点，如果头节点就是需要删除的节点，那就需要 dummyHead 作为前驱节点
+思路二：双指针
+    - 使用 first, second 两个指针
+    - second 初始位于 dummyHead ，first 比 second 领先 n 个节点
+    - 同时遍历两个指针，当 first 位于最后一个节点时，second 刚好位于 倒数第 n 个节点的前驱节点
+`,
+    "link": "https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/?envType=study-plan-v2&envId=top-100-liked"
+  },
 ]
 
 export default data;
