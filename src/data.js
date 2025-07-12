@@ -1296,6 +1296,48 @@ nums 按 严格递增 顺序排列
     `,
     link: "https://leetcode.cn/problems/validate-binary-search-tree/description/?envType=study-plan-v2&envId=top-100-liked",
   },
+  {
+    id: 230,
+    title: "二叉搜索树中第 K 小的元素 kth-smallest-element-in-a-bst",
+    category: "二叉树",
+    content: `
+给定一个二叉搜索树的根节点 root ，和一个整数 k ，请你设计一个算法查找其中第 k 小的元素（从 1 开始计数）。
+
+
+示例 1：
+
+输入：root = [3,1,4,null,2], k = 1
+输出：1
+
+示例 2：
+
+输入：root = [5,3,6,2,4,null,null,1], k = 3
+输出：3
+ 
+
+提示：
+
+树中的节点数为 n 。
+1 <= k <= n <= 104
+0 <= Node.val <= 104
+
+
+进阶：如果二叉搜索树经常被修改（插入/删除操作）并且你需要频繁地查找第 k 小的值，你将如何优化算法？
+    `,
+    difficulty: "中等",
+    hint: `
+利用二叉搜索树中序遍历有序的性质
+思路一：递归
+    - 首先递归左子树
+    - 然后处理当前根节点。在访问当前节点时，k 表示“还剩多少节点需要访问”
+      - 若此时 k 为 0 ，说明当前节点是第 k 小的节点，提前返回
+      - 递减 k 的值
+      - 若此时 k 为 0 ，说明当前节点是第 k 小的节点，保存 k 的值
+    - 最后递归右子树
+进阶解法：待更新
+    `,
+    link: "https://leetcode.cn/problems/kth-smallest-element-in-a-bst/description/?envType=study-plan-v2&envId=top-100-liked",
+  },
 ];
 
 export default data;
