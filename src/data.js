@@ -1,9 +1,9 @@
 const data = [
   {
-    "id": 189,
-    "title": "轮转数组 rotate-array",
-    "category": "普通数组",
-    "content": `
+    id: 189,
+    title: "轮转数组 rotate-array",
+    category: "普通数组",
+    content: `
 给定一个整数数组 nums，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。
 
 
@@ -37,8 +37,8 @@ const data = [
 尽可能想出更多的解决方案，至少有 三种 不同的方法可以解决这个问题。
 你可以使用空间复杂度为 O(1) 的 原地 算法解决这个问题吗？
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 思路一：常规
     - 新建一个数组，根据新的下标复制元素，然后把新数组的元素依次复制到旧数组
 思路二：翻转数组
@@ -46,13 +46,13 @@ const data = [
     - 将数组整体翻转，就能把后 k mod n 项移到开头
     - 然后将翻转后的数组的[0, (k mod n) - 1], [k mod n, n - 1] 子数组分别翻转即可
 `,
-    "link": "https://leetcode.cn/problems/rotate-array/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/rotate-array/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 238,
-    "title": "除自身以外数组的乘积 product-of-array-except-self",
-    "category": "普通数组",
-    "content": `
+    id: 238,
+    title: "除自身以外数组的乘积 product-of-array-except-self",
+    category: "普通数组",
+    content: `
 给你一个整数数组 nums，返回 数组 answer ，其中 answer[i] 等于 nums 中除 nums[i] 之外其余各元素的乘积 。
 
 题目数据 保证 数组 nums之中任意元素的全部前缀元素和后缀的乘积都在  32 位 整数范围内。
@@ -80,8 +80,8 @@ const data = [
 
 进阶：你可以在 O(1) 的额外空间复杂度内完成这个题目吗？（ 出于对空间复杂度分析的目的，输出数组 不被视为 额外空间。）
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 假如nums为[1,2,3,4]，那么answer的值分别为[(2,3,4),(1,3,4),(1,2,4),(1,2,3)]
 如果把i当前值相乘的时候看做是1那么就有如下样式
  1, 2, 3, 4
@@ -92,13 +92,13 @@ const data = [
 我们可以先计算一个三角形每行的乘积，然后再去计算另外一个三角形每行的乘积，
 然后各行相乘，就是answer每个对应的元素
 `,
-    "link": "https://leetcode.cn/problems/product-of-array-except-self/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/product-of-array-except-self/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 73,
-    "title": "矩阵置零 set-matrix-zeroes",
-    "category": "矩阵",
-    "content": `
+    id: 73,
+    title: "矩阵置零 set-matrix-zeroes",
+    category: "矩阵",
+    content: `
 给定一个 m x n 的矩阵，如果一个元素为 0 ，则将其所在行和列的所有元素都设为 0 。请使用 原地 算法。
 
  
@@ -145,8 +145,8 @@ n == matrix[0].length
 一个简单的改进方案是使用 O(m + n) 的额外空间，但这仍然不是最好的解决方案。
 你能想出一个仅使用常量空间的解决方案吗？
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 思路一：常规
     - 第一次遍历记录0元素所在的行和列
     - 第二次遍历将对应元素置零
@@ -162,13 +162,13 @@ n == matrix[0].length
         - 如果对应的第一行或第一列元素为0，则置零
         - 如果标记变量为true，则将第一列元素置零
 `,
-    "link": "https://leetcode.cn/problems/set-matrix-zeroes/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/set-matrix-zeroes/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 54,
-    "title": "螺旋矩阵 spiral-matrix",
-    "category": "矩阵",
-    "content": `
+    id: 54,
+    title: "螺旋矩阵 spiral-matrix",
+    category: "矩阵",
+    content: `
 给你一个 m 行 n 列的矩阵 matrix ，请按照 顺时针螺旋顺序 ，返回矩阵中的所有元素。
 
 
@@ -199,19 +199,19 @@ n == matrix[i].length
 1 <= m, n <= 10
 -100 <= matrix[i][j] <= 100
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 - 使用 l, r, t, b 四个变量存储当前边界的位置
 - 按照螺旋顺序 l -> r, t -> b, r -> l, b -> t 不断遍历
 - 遍历到边界后改变对应边界变量的值（收缩边界）
 `,
-    "link": "https://leetcode.cn/problems/spiral-matrix/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/spiral-matrix/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 48,
-    "title": "旋转图像 rotate-image",
-    "category": "矩阵",
-    "content": `
+    id: 48,
+    title: "旋转图像 rotate-image",
+    category: "矩阵",
+    content: `
 给定一个 n × n 的二维矩阵 matrix 表示一个图像。请你将图像顺时针旋转 90 度。
 
 你必须在 原地 旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要 使用另一个矩阵来旋转图像。
@@ -252,8 +252,8 @@ n == matrix.length == matrix[i].length
 1 <= n <= 20
 -1000 <= matrix[i][j] <= 1000
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 思路一：常规
     - 使用辅助数组 tmp 复制原数组
     - matrix[j][n - i - 1] = tmp[i][j]
@@ -265,13 +265,13 @@ n == matrix.length == matrix[i].length
       - 如果不是方阵：
         - 通过补 0 形成方阵
 `,
-    "link": "https://leetcode.cn/problems/rotate-image/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/rotate-image/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 240,
-    "title": "搜索二维矩阵 II search-a-2d-matrix-ii",
-    "category": "矩阵",
-    "content": `
+    id: 240,
+    title: "搜索二维矩阵 II search-a-2d-matrix-ii",
+    category: "矩阵",
+    content: `
 编写一个高效的算法来搜索 m x n 矩阵 matrix 中的一个目标值 target 。该矩阵具有以下特性：
 
 每行的元素从左到右升序排列。
@@ -311,20 +311,20 @@ n == matrix[i].length
 每列的所有元素从上到下升序排列
 -109 <= target <= 109
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 思路一：
     - 根据每行每列递增的条件遍历矩阵，超出范围时剪枝
 思路二：
     - 遍历时对每行进行二分查找
 `,
-    "link": "https://leetcode.cn/problems/search-a-2d-matrix-ii/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/search-a-2d-matrix-ii/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 160,
-    "title": "相交链表 intersection-of-two-linked-lists",
-    "category": "链表",
-    "content": `
+    id: 160,
+    title: "相交链表 intersection-of-two-linked-lists",
+    category: "链表",
+    content: `
 给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null 。
 
 图示两个链表在节点 c1 开始相交：
@@ -388,8 +388,8 @@ listB 中节点数目为 n
 
 进阶：你能否设计一个时间复杂度 O(m + n) 、仅用 O(1) 内存的解决方案？
     `,
-    "difficulty": "简单",
-    "hint": `
+    difficulty: "简单",
+    hint: `
 思路一：哈希表
     - 首先遍历第一个链表，使用哈希表记录出现的节点
     - 然后遍历第二个链表，通过查找哈希表得到第一个相同的节点
@@ -398,13 +398,13 @@ listB 中节点数目为 n
     - 遍历到尾部（即 node.next = null）时，指针指向另一个链表的头节点
     - 两指针第一次相遇时即为第一个相交节点
 `,
-    "link": "https://leetcode.cn/problems/intersection-of-two-linked-lists/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/intersection-of-two-linked-lists/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 206,
-    "title": "反转链表 reverse-linked-list",
-    "category": "链表",
-    "content": `
+    id: 206,
+    title: "反转链表 reverse-linked-list",
+    category: "链表",
+    content: `
 给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
  
 
@@ -432,8 +432,8 @@ listB 中节点数目为 n
 
 进阶：链表可以选用迭代或递归方式完成反转。你能否用两种方法解决这道题？
     `,
-    "difficulty": "简单",
-    "hint": `
+    difficulty: "简单",
+    hint: `
 思路一：迭代（双指针）
     - 一个指针指向头节点 head
     - 另一个指针指向尾节点的后继（null），作为反转后的 dummy head 节点
@@ -444,13 +444,13 @@ listB 中节点数目为 n
     - 推进递归：把下一个节点 cur.next 当作新的当前节点，把当前节点 cur 当作新的“已反转”部分的头，继续递归。这样一路向下，直到 cur 为 null，开始回溯
     - 回溯阶段反转指针
 `,
-    "link": "https://leetcode.cn/problems/reverse-linked-list/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/reverse-linked-list/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 234,
-    "title": "回文链表 palindrome-linked-list",
-    "category": "链表",
-    "content": `
+    id: 234,
+    title: "回文链表 palindrome-linked-list",
+    category: "链表",
+    content: `
 给你一个单链表的头节点 head ，请你判断该链表是否为回文链表。如果是，返回 true ；否则，返回 false 。
 
  
@@ -473,8 +473,8 @@ listB 中节点数目为 n
 
 进阶：你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
     `,
-    "difficulty": "简单",
-    "hint": `
+    difficulty: "简单",
+    hint: `
 思路一：常规
     - 将值复制到数组，使用头尾两个指针判断
 思路二：快慢指针
@@ -483,13 +483,13 @@ listB 中节点数目为 n
     - 使用两个指针判断回文
     - 恢复链表（可选）
 `,
-    "link": "https://leetcode.cn/problems/palindrome-linked-list/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/palindrome-linked-list/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 141,
-    "title": "环形链表 linked-list-cycle",
-    "category": "链表",
-    "content": `
+    id: 141,
+    title: "环形链表 linked-list-cycle",
+    category: "链表",
+    content: `
 给你一个链表的头节点 head ，判断链表中是否有环。
 
 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。注意：pos 不作为参数进行传递 。仅仅是为了标识链表的实际情况。
@@ -534,20 +534,20 @@ pos 为 -1 或者链表中的一个 有效索引 。
 
 进阶：你能用 O(1)（即，常量）内存解决此问题吗？
     `,
-    "difficulty": "简单",
-    "hint": `
+    difficulty: "简单",
+    hint: `
 思路一：常规
     - 使用哈希表记录出现过的节点
 思路二：快慢指针
     - 如果有环，那么快慢指针一定会在环中某处相遇
 `,
-    "link": "https://leetcode.cn/problems/linked-list-cycle/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/linked-list-cycle/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 142,
-    "title": "环形链表 II linked-list-cycle-ii",
-    "category": "链表",
-    "content": `
+    id: 142,
+    title: "环形链表 II linked-list-cycle-ii",
+    category: "链表",
+    content: `
 给定一个链表的头节点  head ，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
 
 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。如果 pos 是 -1，则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。
@@ -591,8 +591,8 @@ pos 的值为 -1 或者链表中的一个有效索引
 
 进阶：你是否可以使用 O(1) 空间解决此题？
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 思路一：常规
     - 使用哈希表记录出现过的节点
 思路二：快慢指针
@@ -604,13 +604,13 @@ pos 的值为 -1 或者链表中的一个有效索引
       - 我们只需要使慢指针再走 a 步，即可满足 a + mb 的形式，使慢指针走到环入口
       - 因此，可以令快指针回到原点并变为慢指针，两个慢指针同时移动，下一次相遇时刚好又走了 a 步，到底环入口
 `,
-    "link": "https://leetcode.cn/problems/linked-list-cycle-ii/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/linked-list-cycle-ii/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 21,
-    "title": "合并两个有序链表 merge-two-sorted-lists",
-    "category": "链表",
-    "content": `
+    id: 21,
+    title: "合并两个有序链表 merge-two-sorted-lists",
+    category: "链表",
+    content: `
 将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
 
  
@@ -637,18 +637,18 @@ pos 的值为 -1 或者链表中的一个有效索引
 -100 <= Node.val <= 100
 l1 和 l2 均按 非递减顺序 排列
     `,
-    "difficulty": "简单",
-    "hint": `
+    difficulty: "简单",
+    hint: `
 - 使用 dummyHead 节点
 - 注意两链表长度不同的情况
 `,
-    "link": "https://leetcode.cn/problems/merge-two-sorted-lists/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/merge-two-sorted-lists/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 2,
-    "title": "两数相加 add-two-numbers",
-    "category": "链表",
-    "content": `
+    id: 2,
+    title: "两数相加 add-two-numbers",
+    category: "链表",
+    content: `
 给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
 
 请你将两个数相加，并以相同形式返回一个表示和的链表。
@@ -680,17 +680,17 @@ l1 和 l2 均按 非递减顺序 排列
 0 <= Node.val <= 9
 题目数据保证列表表示的数字不含前导零
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 - 依次处理，注意进位和长度不相等的情况
 `,
-    "link": "https://leetcode.cn/problems/add-two-numbers/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/add-two-numbers/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 19,
-    "title": "删除链表的倒数第 N 个结点 remove-nth-node-from-end-of-list",
-    "category": "链表",
-    "content": `
+    id: 19,
+    title: "删除链表的倒数第 N 个结点 remove-nth-node-from-end-of-list",
+    category: "链表",
+    content: `
 给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
 
  
@@ -721,8 +721,8 @@ l1 和 l2 均按 非递减顺序 排列
 
 进阶：你能尝试使用一趟扫描实现吗？
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 思路一：常规
     - 遍历链表得到总长度 L ，那么 L - n + 1 就是需要删除的元素
     - 再次遍历实现删除
@@ -732,13 +732,13 @@ l1 和 l2 均按 非递减顺序 排列
     - second 初始位于 dummyHead ，first 比 second 领先 n 个节点
     - 同时遍历两个指针，当 first 位于最后一个节点时，second 刚好位于 倒数第 n 个节点的前驱节点
 `,
-    "link": "https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 24,
-    "title": "两两交换链表中的节点 swap-nodes-in-pairs",
-    "category": "链表",
-    "content": `
+    id: 24,
+    title: "两两交换链表中的节点 swap-nodes-in-pairs",
+    category: "链表",
+    content: `
 给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）。
 
 
@@ -764,8 +764,8 @@ l1 和 l2 均按 非递减顺序 排列
 链表中节点的数目在范围 [0, 100] 内
 0 <= Node.val <= 100
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 思路一：递归
     - 拆解子问题：先把链表看成「前两节点」+「后面剩余部分」，只关心如何交换前两节点；剩余部分交给递归去做
     - 合并子结果：当前层交换完后，将递归返回的新头 swapPairs(newHead.next) 接回原来的第一个节点 head 之后
@@ -774,13 +774,13 @@ l1 和 l2 均按 非递减顺序 排列
     - 使用 dummyHead 节点，因为如果头节点需要和下一阶段交换，就需要头节点的前驱节点
     - 依次操作指针
     `,
-    "link": "https://leetcode.cn/problems/swap-nodes-in-pairs/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/swap-nodes-in-pairs/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 138,
-    "title": "随机链表的复制 copy-list-with-random-pointer",
-    "category": "链表",
-    "content": `
+    id: 138,
+    title: "随机链表的复制 copy-list-with-random-pointer",
+    category: "链表",
+    content: `
 给你一个长度为 n 的链表，每个节点包含一个额外增加的随机指针 random ，该指针可以指向链表中的任何节点或空节点。
 
 构造这个链表的 深拷贝。 深拷贝应该正好由 n 个 全新 节点组成，其中每个新节点的值都设为其对应的原节点的值。新节点的 next 指针和 random 指针也都应指向复制链表中的新节点，并使原链表和复制链表中的这些指针能够表示相同的链表状态。复制链表中的指针都不应指向原链表中的节点 。
@@ -819,8 +819,8 @@ random_index：随机指针指向的节点索引（范围从 0 到 n-1）；如�
 -104 <= Node.val <= 104
 Node.random 为 null 或指向链表中的节点。
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 思路一：哈希表
     - 遍历链表，使用哈希表记录每一个节点的拷贝，其中键为旧节点，值为新创建的节点，只设置 val
     - 再次遍历，结合哈希表查找构建新节点的 next 和 random 指向
@@ -833,13 +833,13 @@ Node.random 为 null 或指向链表中的节点。
       - 使用指针 pre 和 cur 分别指向两个链表的头节点
       - 遍历执行 pre.next = pre.next.next 和 cur.next = cur.next.next 来拆分链表
     `,
-    "link": "https://leetcode.cn/problems/copy-list-with-random-pointer/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/copy-list-with-random-pointer/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 148,
-    "title": "排序链表 sort-list",
-    "category": "链表",
-    "content": `
+    id: 148,
+    title: "排序链表 sort-list",
+    category: "链表",
+    content: `
 给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。
 
  
@@ -868,8 +868,8 @@ Node.random 为 null 或指向链表中的节点。
 
 进阶：你可以在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序吗？
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 - 题目要求时间空间复杂度分别为 O(nlogn) 和 O(1)，根据时间复杂度我们自然想到二分法，从而联想到归并排序
 - 基于递归的归并排序在递归调用时具有 O(logn) 的空间复杂度，因此不能使用递归
 - 因此考虑从底至顶直接合并：
@@ -879,13 +879,13 @@ Node.random 为 null 或指向链表中的节点。
       - 每轮结束后 intv *= 2，若 intv 大于数组长度则排序完成
     - 使用一个 dummyHead 节点，既可以在每轮合并后找到头节点，也可以在排序时辅助交换指针
     `,
-    "link": "https://leetcode.cn/problems/sort-list/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/sort-list/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 146,
-    "title": "LRU 缓存 lru-cache",
-    "category": "链表",
-    "content": `
+    id: 146,
+    title: "LRU 缓存 lru-cache",
+    category: "链表",
+    content: `
 请你设计并实现一个满足  LRU (最近最少使用) 缓存 约束的数据结构。
 实现 LRUCache 类：
 LRUCache(int capacity) 以 正整数 作为容量 capacity 初始化 LRU 缓存
@@ -923,8 +923,8 @@ lRUCache.get(4);    // 返回 4
 0 <= value <= 105
 最多调用 2 * 105 次 get 和 put
     `,
-    "difficulty": "中等",
-    "hint": `
+    difficulty: "中等",
+    hint: `
 思路一：双向链表+哈希表
     - 双向链表的尾部是即将被删除的节点
     - 当一个节点被访问后，就将它移动到头部
@@ -945,13 +945,13 @@ lRUCache.get(4);    // 返回 4
       - 调用迭代器的 next() 方法返回一个实现了 IterableResult 接口的对象，即形如 { value: ..., done: ... } 的对象
       - value 属性就是要删除的 key
     `,
-    "link": "https://leetcode.cn/problems/lru-cache/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/lru-cache/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 94,
-    "title": "二叉树的中序遍历 binary-tree-inorder-traversal",
-    "category": "二叉树",
-    "content": `
+    id: 94,
+    title: "二叉树的中序遍历 binary-tree-inorder-traversal",
+    category: "二叉树",
+    content: `
 给定一个二叉树的根节点 root ，返回 它的 中序 遍历 。
 
 
@@ -980,21 +980,21 @@ lRUCache.get(4);    // 返回 4
 
 进阶: 递归算法很简单，你可以通过迭代算法完成吗？
     `,
-    "difficulty": "简单",
-    "hint": `
+    difficulty: "简单",
+    hint: `
 中序遍历：左子树 - 根节点 - 右子树
 思路一：递归（推荐）
     - 从根节点开始，依次递归左右子树
 思路二：迭代
     - 递归中隐式维护了一个栈，迭代中需要将其模拟出来
     `,
-    "link": "https://leetcode.cn/problems/binary-tree-inorder-traversal/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/binary-tree-inorder-traversal/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 104,
-    "title": "二叉树的最大深度 maximum-depth-of-binary-tree",
-    "category": "二叉树",
-    "content": `
+    id: 104,
+    title: "二叉树的最大深度 maximum-depth-of-binary-tree",
+    category: "二叉树",
+    content: `
 给定一个二叉树 root ，返回其最大深度。
 
 二叉树的 最大深度 是指从根节点到最远叶子节点的最长路径上的节点数。
@@ -1015,20 +1015,20 @@ lRUCache.get(4);    // 返回 4
 输入：root = [1,null,2]
 输出：2
     `,
-    "difficulty": "简单",
-    "hint": `
+    difficulty: "简单",
+    hint: `
 思路一：DFS（推荐）
     - 递归左右子树，最大深度 = 左子树深度和右子树深度的最大值 + 1
 思路二：BFS
     - 每遍历一层，计数 + 1
     `,
-    "link": "https://leetcode.cn/problems/maximum-depth-of-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/maximum-depth-of-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 226,
-    "title": "翻转二叉树 invert-binary-tree",
-    "category": "二叉树",
-    "content": `
+    id: 226,
+    title: "翻转二叉树 invert-binary-tree",
+    category: "二叉树",
+    content: `
 给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
 
 
@@ -1057,17 +1057,17 @@ lRUCache.get(4);    // 返回 4
 树中节点数目范围在 [0, 100] 内
 -100 <= Node.val <= 100
     `,
-    "difficulty": "简单",
-    "hint": `
+    difficulty: "简单",
+    hint: `
 - 递归左右子树，交换左右子树的位置
     `,
-    "link": "https://leetcode.cn/problems/invert-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/invert-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
-    "id": 101,
-    "title": "对称二叉树 symmetric-tree",
-    "category": "二叉树",
-    "content": `
+    id: 101,
+    title: "对称二叉树 symmetric-tree",
+    category: "二叉树",
+    content: `
 给你一个二叉树的根节点 root ， 检查它是否轴对称。
 
 
@@ -1094,8 +1094,8 @@ lRUCache.get(4);    // 返回 4
 
 进阶：你可以运用递归和迭代两种方法解决这个问题吗？
     `,
-    "difficulty": "简单",
-    "hint": `
+    difficulty: "简单",
+    hint: `
 思路一：递归（推荐）
     - 递归左右子树，左子树的左子树和右子树的右子树比较，左子树的右子树和右子树的左子树比较
 思路二：迭代
@@ -1103,12 +1103,13 @@ lRUCache.get(4);    // 返回 4
     - 初始队列中添加两次根节点，此后每次遍历取出两个节点比较
     - 将他们的子节点按照相反顺序插入队列
     `,
-    "link": "https://leetcode.cn/problems/symmetric-tree/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/symmetric-tree/description/?envType=study-plan-v2&envId=top-100-liked",
+  },
   {
-    "id": 543,
-    "title": "二叉树的直径 diameter-of-binary-tree",
-    "category": "二叉树",
-    "content": `
+    id: 543,
+    title: "二叉树的直径 diameter-of-binary-tree",
+    category: "二叉树",
+    content: `
 给你一棵二叉树的根节点，返回该树的 直径 。
 
 二叉树的 直径 是指树中任意两个节点之间最长路径的 长度 。这条路径可能经过也可能不经过根节点 root 。
@@ -1138,16 +1139,16 @@ lRUCache.get(4);    // 返回 4
 树中节点数目在范围 [1, 104] 内
 -100 <= Node.val <= 100
     `,
-    "difficulty": "简单",
-    "hint": `
+    difficulty: "简单",
+    hint: `
 - 递归
 - 递归时使用经过的节点数便于计算，最后的路径长度为经过的节点数 - 1
 - 对于任一节点，以该节点为根节点的子树的最长路径（节点数）为左子树最大深度 + 右子树最大深度 + 1
 - 使用递归遍历每个节点，计算以该节点为根节点的子树的最长路径
 - 使用全局变量记录当前最长路径，递归过程中修改该变量
     `,
-    "link": "https://leetcode.cn/problems/diameter-of-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked"
+    link: "https://leetcode.cn/problems/diameter-of-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked",
   },
-]
+];
 
 export default data;
