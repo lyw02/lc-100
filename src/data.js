@@ -983,7 +983,7 @@ lRUCache.get(4);    // 返回 4
     "difficulty": "简单",
     "hint": `
 中序遍历：左子树 - 根节点 - 右子树
-思路一：递归
+思路一：递归（推荐）
     - 从根节点开始，依次递归左右子树
 思路二：迭代
     - 递归中隐式维护了一个栈，迭代中需要将其模拟出来
@@ -1017,7 +1017,7 @@ lRUCache.get(4);    // 返回 4
     `,
     "difficulty": "简单",
     "hint": `
-思路一：DFS
+思路一：DFS（推荐）
     - 递归左右子树，最大深度 = 左子树深度和右子树深度的最大值 + 1
 思路二：BFS
     - 每遍历一层，计数 + 1
@@ -1062,6 +1062,48 @@ lRUCache.get(4);    // 返回 4
 - 递归左右子树，交换左右子树的位置
     `,
     "link": "https://leetcode.cn/problems/invert-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked"
+  },
+  {
+    "id": 101,
+    "title": "对称二叉树 symmetric-tree",
+    "category": "二叉树",
+    "content": `
+给你一个二叉树的根节点 root ， 检查它是否轴对称。
+
+
+示例 1：
+
+     1
+  2     2
+3   4 4   3
+
+输入：root = [1,2,2,3,4,4,3]
+输出：true
+
+示例 2：
+
+输入：root = [1,2,2,null,3,null,3]
+输出：false
+
+
+提示：
+
+树中节点数目在范围 [1, 1000] 内
+-100 <= Node.val <= 100
+ 
+
+进阶：你可以运用递归和迭代两种方法解决这个问题吗？
+    `,
+    "difficulty": "简单",
+    "hint": `
+思路一：递归（推荐）
+    - 递归左右子树，左子树的左子树和右子树的右子树比较，左子树的右子树和右子树的左子树比较
+思路二：迭代
+    - 层序遍历
+    - 初始队列中添加两次根节点，此后每次遍历取出两个节点比较
+    - 将他们的子节点按照相反顺序插入队列
+    `,
+    "link": "https://leetcode.cn/problems/symmetric-tree/description/?envType=study-plan-v2&envId=top-100-liked"
   },
 ]
 
