@@ -1244,6 +1244,58 @@ nums 按 严格递增 顺序排列
     `,
     link: "https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/description/?envType=study-plan-v2&envId=top-100-liked",
   },
+  {
+    id: 98,
+    title: "验证二叉搜索树 validate-binary-search-tree",
+    category: "二叉树",
+    content: `
+给你一个二叉树的根节点 root ，判断其是否是一个有效的二叉搜索树。
+
+有效 二叉搜索树定义如下：
+
+节点的左子树只包含 小于 当前节点的数。
+节点的右子树只包含 大于 当前节点的数。
+所有左子树和右子树自身必须也是二叉搜索树。
+ 
+
+示例 1：
+
+  2
+1   3
+
+输入：root = [2,1,3]
+输出：true
+
+示例 2：
+
+  5
+1   4
+  3   6
+
+输入：root = [5,1,4,null,null,3,6]
+输出：false
+解释：根节点的值是 5 ，但是右子节点的值是 4 。
+ 
+
+提示：
+
+树中节点数目范围在[1, 104] 内
+-231 <= Node.val <= 231 - 1
+    `,
+    difficulty: "中等",
+    hint: `
+利用 BST 的中序遍历（左 -> 中 -> 右）有序的性质，检查遍历结果是否严格递增
+思路一：递归（DFS）
+    - 使用一个变量 pre 记录上一次访问到的节点的值
+    - 先递归左子树
+    - 然后比较当前节点（即当前子树的根节点）的值和 pre 的值，若小于等于则不满足严格递增
+    - 最后递归右子树
+思路二：迭代（DFS）
+    - 使用栈来模拟递归调用栈（参考 94. 二叉树的中序遍历）
+    - 同样使用一个变量 pre 用于比较节点大小，检查是否严格递增
+    `,
+    link: "https://leetcode.cn/problems/validate-binary-search-tree/description/?envType=study-plan-v2&envId=top-100-liked",
+  },
 ];
 
 export default data;
