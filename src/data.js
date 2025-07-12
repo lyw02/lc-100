@@ -990,6 +990,40 @@ lRUCache.get(4);    // 返回 4
     `,
     "link": "https://leetcode.cn/problems/binary-tree-inorder-traversal/description/?envType=study-plan-v2&envId=top-100-liked"
   },
+  {
+    "id": 104,
+    "title": "二叉树的最大深度 maximum-depth-of-binary-tree",
+    "category": "二叉树",
+    "content": `
+给定一个二叉树 root ，返回其最大深度。
+
+二叉树的 最大深度 是指从根节点到最远叶子节点的最长路径上的节点数。
+
+ 
+
+示例 1：
+
+     3
+  9     20
+      15   7
+
+输入：root = [3,9,20,null,null,15,7]
+输出：3
+
+示例 2：
+
+输入：root = [1,null,2]
+输出：2
+    `,
+    "difficulty": "简单",
+    "hint": `
+思路一：DFS
+    - 递归左右子树，最大深度 = 左子树深度和右子树深度的最大值 + 1
+思路二：BFS
+    - 每遍历一层，计数 + 1
+    `,
+    "link": "https://leetcode.cn/problems/maximum-depth-of-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked"
+  },
 ]
 
 export default data;
