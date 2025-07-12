@@ -1194,6 +1194,56 @@ lRUCache.get(4);    // 返回 4
     `,
     link: "https://leetcode.cn/problems/binary-tree-level-order-traversal/description/?envType=study-plan-v2&envId=top-100-liked",
   },
+  {
+    id: 108,
+    title: "将有序数组转换为二叉搜索树 convert-sorted-array-to-binary-search-tree",
+    category: "二叉树",
+    content: `
+给你一个整数数组 nums ，其中元素已经按 升序 排列，请你将其转换为一棵 平衡 二叉搜索树。
+
+平衡二叉树 是指该树所有节点的左右子树的高度相差不超过 1。
+
+示例 1：
+
+      0
+  -3    9
+-10   5
+
+输入：nums = [-10,-3,0,5,9]
+输出：[0,-3,9,-10,null,5]
+解释：[0,-10,5,null,-3,null,9] 也将被视为正确答案：
+
+      0
+  -10   5
+    -3   9
+
+示例 2：
+
+  1  或  1
+3          3
+
+
+输入：nums = [1,3]
+输出：[3,1]
+解释：[1,null,3] 和 [3,1] 都是高度平衡二叉搜索树。
+ 
+
+提示：
+
+1 <= nums.length <= 104
+-104 <= nums[i] <= 104
+nums 按 严格递增 顺序排列
+    `,
+    difficulty: "简单",
+    hint: `
+- 二叉搜索树中序遍历有序，因此输入数组实际上是二叉搜索树的中序遍历序列
+- 为了使树尽可能平衡，每次选取数组中间的元素作为根节点
+- 由于数组递增，因此每个子树中的元素在数组中一定连续
+  - 因此可以使用下标 [left, right] 标记子树的范围
+- 递归创建左右子树
+    `,
+    link: "https://leetcode.cn/problems/convert-sorted-array-to-binary-search-tree/description/?envType=study-plan-v2&envId=top-100-liked",
+  },
 ];
 
 export default data;
