@@ -1104,6 +1104,49 @@ lRUCache.get(4);    // 返回 4
     - 将他们的子节点按照相反顺序插入队列
     `,
     "link": "https://leetcode.cn/problems/symmetric-tree/description/?envType=study-plan-v2&envId=top-100-liked"
+  {
+    "id": 543,
+    "title": "二叉树的直径 diameter-of-binary-tree",
+    "category": "二叉树",
+    "content": `
+给你一棵二叉树的根节点，返回该树的 直径 。
+
+二叉树的 直径 是指树中任意两个节点之间最长路径的 长度 。这条路径可能经过也可能不经过根节点 root 。
+
+两节点之间路径的 长度 由它们之间边数表示。
+
+ 
+
+示例 1：
+
+    1
+  2   3
+4   5
+
+输入：root = [1,2,3,4,5]
+输出：3
+解释：3 ，取路径 [4,2,1,3] 或 [5,2,1,3] 的长度。
+
+示例 2：
+
+输入：root = [1,2]
+输出：1
+ 
+
+提示：
+
+树中节点数目在范围 [1, 104] 内
+-100 <= Node.val <= 100
+    `,
+    "difficulty": "简单",
+    "hint": `
+- 递归
+- 递归时使用经过的节点数便于计算，最后的路径长度为经过的节点数 - 1
+- 对于任一节点，以该节点为根节点的子树的最长路径（节点数）为左子树最大深度 + 右子树最大深度 + 1
+- 使用递归遍历每个节点，计算以该节点为根节点的子树的最长路径
+- 使用全局变量记录当前最长路径，递归过程中修改该变量
+    `,
+    "link": "https://leetcode.cn/problems/diameter-of-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked"
   },
 ]
 
