@@ -1500,6 +1500,70 @@ inorder 保证 为二叉树的中序遍历序列
     `,
     link: "https://leetcode.cn/construct-binary-tree-from-preorder-and-inorder-traversal/description/?envType=study-plan-v2&envId=top-100-liked",
   },
+  {
+    id: 437,
+    title: "路径总和 III path-sum-iii",
+    category: "二叉树",
+    content: `
+给定一个二叉树的根节点 root ，和一个整数 targetSum ，求该二叉树里节点值之和等于 targetSum 的 路径 的数目。
+
+路径 不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
+
+
+示例 1：
+
+        10
+     5      -3
+  3     2      11
+3  -2     1
+
+输入：root = [10,5,-3,3,2,null,11,3,-2,null,1], targetSum = 8
+输出：3
+解释：和等于 8 的路径有 3 条，5 -> 3, 5 -> 2 -> 1, -3 -> 11。
+
+示例 2：
+
+输入：root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
+输出：3
+
+
+提示:
+
+二叉树的节点个数的范围是 [0,1000]
+-109 <= Node.val <= 109
+-1000 <= targetSum <= 1000
+    `,
+    difficulty: "中等",
+    hint: `
+- 前缀和，类似 560.和为 k 的子数组
+  - 核心思路就是用「前缀和＋哈希表」来把暴力枚举所有子数组的 O(n²) 降到 O(n)
+  - 什么是前缀和？
+      - 前缀和 s[i] 表示从数组开头到第 i 个元素这段区间的所有元素之和。
+      - 例如，数组 nums = [1, 2, 3, 4]，它的前缀和序列就是:
+          - s[0] = 1
+          - s[1] = 1 + 2 = 3
+          - s[2] = 1 + 2 + 3 = 6
+          - s[3] = 1 + 2 + 3 + 4 = 10
+  - 有了前缀和，就可以快速算「任意子数组」的和：
+      - 假设我们要算子数组 nums[i…j] 的和，用前缀和只要做一次减法就可以：
+          - sum(nums[i…j]) = s[j] - s[i-1] (其中，如果 i = 0，就当作 s[−1] = 0)
+  - 把找「和为 k」的问题转化一下：
+      - 我们想找所有 (i, j) 使得 sum(nums[i…j]) = k。
+      - 换成前缀和就是：
+          - s[j] - s[i-1] = k
+          - 即 s[i-1] = s[j] - k
+          - 换句话说，对于遍历到的每个 j，只要看看之前有没有出现过前缀和等于 s[j] - k 的位置，就可以知道跟当前 j 配对能凑出多少个子数组。
+  - 用哈希表记录前缀和出现次数：
+      - 定义一个 map，键是「某个前缀和的值」，值是「这个前缀和值出现了多少次」
+- 递归
+  - 使用 DFS 递归遍历二叉树
+  - 将当前前缀和 curSum 初始化为 0 ，每遍历一个节点 node ，就使用 curSum += node.val 更新前缀和
+  - 检查哈希表中是否有前缀和 curSum - targetSum ，如果有，说明存在某个祖先节点到当前节点的路径和为 targetSum
+  - 将哈希表中当前前缀和的记录 + 1
+  - 递归左右子树
+    `,
+    link: "https://leetcode.cn/path-sum-iii/description/?envType=study-plan-v2&envId=top-100-liked",
+  },
 ];
 
 export default data;
