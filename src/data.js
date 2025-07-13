@@ -1399,6 +1399,61 @@ nums 按 严格递增 顺序排列
     `,
     link: "https://leetcode.cn/problems/binary-tree-right-side-view/description/?envType=study-plan-v2&envId=top-100-liked",
   },
+  {
+    id: 114,
+    title: "二叉树展开为链表 flatten-binary-tree-to-linked-list",
+    category: "二叉树",
+    content: `
+给你二叉树的根结点 root ，请你将它展开为一个单链表：
+
+展开后的单链表应该同样使用 TreeNode ，其中 right 子指针指向链表中下一个结点，而左子指针始终为 null 。
+展开后的单链表应该与二叉树 先序遍历 顺序相同。
+ 
+
+示例 1：
+
+      1             1
+  2     5     =>      2
+3   4     6             3
+                          4
+                            5
+                              6
+
+输入：root = [1,2,5,3,4,null,6]
+输出：[1,null,2,null,3,null,4,null,5,null,6]
+
+示例 2：
+
+输入：root = []
+输出：[]
+
+示例 3：
+
+输入：root = [0]
+输出：[0]
+ 
+
+提示：
+
+树中结点数在范围 [0, 2000] 内
+-100 <= Node.val <= 100
+ 
+
+进阶：你可以使用原地算法（O(1) 额外空间）展开这棵树吗？
+    `,
+    difficulty: "中等",
+    hint: `
+- 前序遍历访问各节点的顺序是根节点、左子树、右子树
+- 如果一个节点没有左子节点
+  - 则该节点不需要展开操作
+- 如果一个节点有左子节点
+  - 则左子树中最后一个节点被访问后，访问该节点的右子节点
+  - 该节点左子树中最后一个节点是左子树中最右边的节点，将其作为前驱节点
+  - 将当前节点的右子节点赋给前驱节点，然后将当前节点的左子节点赋给右子节点，然后将左子节点设为 null
+  - 然后依次处理下一个节点（即右子树的根节点）
+    `,
+    link: "https://leetcode.cn/flatten-binary-tree-to-linked-list/description/?envType=study-plan-v2&envId=top-100-liked",
+  },
 ];
 
 export default data;
