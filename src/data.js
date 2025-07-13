@@ -1561,6 +1561,7 @@ inorder 保证 为二叉树的中序遍历序列
   - 检查哈希表中是否有前缀和 curSum - targetSum ，如果有，说明存在某个祖先节点到当前节点的路径和为 targetSum
   - 将哈希表中当前前缀和的记录 + 1
   - 递归左右子树
+  - 在递归返回前，需要在哈希表中撤销当前节点的影响，即将当前前缀和对应的记录 - 1 或删除
     `,
     link: "https://leetcode.cn/path-sum-iii/description/?envType=study-plan-v2&envId=top-100-liked",
   },
