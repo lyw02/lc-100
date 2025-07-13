@@ -1003,9 +1003,9 @@ lRUCache.get(4);    // 返回 4
 
 示例 1：
 
-     3
-  9     20
-      15   7
+   3
+9     20
+    15   7
 
 输入：root = [3,9,20,null,null,15,7]
 输出：3
@@ -1120,8 +1120,8 @@ lRUCache.get(4);    // 返回 4
 
 示例 1：
 
-    1
-  2   3
+     1
+  2    3
 4   5
 
 输入：root = [1,2,3,4,5]
@@ -1213,9 +1213,9 @@ lRUCache.get(4);    // 返回 4
 输出：[0,-3,9,-10,null,5]
 解释：[0,-10,5,null,-3,null,9] 也将被视为正确答案：
 
-      0
-  -10   5
-    -3   9
+    0
+-10   5
+  -3   9
 
 示例 2：
 
@@ -1269,8 +1269,8 @@ nums 按 严格递增 顺序排列
 示例 2：
 
   5
-1   4
-  3   6
+1    4
+   3   6
 
 输入：root = [5,1,4,null,null,3,6]
 输出：false
@@ -1356,8 +1356,8 @@ nums 按 严格递增 顺序排列
 解释：
 
   1
-2   3
-  5   4
+2    3
+  5    4
 
 
 示例 2：
@@ -1453,6 +1453,52 @@ nums 按 严格递增 顺序排列
   - 然后依次处理下一个节点（即右子树的根节点）
     `,
     link: "https://leetcode.cn/flatten-binary-tree-to-linked-list/description/?envType=study-plan-v2&envId=top-100-liked",
+  },
+  {
+    id: 105,
+    title: "从前序与中序遍历序列构造二叉树 construct-binary-tree-from-preorder-and-inorder-traversal",
+    category: "二叉树",
+    content: `
+给定两个整数数组 preorder 和 inorder ，其中 preorder 是二叉树的先序遍历， inorder 是同一棵树的中序遍历，请构造二叉树并返回其根节点。
+
+
+示例 1:
+
+  3
+9    20
+   15  7
+
+输入: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+输出: [3,9,20,null,null,15,7]
+示例 2:
+
+输入: preorder = [-1], inorder = [-1]
+输出: [-1]
+ 
+
+提示:
+
+1 <= preorder.length <= 3000
+inorder.length == preorder.length
+-3000 <= preorder[i], inorder[i] <= 3000
+preorder 和 inorder 均 无重复 元素
+inorder 均出现在 preorder
+preorder 保证 为二叉树的前序遍历序列
+inorder 保证 为二叉树的中序遍历序列
+    `,
+    difficulty: "中等",
+    hint: `
+- 前序遍历性质： 节点按照 [ 根节点 | 左子树 | 右子树 ] 排序
+- 中序遍历性质： 节点按照 [ 左子树 | 根节点 | 右子树 ] 排序
+- 因此使用前序遍历得到根节点，然后使用中序遍历划分左右子树
+- 递归构建左右子树
+- 为便于在中序遍历序列中查找根节点，可以使用哈希表存储中序遍历中节点和索引的映射
+- 每次递归都是在构建一个子树，因此递归函数需要三个参数：
+    - 根节点在前序遍历中的索引 i
+    - 中序遍历中子树左右边界的索引范围 l 和 r
+    - 递归终止条件：l > r
+    `,
+    link: "https://leetcode.cn/construct-binary-tree-from-preorder-and-inorder-traversal/description/?envType=study-plan-v2&envId=top-100-liked",
   },
 ];
 
