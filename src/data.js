@@ -1196,7 +1196,8 @@ lRUCache.get(4);    // 返回 4
   },
   {
     id: 108,
-    title: "将有序数组转换为二叉搜索树 convert-sorted-array-to-binary-search-tree",
+    title:
+      "将有序数组转换为二叉搜索树 convert-sorted-array-to-binary-search-tree",
     category: "二叉树",
     content: `
 给你一个整数数组 nums ，其中元素已经按 升序 排列，请你将其转换为一棵 平衡 二叉搜索树。
@@ -1456,7 +1457,8 @@ nums 按 严格递增 顺序排列
   },
   {
     id: 105,
-    title: "从前序与中序遍历序列构造二叉树 construct-binary-tree-from-preorder-and-inorder-traversal",
+    title:
+      "从前序与中序遍历序列构造二叉树 construct-binary-tree-from-preorder-and-inorder-traversal",
     category: "二叉树",
     content: `
 给定两个整数数组 preorder 和 inorder ，其中 preorder 是二叉树的先序遍历， inorder 是同一棵树的中序遍历，请构造二叉树并返回其根节点。
@@ -1679,7 +1681,7 @@ p 和 q 均存在于给定的二叉树中。
         if (prices[i] - cost > profit) profit = prices[i] - cost;
     }
     return profit;
-};`
+};`,
   },
   {
     id: 55,
@@ -1713,6 +1715,7 @@ p 和 q 均存在于给定的二叉树中。
     hint: `
 - 对于每一个可以到达的位置 x，它使得 x + 1, x + 2, ⋯, x + nums[x] 这些连续的位置都可以到达
 - 我们依次遍历数组中的每一个位置，并实时维护最远可以到达的位置
+    - 对于位置 i ，「最远可以到达的位置」 为 「当前最远可以到达的位置」 和 「i + nums[i]」 之间的最大值
 - 如果 最远可以到达的位置 大于等于数组中的最后一个位置，那就说明最后一个位置可达
     `,
     link: "https://leetcode.cn/problems/jump-game/?envType=study-plan-v2&envId=top-100-liked",
@@ -1734,7 +1737,68 @@ p 和 q 均存在于给定的二叉树中。
         }
     }
     return false;
-};`
+};`,
+  },
+  {
+    id: 45,
+    title: "跳跃游戏 II jump-game-ii",
+    category: "贪心算法",
+    content: `
+给定一个长度为 n 的 0 索引整数数组 nums。初始位置为 nums[0]。
+
+每个元素 nums[i] 表示从索引 i 向后跳转的最大长度。换句话说，如果你在 nums[i] 处，你可以跳转到任意 nums[i + j] 处:
+
+0 <= j <= nums[i] 
+i + j < n
+返回到达 nums[n - 1] 的最小跳跃次数。生成的测试用例可以到达 nums[n - 1]。
+
+
+示例 1:
+
+输入: nums = [2,3,1,1,4]
+输出: 2
+解释: 跳到最后一个位置的最小跳跃数是 2。
+     从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
+
+示例 2:
+
+输入: nums = [2,3,0,1,4]
+输出: 2
+
+
+提示:
+
+1 <= nums.length <= 104
+0 <= nums[i] <= 1000
+题目保证可以到达 nums[n-1]
+    `,
+    difficulty: "中等",
+    hint: `
+- 对于每一个可以到达的位置 x，它使得 x + 1, x + 2, ⋯, x + nums[x] 这些连续的位置都可以到达
+- 我们依次遍历数组中的每一个位置，并实时维护最远可以到达的位置
+  - 对于位置 i ，「最远可以到达的位置」 为 「当前最远可以到达的位置」 和 「i + nums[i]」 之间的最大值
+- 贪心策略：在当前这一步能够到达的所有位置中，找出下一步能跳得最远的位置
+  - 换句话说，我们不关心这一步跳到哪里，我们只关心在这一步的“跳跃范围内”，哪一个位置能为我们的“下一次跳跃”提供最远的触及范围
+  - 因此需要记录当前这一步能够到达的最远位置作为边界
+  - 当遍历到边界时，将边界更新为下一次跳跃能够到达的最远位置，并将跳跃次数加一
+    `,
+    link: "https://leetcode.cn/problems/jump-game-ii/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function jump(nums: number[]): number {
+    let rightmost = 0;
+    let end = 0; // 当前能够到达的最大下标位置记为边界
+    let res = 0; // 跳跃次数
+    for (let i = 0; i < nums.length; i++) {
+        rightmost = Math.max(rightmost, i + nums[i]);
+
+        // 遍历数组到达边界时，更新边界并将跳跃次数增加 1
+        // 边界正好为最后一个位置的情况下不必跳跃
+        if (i === end && end < nums.length - 1) {
+            end = rightmost;
+            res++;
+        }
+    }
+    return res;
+};`,
   },
 ];
 
