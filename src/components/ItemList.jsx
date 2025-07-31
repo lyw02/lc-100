@@ -1,10 +1,8 @@
-// src/components/ItemList.js
 import React, { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const ItemList = ({ item }) => {
-  // 为内容、难度和提示分别创建独立的 state
   const [showContent, setShowContent] = useState(false);
   const [showDifficulty, setShowDifficulty] = useState(false);
   const [showHint, setShowHint] = useState(false);
