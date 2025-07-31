@@ -1628,6 +1628,59 @@ p 和 q 均存在于给定的二叉树中。
     `,
     link: "https://leetcode.cn/lowest-common-ancestor-of-a-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked",
   },
+  {
+    id: 121,
+    title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
+    category: "贪心算法",
+    content: `
+给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
+
+你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
+
+返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。
+
+ 
+
+示例 1：
+
+输入：[7,1,5,3,6,4]
+输出：5
+解释：在第 2 天（股票价格 = 1）的时候买入，在第 5 天（股票价格 = 6）的时候卖出，最大利润 = 6-1 = 5 。
+     注意利润不能是 7-1 = 6, 因为卖出价格需要大于买入价格；同时，你不能在买入前卖出股票。
+示例 2：
+
+输入：prices = [7,6,4,3,1]
+输出：0
+解释：在这种情况下, 没有交易完成, 所以最大利润为 0。
+ 
+
+提示：
+
+1 <= prices.length <= 105
+0 <= prices[i] <= 104
+    `,
+    difficulty: "简单",
+    hint: `
+- 当遍历到第 i 天时：
+  - 如果今天（第 i 天）卖出股票，那么为了利润最大化，应该是在什么时候买入的呢？
+  - 应该是在第 i 天之前的价格最低的那一天买入
+- 所以，算法的核心就变成了：
+  - 遍历每一天，假设这一天是卖出日
+  - 然后找出在它之前所有天中的最低股价，计算出今天卖出能够获得的最大利润，并持续更新我们所记录的全局最大利润
+    `,
+    link: "https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function maxProfit(prices: number[]): number {
+    // 若在前 i 天选择卖出，若想达到最高利润，则一定选择之前价格最低的交易日买入
+    // cost 为前 i 天最低价格
+    let cost = prices[0];
+    let profit = 0;
+    for (let i = 1; i < prices.length; i++) {
+        if (prices[i] < cost) cost = prices[i];
+        if (prices[i] - cost > profit) profit = prices[i] - cost;
+    }
+    return profit;
+};`
+  },
 ];
 
 export default data;

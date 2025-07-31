@@ -1,5 +1,7 @@
 // src/components/ItemList.js
 import React, { useState } from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const ItemList = ({ item }) => {
   // 为内容、难度和提示分别创建独立的 state
@@ -7,6 +9,7 @@ const ItemList = ({ item }) => {
   const [showDifficulty, setShowDifficulty] = useState(false);
   const [showHint, setShowHint] = useState(false);
   const [showCategory, setShowCategory] = useState(false);
+  const [showCode, setShowCode] = useState(false);
 
   const handleTitleClick = () => {
     window.open(item.link, "_blank", "noopener,noreferrer");
@@ -37,6 +40,10 @@ const ItemList = ({ item }) => {
         <button onClick={() => setShowHint(!showHint)}>
           {showHint ? "收起提示" : "展开提示"}
         </button>
+
+        <button onClick={() => setShowCode(!showCode)}>
+          {showCode ? "收起代码" : "展开代码"}
+        </button>
       </div>
 
       {/* 详情内容区域 */}
@@ -50,6 +57,18 @@ const ItemList = ({ item }) => {
         {showHint && (
           <p>
             <strong>提示：</strong> {item.hint}
+          </p>
+        )}
+
+        {showCode && (
+          <p>
+            <SyntaxHighlighter
+              language="typescript"
+              style={oneLight}
+              showLineNumbers
+            >
+              {item.code ?? "暂无代码"}
+            </SyntaxHighlighter>
           </p>
         )}
       </div>
