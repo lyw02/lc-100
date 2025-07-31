@@ -1910,6 +1910,53 @@ s 仅由小写英文字母组成
     return dp[n];
 };`,
   },
+  {
+    id: 118,
+    title: "杨辉三角 pascals-triangle",
+    category: "动态规划",
+    content: `
+给定一个非负整数 numRows，生成「杨辉三角」的前 numRows 行。
+
+在「杨辉三角」中，每个数是它左上方和右上方的数的和。
+
+示例 1:
+
+输入: numRows = 5
+输出: [
+          [1],
+        [1,  1],
+      [1,  2,  1],
+    [1,  3,  3,  1],
+  [1,  4,  6,  4,  1]
+]
+
+示例 2:
+
+输入: numRows = 1
+输出: [[1]]
+
+提示:
+
+1 <= numRows <= 30
+    `,
+    difficulty: "简单",
+    hint: `
+    `,
+    link: "https://leetcode.cn/problems/pascals-triangle/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function generate(numRows: number): number[][] {
+    if (numRows === 1) return [[1]];
+    const dp = Array.from({ length: numRows }, () => []);
+    dp[0] = [1];
+    dp[1] = [1, 1];
+    for (let i = 2; i < numRows; i++) {
+        dp[i] = Array.from({ length: i + 1 }, () => 1);
+        for (let j = 1; j < i; j++) {
+            dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+        }
+    }
+    return dp;
+};`,
+  },
 ];
 
 export default data;
