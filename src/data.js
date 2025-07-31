@@ -1957,6 +1957,63 @@ s 仅由小写英文字母组成
     return dp;
 };`,
   },
+  {
+    id: 198,
+    title: "打家劫舍 house-robber",
+    category: "动态规划",
+    content: `
+你是一个专业的小偷，计划偷窃沿街的房屋。每间房内都藏有一定的现金，影响你偷窃的唯一制约因素就是相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警。
+
+给定一个代表每个房屋存放金额的非负整数数组，计算你 不触动警报装置的情况下 ，一夜之内能够偷窃到的最高金额。
+
+示例 1：
+
+输入：[1,2,3,1]
+输出：4
+解释：偷窃 1 号房屋 (金额 = 1) ，然后偷窃 3 号房屋 (金额 = 3)。
+     偷窃到的最高金额 = 1 + 3 = 4 。
+
+示例 2：
+
+输入：[2,7,9,3,1]
+输出：12
+解释：偷窃 1 号房屋 (金额 = 2), 偷窃 3 号房屋 (金额 = 9)，接着偷窃 5 号房屋 (金额 = 1)。
+     偷窃到的最高金额 = 2 + 9 + 1 = 12 。
+
+提示：
+
+1 <= nums.length <= 100
+0 <= nums[i] <= 400
+    `,
+    difficulty: "中等",
+    hint: `
+- 定义状态：
+    - dp[i] = 在前 i 间房屋（从第 0 间到第 i-1 间）中，我们能偷窃到的最高总金额
+    - 目标：求出 dp[n]，其中 n 是房屋的总数量
+- 状态转移方程：
+    - 对于第 i 间房屋（索引为 i-1，金额为 nums[i-1]），有两个选择：
+      - 偷窃第 i 间房屋
+        - 能获得的总金额是：nums[i-1] + dp[i-2]
+      - 不偷窃第 i 间房屋
+        - 能获得的总金额是：dp[i-1]
+    - 因此，状态转移方程：dp[i] = max(dp[i−1], dp[i−2] + nums[i−1])
+- 初始条件（边界情况）：
+    - dp[0]：代表前 0 间房，收益是 0，即 dp[0] = 0
+    - dp[1]：代表前 1 间房（即 nums[0]）。收益是 nums[0]，即 dp[1] = nums[0]
+    `,
+    link: "https://leetcode.cn/problems/house-robber/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function rob(nums: number[]): number {
+    const dp = Array.from({ length: nums.length }, () => 0);
+    dp[0] = nums[0];
+    dp[1] = Math.max(nums[0], nums[1])
+    for (let i = 2; i < nums.length; i++) {
+        // 不偷 i 房间：dp[i] = dp[i - 1]
+        // 偷 i 房间：dp[i] = dp[i - 2] + nums[i]
+        dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i])
+    }
+    return dp[nums.length - 1]
+};`,
+  },
 ];
 
 export default data;
