@@ -2335,6 +2335,110 @@ wordDict 中的所有字符串 互不相同
     return tails.length;
 };`,
   },
+  {
+    id: 152,
+    title: "乘积最大子数组 maximum-product-subarray",
+    category: "动态规划",
+    content: `
+给你一个整数数组 nums ，请你找出数组中乘积最大的非空连续 子数组（该子数组中至少包含一个数字），并返回该子数组所对应的乘积。
+
+测试用例的答案是一个 32-位 整数。
+
+示例 1:
+
+输入: nums = [2,3,-2,4]
+输出: 6
+解释: 子数组 [2,3] 有最大乘积 6。
+
+示例 2:
+
+输入: nums = [-2,0,-1]
+输出: 0
+解释: 结果不能为 2, 因为 [-2,-1] 不是子数组。
+
+提示:
+
+1 <= nums.length <= 2 * 104
+-10 <= nums[i] <= 10
+nums 的任何子数组的乘积都 保证 是一个 32-位 整数
+    `,
+    difficulty: "中等",
+    hint: `
+思路一：常规动态规划
+    - 定义状态：
+        - 如果只定义 dp[i] 为以 nums[i] 结尾的最大乘积，是行不通的
+          - 因为有负数的存在，一个当前看起来很小的负数乘积，在遇到下一个负数时，可能会变成一个极大的正数乘积。因此，我们不能只关心最大值，也要关心最小值
+        - 所以，在每个位置 i，我们需要同时记录两个状态：
+          - 以 nums[i] 结尾的最大乘积
+          - 以 nums[i] 结尾的最小乘积
+        - 定义两个 DP 数组：
+          - max_dp[i]: 以 nums[i] 结尾的连续子数组的最大乘积
+          - min_dp[i]: 以 nums[i] 结尾的连续子数组的最小乘积
+        - 最终的答案是所有 max_dp[i] 中的最大值
+    - 状态转移方程：
+        - 以 max_dp[i] 为例，它有三种可能性：
+          - 1. 来自前一个最大乘积：max_dp[i-1] * nums[i]（当 nums[i] 是正数时，这可能是最大值）
+          - 2. 来自前一个最小乘积：min_dp[i-1] * nums[i]（当 nums[i] 是负数时，负负得正，这可能是最大值）
+          - 3. 不与前面相乘：nums[i]（当前面的乘积是负数或很小时，可能还不如 nums[i] 本身大）
+        - 所以，max_dp[i] 就是这三者中的最大值。同理，min_dp[i] 是这三者中的最小值
+        - 因此，得到状态转移方程：
+          - max_dp[i] = max(max_dp[i-1] * nums[i], min_dp[i-1] * nums[i], nums[i])
+          - min_dp[i] = min(max_dp[i-1] * nums[i], min_dp[i-1] * nums[i], nums[i])
+    - 初始条件（边界情况）：
+        - 对于第一个元素 nums[0]，以它结尾的子数组只有它自己
+          - max_dp[0] = nums[0]
+          - min_dp[0] = nums[0]
+        - 还需要记录全局最大值作为结果，每计算出一个 max_dp[i]，我们都要用它来更新全局最大值
+思路二：滚动数组优化
+    - 在计算 i 时，只用到了 i-1 的状态，因此完全不需要存储整个 dp 数组
+    - 可以用两个变量 max 和 min 来代替 dp 数组
+    `,
+    link: "https://leetcode.cn/problems/maximum-product-subarray/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function maxProduct(nums: number[]): number {
+    // 记录两个状态：
+    // maxDp[i]: 以索引 i 结尾的 连续子数组 的 最大 乘积。
+    // minDp[i]: 以索引 i 结尾的 连续子数组 的 最小 乘积。
+    
+    // 以 nums[i] 结尾的子数组，要么就是 nums[i] 本身，要么是 nums[i] 和之前某个以 i-1 结尾的子数组的组合。
+    // 所以，maxDp[i] 的值有三种可能：
+    //      1. nums[i] 本身。
+    //      2. maxDp[i-1] * nums[i] (当 nums[i] 是正数时，我们希望乘以一个大的正数)。
+    //      3. minDp[i-1] * nums[i] (当 nums[i] 是负数时，我们希望乘以一个小的负数，负负得正)。
+    
+    // 因此，状态转移方程如下：
+    // maxDp[i] = max(nums[i], maxDp[i-1] * nums[i], minDp[i-1] * nums[i])
+    // 同理，minDp[i] 的状态转移方程为：
+    // minDp[i] = min(nums[i], maxDp[i-1] * nums[i], minDp[i-1] * nums[i])
+
+    // 使用 dp 数组形式：
+    // const maxDp: number[] = Array.from({ length: nums.length }, () => -Infinity);
+    // const minDp: number[] = Array.from({ length: nums.length }, () => -Infinity);
+    // maxDp[0] = nums[0];
+    // minDp[0] = nums[0];
+    // let result = nums[0];
+
+    // for (let i = 1; i < nums.length; i++) {
+    //     maxDp[i] = Math.max(nums[i], maxDp[i-1] * nums[i], minDp[i-1] * nums[i]);
+    //     minDp[i] = Math.min(nums[i], maxDp[i-1] * nums[i], minDp[i-1] * nums[i]);
+    //     result = Math.max(result, maxDp[i]);
+    // }
+
+    // return result
+
+    // 滚动数组优化：不需要完整的 dp 数组，只需要用两个变量来记录上一步的最大和最小乘积即可
+    let max = nums[0];
+    let min = nums[0];
+    let result = nums[0];
+    for (let i = 1; i < nums.length; i++) {
+        const tempMax = max;
+        max = Math.max(nums[i], tempMax * nums[i], min * nums[i]);
+        min = Math.min(nums[i], tempMax * nums[i], min * nums[i]);
+        result = Math.max(result, max);
+    }
+
+    return result;
+};`,
+  },
 ];
 
 export default data;
