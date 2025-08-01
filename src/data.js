@@ -2732,6 +2732,83 @@ n == grid[i].length
     return dp[grid.length - 1][grid[0].length - 1];
 };`,
   },
+  {
+    id: 5,
+    title: "最长回文子串 longest-palindromic-substring",
+    category: "多维动态规划",
+    content: `
+给你一个字符串 s，找到 s 中最长的 回文 子串。
+
+示例 1：
+
+输入：s = "babad"
+输出："bab"
+解释："aba" 同样是符合题意的答案。
+示例 2：
+
+输入：s = "cbbd"
+输出："bb"
+
+提示：
+
+1 <= s.length <= 1000
+s 仅由数字和英文字母组成
+    `,
+    difficulty: "中等",
+    hint: `
+- 定义状态：
+    - 子问题：判断 s 的子串 s[i...j] 是否为回文串
+    - dp[i][j] = 子串 s[i...j] 是否是一个回文串
+    - 最终目标：找到一个 dp[i][j] === true 且 j - i + 1 (子串长度) 最大的 (i, j) 组合
+- 状态转移方程：
+    - 一个子串 s[i...j] 成为回文串需要满足以下条件：
+      - 两端的字符必须相等
+      - 去掉两端字符后，中间的部分也必须是回文串，即 dp[i][j] 的值取决于 dp[i+1][j-1] 的值
+        - 但是当内部子串 s[i+1...j-1] 的长度小于2（即 j < i + 3）时，就不需要再依赖 dp[i+1][j-1]
+    - 因此，得到状态转移方程：dp[i][j] = (s[i] === s[j]) && (j < i + 3 || dp[i+1][j-1])
+- 初始条件（边界条件）：
+    - 所有长度为 1 的子串都是回文串，即 dp[i][i] = true
+    - 所有长度为 2 的子串，当且仅当两个字符相同时才是回文串，即 dp[i][i+1] = s[i] === s[i+1]
+    `,
+    link: "https://leetcode.cn/problems/longest-palindromic-substring/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function longestPalindrome(s: string): string {
+    // 回文天然具有「状态转移」性质：
+    // 长度大于 2 的回文去掉头尾字符以后，剩下的依然是回文。
+    // 反之，如果一个字符串头尾两个字符不相等，那么一定不是回文。
+
+    const len = s.length;
+    if (len === 1) return s;
+
+    const dp = Array.from({ length: len }, () => Array(len).fill(false));
+
+    // 当递推公式 dp[i][j] = dp[i + 1][j - 1] 被调用时，必然满足 j - i >= 3
+    // 它所依赖的 dp[i + 1][j - 1] 所对应的子串 s[i+1..j-1] 的长度 (j-1) - (i+1) + 1 = j - i - 1，最小也是 3 - 1 = 2
+    // 因此，递推公式永远不会去查询一个长度为1的子串（即对角线上的 dp[k][k]）的状态
+    // 因此无需初始化对角线
+    // for (let i = 0; i < len; i++) {
+    //     dp[i][i] = true;
+    // }
+
+    let maxLen = 1;
+    let start = 0;
+
+    for (let j = 1; j < len; j++) {
+        for (let i = 0; i < j; i++) {
+            if (s[i] === s[j] && (j - i < 3 || dp[i + 1][j - 1])) {
+                dp[i][j] = true;
+                
+                const currentLen = j - i + 1;
+                if (currentLen > maxLen) {
+                    maxLen = currentLen;
+                    start = i;
+                }
+            }
+        }
+    }
+
+    return s.substring(start, start + maxLen);
+};`,
+  },
 ];
 
 export default data;
