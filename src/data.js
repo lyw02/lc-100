@@ -3052,6 +3052,64 @@ word1 和 word2 由小写英文字母组成
     return nums.reduce((acc, cur) => acc ^ cur, 0);
 };`,
   },
+  {
+    id: 169,
+    title: "多数元素 majority-element",
+    category: "技巧",
+    content: `
+给定一个大小为 n 的数组 nums ，返回其中的多数元素。多数元素是指在数组中出现次数 大于 ⌊ n/2 ⌋ 的元素。
+
+你可以假设数组是非空的，并且给定的数组总是存在多数元素。
+
+示例 1：
+
+输入：nums = [3,2,3]
+输出：3
+
+示例 2：
+
+输入：nums = [2,2,1,1,1,2,2]
+输出：2
+
+提示：
+n == nums.length
+1 <= n <= 5 * 104
+-109 <= nums[i] <= 109
+
+进阶：尝试设计时间复杂度为 O(n)、空间复杂度为 O(1) 的算法解决此问题。
+    `,
+    difficulty: "简单",
+    hint: `
+思路一：哈希表
+思路二：摩尔投票
+    - 设输入数组 nums 的众数为 x ，数组长度为 n
+      - 推论一： 若记 众数 的票数为 +1 ，非众数 的票数为 −1 ，则一定有所有数字的 票数和 > 0 
+      - 推论二： 若数组的前 a 个数字的 票数和 = 0 ，则 数组剩余 (n−a) 个数字的 票数和一定 > 0 ，即后 (n−a) 个数字的 众数仍为 x 
+    - 根据以上推论，首先假设众数为数组首元素 nums[0]，真实众数为 x ，遍历并统计票数：
+      - 若遍历到位置 i 时发生 票数和 = 0 ，根据推论剩余数组的真实众数不变，我们将假设众数更新为 nums[i+1]
+      - 相当于利用推理的特性，当票数和 = 0 时缩小剩余数组区间
+      - 当遍历完成时，最后一轮假设的数字即为众数
+    `,
+    link: "https://leetcode.cn/problems/majority-element/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function majorityElement(nums: number[]): number {
+    // 常规思路：哈希表
+    // const map = new Map();
+    // for (const i of nums) {
+    //     const count = (map.get(i) || 0) + 1;
+    //     map.set(i, count);
+    //     if (count > Math.floor(nums.length / 2)) return i;
+    // }
+
+    // 摩尔投票
+    let maj = nums[0];
+    let vote = 1; // 由于假设第一个元素是众数，因此直接将投票 + 1，遍历时跳过第一个元素
+    for (let i = 1; i < nums.length; i++) {
+        nums[i] === maj ? vote++ : vote--;
+        if (vote === 0) maj = nums[i + 1];
+    }
+    return maj;
+};`,
+  },
 ];
 
 export default data;
