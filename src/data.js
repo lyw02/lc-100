@@ -3297,6 +3297,84 @@ function nextPermutation(nums: number[]): void {
     }
 };`,
   },
+  {
+    id: 287,
+    title: "寻找重复数 find-the-duplicate-number",
+    category: "技巧",
+    content: `
+给定一个包含 n + 1 个整数的数组 nums ，其数字都在 [1, n] 范围内（包括 1 和 n），可知至少存在一个重复的整数。
+
+假设 nums 只有 一个重复的整数 ，返回 这个重复的数 。
+
+你设计的解决方案必须 不修改 数组 nums 且只用常量级 O(1) 的额外空间。
+
+示例 1：
+
+输入：nums = [1,3,4,2,2]
+输出：2
+
+示例 2：
+
+输入：nums = [3,1,3,4,2]
+输出：3
+
+示例 3 :
+
+输入：nums = [3,3,3,3,3]
+输出：3
+
+提示：
+
+1 <= n <= 105
+nums.length == n + 1
+1 <= nums[i] <= n
+nums 中 只有一个整数 出现 两次或多次 ，其余整数均只出现 一次
+ 
+
+进阶：
+
+如何证明 nums 中至少存在一个重复的数字?
+你可以设计一个线性级时间复杂度 O(n) 的解决方案吗？
+    `,
+    difficulty: "中等",
+    hint: `
+- 如果数组中没有重复的数，以数组 [1, 3, 4, 2]为例，我们将数组下标 n 和数 nums[n] 建立一个映射关系 f(n)，
+    - 其映射关系 n->f(n)为：
+      - 0 -> 1
+      - 1 -> 3
+      - 2 -> 4
+      - 3 -> 2
+    - 即 0 -> 1 -> 3 -> 2 -> 4 -> null
+- 如果数组中有重复的数，以数组 [1, 3, 4, 2, 2]为例，我们将数组下标 n 和数 nums[n] 建立一个映射关系 f(n)，
+    - 其映射关系 n->f(n)为：
+      - 0 -> 1
+      - 1 -> 3
+      - 2 -> 4
+      - 3 -> 2
+      - 4 -> 2
+    - 即 0 -> 1 -> 3 -> 2 -> 4
+                        ↑ <- ↓
+    - 形成了环形链表
+    - 类似 142. 环形链表 II，使用快慢指针找到环入口
+      - 142. 中慢指针走一步 slow = slow.next ==> 本题 slow = nums[slow]
+      - 142. 中快指针走两步 fast = fast.next.next ==> 本题 fast = nums[nums[fast]]
+    `,
+    link: "https://leetcode.cn/problems/find-the-duplicate-number/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function findDuplicate(nums: number[]): number {
+    let slow = nums[0];
+    let fast = nums[nums[0]];
+    while (fast !== slow) {
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+    }
+    fast = 0;
+    while (fast !== slow) {
+        slow = nums[slow];
+        fast = nums[fast];
+    }
+    return fast;
+};`,
+  },
 ];
 
 export default data;
