@@ -2042,6 +2042,7 @@ s 仅由小写英文字母组成
     difficulty: "中等",
     hint: `
 - 定义状态：
+    - 目标是求和为 n 的最少数量，那么子问题就是求解从 1 到 n 所有数字的最优解
     - dp[i] = 和为 i 的完全平方数的最少数量
     - 数组的大小是 n+1，存储从 dp[0] 到 dp[n] 的所有结果
     - 目标：求出 dp[n]
@@ -2080,6 +2081,82 @@ s 仅由小写英文字母组成
         }
     }
     return dp[n];
+};`,
+  },
+  {
+    id: 322,
+    title: "零钱兑换 coin-change",
+    category: "动态规划",
+    content: `
+给你一个整数数组 coins ，表示不同面额的硬币；以及一个整数 amount ，表示总金额。
+
+计算并返回可以凑成总金额所需的 最少的硬币个数 。如果没有任何一种硬币组合能组成总金额，返回 -1 。
+
+你可以认为每种硬币的数量是无限的。
+
+示例 1：
+
+输入：coins = [1, 2, 5], amount = 11
+输出：3 
+解释：11 = 5 + 5 + 1
+
+示例 2：
+
+输入：coins = [2], amount = 3
+输出：-1
+
+示例 3：
+
+输入：coins = [1], amount = 0
+输出：0
+ 
+
+提示：
+
+1 <= coins.length <= 12
+1 <= coins[i] <= 231 - 1
+0 <= amount <= 104
+    `,
+    difficulty: "中等",
+    hint: `
+- 定义状态：
+    - 目标是凑出总金额 amount 所需的最少硬币个数，那么子问题就是凑出比 amount 小的金额（1, 2, ..., amount-1）所需的最少硬币数
+    - dp[i] = 凑成总金额 i 所需要的最少硬币个数
+- 状态转移方程：
+    - dp[i] 的值应该如何从之前的状态推导出来？
+      - 如果要凑出金额 i，最后一步必然是加上了某一枚硬币才达到的。这枚硬币的面额可能是 coins 数组中的任意一个，称之为 c，那么在这之前的总金额一定是 i - c
+      - 由于已经知道凑出 i - c 所需的最少硬币数是 dp[i - c]，那么凑出 i 的硬币数就是 dp[i - c] + 1（这里的 +1 就是最后加上的这枚硬币 c）
+      - 由于 coins 数组中可能有多重面额的硬币，所以我们有多种选择：
+        - 如果最后一枚是 coins[0]，所需总数为 dp[i - coins[0]] + 1
+        - 如果最后一枚是 coins[1]，所需总数为 dp[i - coins[1]] + 1
+        - 如果最后一枚是 coins[2]，所需总数为 dp[i - coins[2]] + 1
+        - ... （对于所有 coin of coins 且 coin <= i）
+      - 我们想要的是最少的硬币数，选择所有可能性中最小的值
+    - 因此，得到状态转移方程：dp[i] = min(dp[i−c] + 1) for c of coins && c <= i
+- 初始条件（边界情况）：
+    - dp[0] 表示凑出金额 0 所需的最少硬币数，显然是 0 个，因此 dp[0] = 0
+    - 在计算 dp[i] 时，我们会用到 min，因此需要给 dp 数组中的其他元素一个初始值。这个初始值应该是一个“极大值”，表示“无法凑出”
+      - 可以将初始值设为 amount + 1，因为凑出 amount 最多只需要 amount 个硬币（所有硬币面额都是 1）。所以 amount + 1 是一个不可能达到的数
+    - 最终 dp[amount] 存储了凑出总金额 amount 所需的最少硬币数
+      - 如果最终 dp[amount] 的值仍然是初始化的“极大值” (amount + 1)，这说明在计算过程中，它从未被成功更新过
+      - 这也就意味着，用给定的硬币面额无法凑出总金额 amount。在这种情况下，根据题目要求，应该返回 -1
+    `,
+    link: "https://leetcode.cn/problems/coin-change/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function coinChange(coins: number[], amount: number): number {
+    const MAX = amount + 1;
+
+    // dp[i] 代表凑出金额 i 所需的最少硬币数
+    const dp = Array.from({ length: amount + 1 }, () => MAX);
+
+    dp[0] = 0;
+
+    for (const coin of coins) {
+        for (let i = coin; i <= amount; i++) {
+            dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+        }
+    }
+
+    return dp[amount] === MAX ? -1 : dp[amount];
 };`,
   },
 ];
