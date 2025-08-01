@@ -2439,6 +2439,96 @@ nums 的任何子数组的乘积都 保证 是一个 32-位 整数
     return result;
 };`,
   },
+  {
+    id: 416,
+    title: "分割等和子集 partition-equal-subset-sum",
+    category: "动态规划",
+    content: `
+给你一个 只包含正整数 的 非空 数组 nums 。请你判断是否可以将这个数组分割成两个子集，使得两个子集的元素和相等。
+
+示例 1：
+
+输入：nums = [1,5,11,5]
+输出：true
+解释：数组可以分割成 [1, 5, 5] 和 [11] 。
+
+示例 2：
+
+输入：nums = [1,2,3,5]
+输出：false
+解释：数组不能分割成两个元素和相等的子集。
+
+提示：
+
+1 <= nums.length <= 200
+1 <= nums[i] <= 100
+    `,
+    difficulty: "中等",
+    hint: `
+- 问题转换：
+    - 如果一个数组能被分割成两个和相等的子集，那么这两个子集的和必然都等于原数组所有元素总和的一半。
+      - 首先，计算出数组 nums 的总和 total_sum
+        - 如果 total_sum 是一个奇数，那么它不可能被平分成两个整数的和。这种情况下，我们可以直接断定无法完成分割，返回 false
+        - 如果 total_sum 是一个偶数，我们令 target = total_sum / 2。现在，原问题就转换成了：
+          - 我们能否从 nums 数组中，挑选出若干个数字，使得这些数字的和恰好等于 target？
+          - 这个问题类似于 0-1 背包问题：
+            - 背包的容量 capacity：target
+            - 要装的物品 items：nums 数组中的每一个数字
+            - 每个物品的重量 weight：nums[i] 的值
+            - 每个物品的价值 value：nums[i] 的值（在这里，重量和价值是相同的）
+          - 相当于求用这些物品（数字）能否恰好装满这个容量为 target 的背包
+- 定义状态：
+    - dp[j] = 是否存在 nums 的一个子集，其所有元素之和恰好为 j
+    - dp 数组的大小是 target + 1，最终目标是求 dp[target] 的值
+- 状态转移方程：
+    - 遍历 nums 数组中的每一个数字 num，然后用这个 num 来更新整个 dp 数组
+      - 对于数字 num 和目标和 j，我们有两种选择：
+        - 不将 num 放入子集：那么 dp[j] 的状态就取决于在考虑 num 之前，我们能否凑出和为 j。也就是说，它的值等于旧的 dp[j]
+        - 将 num 放入子集：需要检查在不放 num 的情况下，是否能凑出 j - num 的和，即 dp[j - num] 是否为 true（这要求 j >= num）
+      - 因此，得到状态转移方程：dp[j] = dp[j] ∣∣ dp[j − num]
+    - 注意：在更新 dp 数组时，内层循环（遍历 j）必须从后往前（从 target 到 num）
+      - 因为0/1背包问题中的每个物品（数字）只能使用一次
+      - 如果我们从前往后遍历 j，当我们计算 dp[j] 时，所依赖的 dp[j - num] 可能已经是被当前这个 num 更新过的状态
+      - 这会导致一个数字被重复使用，问题就变成了“完全背包问题”，与题意不符
+      - 从后往前遍历，可以保证我们计算 dp[j] 时所引用的 dp[j - num] 还是上一轮（未被当前 num 更新过）的状态。
+- 初始条件（边界情况）：
+    - dp[0] = true，因为和为 0 一定可以达成（即不选择任何数字）
+    - dp 数组的其余所有元素 dp[1...target] 初始化为 false
+    `,
+    link: "https://leetcode.cn/problems/partition-equal-subset-sum/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function canPartition(nums: number[]): boolean {
+    // 如果数组能被分割成两个和相等的子集，那么这两个子集的和都必须等于 sum / 2。
+    // 因此，问题转化为：能否从原数组中找到一个子集，使得它的和等于 sum / 2。
+    // 与 0-1背包问题 类似。每个数字是物品，sum / 2 是背包容量，每个数字的“价值”和“重量”都等于其本身。
+    let sum = 0;
+    for (const n of nums) {
+        sum += n;
+    }
+    if (sum % 2 !== 0) return false;
+
+    let target = sum / 2;
+    // dp[j] 表示是否能凑出和为 j。
+    // 即：dp 数组的索引代表了我们想要凑成的和。
+    // 最小可能凑出的和是 0，最大的和是target，因此数组索引从 0 到 target，长度为 target + 1。
+    const dp = Array.from({ length: target + 1 }, () => false);
+    dp[0] = true;
+
+    // 遍历每个数字（物品）
+    for (const num of nums) {
+        // 从 target 倒序遍历到 num
+        // 如果 j 从小到大遍历，那么在计算 dp[j] 时，dp[j - num] 已经被当前 num 更新过了。
+        // 这会导致一个元素被多次使用，而我们希望每个元素只使用一次（0-1 背包的特性）。
+        for (let j = target; j >= num; j--) {
+            // 如果不选择当前 num，则看 dp[j] 本身是否为 true (由之前的数字凑出)
+            // 如果选择当前 num，则看 dp[j - num] 是否为 true (从之前的数字凑出 j - num)
+            dp[j] = dp[j] || dp[j - num];
+            if (dp[target] === true) return true;
+        }
+    }
+
+    return false;
+};`,
+  },
 ];
 
 export default data;
