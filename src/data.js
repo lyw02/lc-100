@@ -2230,6 +2230,111 @@ wordDict 中的所有字符串 互不相同
     return dp[s.length];
 };`,
   },
+  {
+    id: 300,
+    title: "最长递增子序列 longest-increasing-subsequence",
+    category: "动态规划",
+    content: `
+给你一个整数数组 nums ，找到其中最长严格递增子序列的长度。
+
+子序列 是由数组派生而来的序列，删除（或不删除）数组中的元素而不改变其余元素的顺序。例如，[3,6,2,7] 是数组 [0,3,1,6,2,2,7] 的子序列。
+
+示例 1：
+
+输入：nums = [10,9,2,5,3,7,101,18]
+输出：4
+解释：最长递增子序列是 [2,3,7,101]，因此长度为 4 。
+
+示例 2：
+
+输入：nums = [0,1,0,3,2,3]
+输出：4
+
+示例 3：
+
+输入：nums = [7,7,7,7,7,7,7]
+输出：1
+
+提示：
+
+1 <= nums.length <= 2500
+-104 <= nums[i] <= 104
+
+进阶：
+
+你能将算法的时间复杂度降低到 O(nlog(n)) 吗?
+    `,
+    difficulty: "中等",
+    hint: `
+- 思路一：标准动态规划 O(n^2)
+    - 定义状态：
+      - 子问题：以每个元素结尾的子序列的最长递增子序列
+      - dp[i] = 在 nums 数组中，以 nums[i] 这个元素结尾的最长递增子序列的长度
+      - 最终答案将是整个 dp 数组中的最大值，因为最长递增子序列可能在任何一个位置结束
+    - 状态转移方程：
+      - 要计算 dp[i]，即以 nums[i] 结尾的最长递增子序列的长度，我们必须选择 nums[i] 作为这个子序列的最后一个元素
+      - 那么，它前面的那个元素 nums[j] 必须满足两个条件：
+        - 它在 nums[i] 的前面，即 j < i
+        - 它的值比 nums[i] 小，即 nums[j] < nums[i]，这样才能递增
+      - 如果我们把 nums[i] 接在以 nums[j] 结尾的最长递增子序列的后面，就能形成一个更长的、以 nums[i] 结尾的递增子序列。这个新序列的长度是 dp[j] + 1
+      - 为了让 dp[i] 尽可能大，应该遍历所有满足条件的 j（0 <= j < i 且 nums[j] < nums[i]），然后从所有 dp[j] + 1 的结果中取最大值
+      - 因此，得到状态转移方程：dp[i] = max(1, max(dp[j] + 1)) for j in [0, i] && nums[j] < nums[i]
+    - 初始条件（边界情况）：
+      - 任意 nums[i] 本身就可以构成一个长度为 1 的子序列，因此将 dp 数组的所有元素都初始化为 1
+- 思路二：贪心 + 二分查找 O(nlogn)
+    - 考虑贪心：如果我们要使上升子序列尽可能的长，则我们需要让序列上升得尽可能慢，因此我们希望每次在上升子序列最后加上的那个数尽可能的小
+    - 维护一个 tails 数组，tails[i] 表示长度为 i + 1 的递增子序列结尾元素的最小值
+    - 那么长度为 i + 2 的递增子序列一定是由长度为 i + 1 的递增子序列加上一个更大的数构成的
+      - 也就是说长度为 i + 2 的递增子序列的末尾元素一定大于长度为 i + 1 的递增子序列的末尾元素
+      - 也就是说 tails 数组一定递增
+    - 遍历 nums 数组：
+      - 如果 nums[i] 大于 tails 中的所有元素（即大于 tails 的末尾元素），那么直接将 nums[i] 加入 tails 末尾
+        - 相当于最长递增子序列的长度加一
+      - 如果 nums[i] 不能大于 tails 中的所有元素，那么查找第一个大于等于 nums[i] 的元素 tails[k]，使用 nums[i] 替换它
+        - 相当于找到了一个末尾数字更小的长度为 k + 1 的序列，更容易被后面的数字接上
+        - 查找过程可以使用二分查找
+    `,
+    link: "https://leetcode.cn/problems/longest-increasing-subsequence/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function lengthOfLIS(nums: number[]): number {
+    // 动态规划
+    // dp[i] 的值代表 nums 以 nums[i] 结尾的最长子序列长度
+    // 遍历[0, i), dp[i] = max(dp[i], dp[j] + 1) for j in [0, i)
+
+    // const dp = Array.from({ length: nums.length }, () => 1);
+    // let max = 1;
+    // for (let i = 0; i < nums.length; i++) {
+    //     for (let j = 0; j < i; j++) {
+    //         if (nums[j] < nums[i]) {
+    //             dp[i] = Math.max(dp[i], dp[j] + 1);
+    //         }
+    //     }
+    //     if (dp[i] > max) max = dp[i];
+    // }
+    // return max;
+
+    // 进阶解法
+    const tails = [nums[0]];
+    for (const num of nums) {
+        if (num > tails[tails.length - 1]) {
+            tails.push(num);
+        } else {
+            // 二分查找
+            let l = 0;
+            let r = tails.length - 1;
+            while (l <= r) {
+                const m = Math.floor((l + r) / 2);
+                if (num <= tails[m]) {
+                    r = m - 1;
+                } else {
+                    l = m + 1;
+                }
+            }
+            tails[l] = num;
+        }
+    }
+    return tails.length;
+};`,
+  },
 ];
 
 export default data;
