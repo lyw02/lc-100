@@ -111,6 +111,60 @@ strs[i] 仅包含小写字母
 };`
   },
   {
+    id: 128,
+    title: "最长连续序列 longest-consecutive-sequence",
+    category: "哈希",
+    content: `
+给定一个未排序的整数数组 nums ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
+
+请你设计并实现时间复杂度为 O(n) 的算法解决此问题。
+
+示例 1：
+
+输入：nums = [100,4,200,1,3,2]
+输出：4
+解释：最长数字连续序列是 [1, 2, 3, 4]。它的长度为 4。
+
+示例 2：
+
+输入：nums = [0,3,7,2,5,8,4,6,0,1]
+输出：9
+
+示例 3：
+
+输入：nums = [1,0,1,2]
+输出：3
+
+提示：
+
+0 <= nums.length <= 105
+-109 <= nums[i] <= 109
+    `,
+    difficulty: "中等",
+    hint: `
+- 如果一个数字 x 是一个连续序列的起点，那么 x-1 这个数字一定不存在于原始数组中
+- 使用哈希集合，便于查询一个数字是否在数组中
+- 与其对每个数字都盲目地向两边探索，不如只从每个连续序列的“起点”开始计算
+- 也就是对于每一个 num，只考虑 num - 1 不在哈希集合中的情况
+    - 然后依次查询 num + 1, num + 2, num + 3... 是否在哈希集合中
+    - 最终更新全局最大长度
+`,
+    link: "https://leetcode.cn/problems/longest-consecutive-sequence/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function longestConsecutive(nums: number[]): number {
+    let res = 0;
+    const set = new Set(nums);
+    for (const num of set) {
+        if (set.has(num - 1)) continue; // 确保只从连续序列的起点开始计数
+
+        let next = num + 1; // num 是序列起点
+        while (set.has(next)) next++; // 不断查找下一个数是否在哈希集合中
+
+        res = Math.max(res, next - num);
+    }
+    return res;
+};`
+  },
+  {
     id: 189,
     title: "轮转数组 rotate-array",
     category: "普通数组",
