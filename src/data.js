@@ -275,6 +275,90 @@ n == height.length
 };`
   },
   {
+    id: 15,
+    title: "三数之和 3sum",
+    category: "双指针",
+    content: `
+给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请你返回所有和为 0 且不重复的三元组。
+
+注意：答案中不可以包含重复的三元组。
+
+示例 1：
+
+输入：nums = [-1,0,1,2,-1,-4]
+输出：[[-1,-1,2],[-1,0,1]]
+解释：
+nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0 。
+nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0 。
+nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
+不同的三元组是 [-1,0,1] 和 [-1,-1,2] 。
+注意，输出的顺序和三元组的顺序并不重要。
+
+示例 2：
+
+输入：nums = [0,1,1]
+输出：[]
+解释：唯一可能的三元组和不为 0 。
+
+示例 3：
+
+输入：nums = [0,0,0]
+输出：[[0,0,0]]
+解释：唯一可能的三元组和为 0 。
+
+提示：
+
+3 <= nums.length <= 3000
+-105 <= nums[i] <= 105
+    `,
+    difficulty: "中等",
+    hint: `
+- 直接找三个数很难，我们把它简化成“先固定一个数，再去找另外两个数”
+- 首先对数组进行排序，便于跳过重复元素，且可以按从前往后递增的方向查找
+- 外层循环：遍历数组，固定第一个数 k
+    - 如果 k > 0，由于数组已排序，后面的数都 > 0，不可能找到结果
+    - 指针 i, j 指向 k 之后的序列的头尾
+      - 内层循环：根据 sum = nums[i] + nums[j] + nums[k] 与 0 的大小关系调整 i, j 的位置，直到相遇
+    - 两层循环中都要注意跳过重复元素
+`,
+    link: "https://leetcode.cn/problems/3sum/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function threeSum(nums: number[]): number[][] {
+    // 直接找三个数很难，我们把它简化成“先固定一个数，再去找另外两个数”
+
+    const res = [];
+
+    // 排序的作用：
+    // - 方便移动：我们可以有方向地找（往后移动就是找更大的）
+    // - 容易去重：相同的都在一起了，很容易发现并跳过
+    const list = nums.toSorted((a, b) => a - b);
+
+    // 固定第一个数 k
+    for (let k = 0; k < list.length - 2; k++) {
+        if (list[k] > 0) break; // 如果第一个数大于0，此时3个数字都大于0，不可能找到结果
+        if (k > 0 && list[k] === list[k - 1]) continue; // 跳过重复
+        let i = k + 1;
+        let j = list.length - 1;
+        while (i < j) {
+            const sum = list[i] + list[j] + list[k];
+            if (sum < 0) {
+                while (i < j && list[i] === list[i + 1]) i++; // 跳过重复
+                i++;
+            } else if (sum > 0) {
+                while (i < j && list[j] === list[j - 1]) j--; // 跳过重复
+                j--;
+            } else {
+                res.push([list[i], list[j], list[k]]);
+                while (i < j && list[i] === list[i + 1]) i++; // 跳过重复
+                while (i < j && list[j] === list[j - 1]) j--; // 跳过重复
+                i++;
+                j--;
+            }
+        }
+    }
+    return res;
+};`
+  },
+  {
     id: 189,
     title: "轮转数组 rotate-array",
     category: "普通数组",
