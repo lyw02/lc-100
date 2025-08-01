@@ -2809,6 +2809,98 @@ s 仅由数字和英文字母组成
     return s.substring(start, start + maxLen);
 };`,
   },
+  {
+    id: 1143,
+    title: "最长公共子序列 longest-common-subsequence",
+    category: "多维动态规划",
+    content: `
+给定两个字符串 text1 和 text2，返回这两个字符串的最长 公共子序列 的长度。如果不存在 公共子序列 ，返回 0 。
+
+一个字符串的 子序列 是指这样一个新的字符串：它是由原字符串在不改变字符的相对顺序的情况下删除某些字符（也可以不删除任何字符）后组成的新字符串。
+
+例如，"ace" 是 "abcde" 的子序列，但 "aec" 不是 "abcde" 的子序列。
+两个字符串的 公共子序列 是这两个字符串所共同拥有的子序列。
+
+示例 1：
+
+输入：text1 = "abcde", text2 = "ace" 
+输出：3  
+解释：最长公共子序列是 "ace" ，它的长度为 3 。
+
+示例 2：
+
+输入：text1 = "abc", text2 = "abc"
+输出：3
+解释：最长公共子序列是 "abc" ，它的长度为 3 。
+
+示例 3：
+
+输入：text1 = "abc", text2 = "def"
+输出：0
+解释：两个字符串没有公共子序列，返回 0 。
+
+提示：
+
+1 <= text1.length, text2.length <= 1000
+text1 和 text2 仅由小写英文字符组成。
+    `,
+    difficulty: "中等",
+    hint: `
+- 定义状态：
+    - 子问题：计算 text1 的前 i 个字符与 text2 的前 j 个字符的最长公共子序列的长度
+    - dp[i][j] 表示 text1 的前 i 个字符（即 text1[0...i-1]）与 text2 的前 j 个字符（即 text2[0...j-1]）的最长公共子序列的长度
+    - 最终目标：求解 dp[m][n]，其中 m 是 text1 的长度，n 是 text2 的长度
+    - 为了方便处理边界情况（如空字符串），可以让 dp 表的大小为 (m+1) x (n+1)
+      - 这样，dp[i][j] 就对应 text1 的前 i 个字符和 text2 的前 j 个字符，索引 i 和 j 就可以从 1 开始
+      - text1 的第 i 个字符是 text1[i-1]，text2 的第 j 个字符是 text2[j-1]
+- 状态转移方程：
+    - 对于 dp[i][j]，考虑对应的两个子串的末尾字符，即 text1[i-1] 和 text2[j-1]，存在两种情况：
+      - 两个末尾字符相等，即 text1[i-1] === text2[j-1]
+        - 例如，比较 "abcde" 和 "ace" 时，我们比较到 text1 的第5个字符 'e' 和 text2 的第3个字符 'e'。它们是相等的
+        - 既然这两个字符相等，那么它们一定可以作为公共子序列的一部分。这个公共字符为我们的LCS长度贡献了 1
+        - 剩下的问题就是去寻找 "abcd" 和 "ac" 的最长公共子序列，然后把 'e' 接在后面
+        - 所以，dp[i][j] 的值等于 text1[0...i-2] 和 text2[0...j-2] 的LCS长度再加 1
+        - 即 dp[i][j] = dp[i-1][j-1] + 1
+      - 两个末尾字符不相等，即 text1[i-1] !== text2[j-1]
+        - 例如，比较 "abc" 和 "abd"，末尾字符 'c' 和 'd' 不相等
+        - 因为这两个字符不相等，它们不可能同时出现在LCS的末尾
+        - 所以，最长的公共子序列：
+          - 要么是在 text1 去掉末尾字符后（即 text1[0...i-2]）与 text2 完整子串（text2[0...j-1]）之间产生
+          - 要么是在 text2 去掉末尾字符后（即 text2[0...j-2]）与 text1 完整子串（text1[0...i-1]）之间产生
+          - 我们需要在这两种可能中取一个较大值
+          - 即 dp[i][j] = max(dp[i-1][j], dp[i][j-1])
+- 初始条件（边界条件）：
+    `,
+    link: "https://leetcode.cn/problems/longest-common-subsequence/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function longestCommonSubsequence(text1: string, text2: string): number {
+    const m = text1.length;
+    const n = text2.length;
+
+    // dp[i][j] 表示 text1[0:i] 和 text2[0:j] 的最长公共子序列的长度
+    const dp = Array.from({ length: m + 1 }, () => 
+        Array(n + 1).fill(0)
+    );
+
+    // 状态转移：
+    // 当 text1[i - 1] === text2[j - 1] 时，将这两个相同的字符称为公共字符
+    //      考虑 text1[0:i-1] 和 text2[0:j-1] 的最长公共子序列，再增加一个字符（即公共字符）即可得到 text1[0:i] 和 text2[0:j] 的最长公共子序列
+    // 当 text1[i - 1] !== text2[j - 1] 时，考虑：
+    //      1. text1[0:i-1] 和 text2[0:j] 的最长公共子序列
+    //      2. text1[0:i] 和 text2[0:j-1] 的最长公共子序列
+    //      两项中的长度较大的一项
+    for (let i = 1; i < m + 1; i++) {
+        for (let j = 1; j < n + 1; j++) {
+            if (text1[i - 1] === text2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            } else {
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+
+    return dp[m][n];
+};`,
+  },
 ];
 
 export default data;
