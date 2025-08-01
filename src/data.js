@@ -2159,6 +2159,77 @@ s 仅由小写英文字母组成
     return dp[amount] === MAX ? -1 : dp[amount];
 };`,
   },
+  {
+    id: 139,
+    title: "单词拆分 word-break",
+    category: "动态规划",
+    content: `
+给你一个字符串 s 和一个字符串列表 wordDict 作为字典。如果可以利用字典中出现的一个或多个单词拼接出 s 则返回 true。
+
+注意：不要求字典中出现的单词全部都使用，并且字典中的单词可以重复使用。
+
+ 
+
+示例 1：
+
+输入: s = "leetcode", wordDict = ["leet", "code"]
+输出: true
+解释: 返回 true 因为 "leetcode" 可以由 "leet" 和 "code" 拼接成。
+示例 2：
+
+输入: s = "applepenapple", wordDict = ["apple", "pen"]
+输出: true
+解释: 返回 true 因为 "applepenapple" 可以由 "apple" "pen" "apple" 拼接成。
+     注意，你可以重复使用字典中的单词。
+示例 3：
+
+输入: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+输出: false
+ 
+
+提示：
+
+1 <= s.length <= 300
+1 <= wordDict.length <= 1000
+1 <= wordDict[i].length <= 20
+s 和 wordDict[i] 仅由小写英文字母组成
+wordDict 中的所有字符串 互不相同
+    `,
+    difficulty: "中等",
+    hint: `
+- 定义状态：
+    - 要判断字符串 s 能否被拆分，子问题就是：s 的各个前缀能否被拆分？
+    - dp[i] = 字符串 s 中长度为 i 的前缀（即子串 s[0...i-1]）是否可以被成功拆分
+    - dp 数组的长度是 s.length + 1。目标：求解 dp[s.length] 的值
+- 状态转移方程：
+    - dp[i] 的真假，是如何由之前的状态（dp[0], dp[1], ..., dp[i-1]）决定的呢？
+    - 考虑 dp[i] 为真的条件：
+      - 如果长度为 i 的前缀 s[0...i-1] 能够被成功拆分，那么它必然可以被看作是 (一个更短的、可被成功拆分的前缀) + (一个字典中的单词) 这样的组合
+      - 换句话说，我们可以在 0 到 i-1 之间寻找一个“分割点” j，如果满足以下两个条件，那么 dp[i] 就为 true：
+        - 分割点 j 之前的部分 s[0...j-1] 可以被成功拆分，也就是 dp[j] == true
+        - 分割点 j 到 i-1 的部分 s[j...i-1] 是字典 wordDict 中的一个单词
+      - 只需要在 j 从 0 到 i-1 的所有可能中，找到至少一个满足上述两个条件的分割点，就可以断定 dp[i] 为 true
+      - 因此，得到状态转移方程：dp[i] = ∃j∈[0, i−1] (dp[j] && s.substring(j, i) is in wordDict)
+- 初始条件（边界情况）：
+    - dp[0]：空字符串（长度为0）前缀，定义为 true，因为一个空的前缀是合法的拆分起点
+    - 其他元素初始化为 false
+    `,
+    link: "https://leetcode.cn/problems/word-break/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function wordBreak(s: string, wordDict: string[]): boolean {
+    const set = new Set(wordDict);
+    const dp = Array.from({ length: s.length + 1 }, () => false);
+    dp[0] = true;
+    for (let i = 1; i <= s.length; i++) {
+        for (let j = 0; j < i; j++) {
+            if (dp[j] && set.has(s.substring(j, i))) {
+                dp[i] = true;
+                break;
+            }
+        }
+    }
+    return dp[s.length];
+};`,
+  },
 ];
 
 export default data;
