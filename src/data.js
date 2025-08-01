@@ -2870,6 +2870,9 @@ text1 和 text2 仅由小写英文字符组成。
           - 我们需要在这两种可能中取一个较大值
           - 即 dp[i][j] = max(dp[i-1][j], dp[i][j-1])
 - 初始条件（边界条件）：
+    - dp[i][0] = 0，因为 text1 的前 0 个字符（空字符串）与 text2 的前 j 个字符的公共子序列都只能是空，长度为 0
+    - dp[0][j] = 0，同理
+    - 可以直接把 dp 表所有元素初始化为 0
     `,
     link: "https://leetcode.cn/problems/longest-common-subsequence/?envType=study-plan-v2&envId=top-100-liked",
     code: `function longestCommonSubsequence(text1: string, text2: string): number {
@@ -2894,6 +2897,109 @@ text1 和 text2 仅由小写英文字符组成。
                 dp[i][j] = dp[i - 1][j - 1] + 1;
             } else {
                 dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+
+    return dp[m][n];
+};`,
+  },
+  {
+    id: 72,
+    title: "编辑距离 edit-distance",
+    category: "多维动态规划",
+    content: `
+给你两个单词 word1 和 word2， 请返回将 word1 转换成 word2 所使用的最少操作数  。
+
+你可以对一个单词进行如下三种操作：
+
+插入一个字符
+删除一个字符
+替换一个字符
+
+示例 1：
+
+输入：word1 = "horse", word2 = "ros"
+输出：3
+解释：
+horse -> rorse (将 'h' 替换为 'r')
+rorse -> rose (删除 'r')
+rose -> ros (删除 'e')
+
+示例 2：
+
+输入：word1 = "intention", word2 = "execution"
+输出：5
+解释：
+intention -> inention (删除 't')
+inention -> enention (将 'i' 替换为 'e')
+enention -> exention (将 'n' 替换为 'x')
+exention -> exection (将 'n' 替换为 'c')
+exection -> execution (插入 'u')
+
+提示：
+
+0 <= word1.length, word2.length <= 500
+word1 和 word2 由小写英文字母组成
+    `,
+    difficulty: "中等",
+    hint: `
+- 定义状态：
+    - 这个问题的最优子结构与“最长公共子序列”非常相似。将 word1 完全转换为 word2 的最小代价，依赖于将 word1 的前缀转换为 word2 的前缀的最小代价
+    - 子问题：dp[i][j] 表示将 word1 的前 i 个字符（word1[0...i-1]）转换成 word2 的前 j 个字符（word2[0...j-1]）所需的最少操作数
+    - 最终目标：求解 dp[m][n]，其中 m 是 word1 的长度，n 是 word2 的长度
+    - dp 表的大小设为 (m+1) x (n+1)
+- 状态转移方程：
+    - 考虑 word1 的第 i 个字符（word1[i-1]）和 word2 的第 j 个字符（word2[j-1]），存在两种情况：
+      - 两个末尾字符相等，即 word1[i-1] === word2[j-1]
+        - 末尾字符已经匹配，不需要对它们进行操作
+        - 因此，将 word1[0...i-1] 转换为 word2[0...j-1] 的成本，就等于将它们各自去掉最后一个字符后的转换成本，即 word1[0...i-2] 转换为 word2[0...j-2] 的成本
+        - 即 dp[i][j] = dp[i-1][j-1]
+      - 两个末尾字符不相等，word1[i-1] !== word2[j-1]
+        - 此时必须执行一次操作才能使 word1 的前缀向 word2 的前缀靠拢，有三种选择：
+          - 替换: 将 word1[i-1] 替换成 word2[j-1]
+            - 完成这次操作后，两个字符串的末尾就匹配了，问题就退化为计算 word1[0...i-2] 到 word2[0...j-2] 的编辑距离
+            - 因此总操作数 dp[i][j] = dp[i-1][j-1] + 1
+          - 删除：将 word1[i-1] 删除
+            - 完成这次操作后，问题变为将 word1[0...i-2] 转换为 word2[0...j-1] 的最小操作数
+            - 因此总操作数 dp[i][j] = dp[i-1][j] + 1
+          - 插入：在 word1 的末尾插入一个字符 word2[j-1]，使其与 word2 的末尾匹配
+            - 完成这次操作后，问题变为将 word1[0...i-1] 转换为 word2[0...j-2] 的最小操作数
+            - 因此总操作数 dp[i][j] = dp[i][j-1] + 1
+          - 最终结果是上面三种情况的最小值
+- 初始条件（边界条件）：
+    - dp[0][0] = 0，因为从空字符串转换到空字符串不需要任何操作
+    - dp[i][0] = i，因为将 word1 的前 i 个字符转换为空字符串（word2 的前 0 个字符）需要 i 次删除操作
+    - dp[0][j] = j，因为将空字符串（word1 的前 0 个字符）转换为 word2 的前 j 个字符需要 j 次插入操作
+    `,
+    link: "https://leetcode.cn/problems/edit-distance/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function minDistance(word1: string, word2: string): number {
+    const m = word1.length;
+    const n = word2.length;
+
+    // dp[i][j] 表示把 word1 前 i 个字符修改为 word2 前 j 个字符的最小步数
+    const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+
+    for(let i = 1; i <= m; i++) {
+        dp[i][0] = i;
+    }
+    for(let j = 1; j <= n; j++) {
+        dp[0][j] = j;
+    }
+
+    // 对于长度分别为 i 和 j 的子串
+    // 若最后一个字符相同，则跳过，往前遍历
+    // 否则采取三种操作中步数最小的，并将当前步数 + 1
+    // dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1] 三个剩余子问题分别对应：
+    //      - 删除 word1[i - 1]
+    //      - 在 word1[i - 1] 后添加 word2[j - 1]
+    //      - 将 word1[i - 1] 替换为 word2[j - 1]
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            if (word1[i - 1] === word2[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1];
+            } else {
+                dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1;
             }
         }
     }
