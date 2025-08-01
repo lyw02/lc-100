@@ -3110,6 +3110,80 @@ n == nums.length
     return maj;
 };`,
   },
+  {
+    id: 75,
+    title: "颜色分类 sort-colors",
+    category: "技巧",
+    content: `
+给定一个包含红色、白色和蓝色、共 n 个元素的数组 nums ，原地 对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
+
+我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。
+
+必须在不使用库内置的 sort 函数的情况下解决这个问题。
+
+示例 1：
+
+输入：nums = [2,0,2,1,1,0]
+输出：[0,0,1,1,2,2]
+
+示例 2：
+
+输入：nums = [2,0,1]
+输出：[0,1,2]
+
+提示：
+
+n == nums.length
+1 <= n <= 300
+nums[i] 为 0、1 或 2
+ 
+
+进阶：
+
+你能想出一个仅使用常数空间的一趟扫描算法吗？
+    `,
+    difficulty: "简单",
+    hint: `
+- 单指针遍历，双指针维护边界
+- 指针 i 遍历数组，指针 p0 维护 0 的边界（指向第一个不为 0 的位置），指针 p1 维护 1 的边界（指向第一个不为 0 或 1 的位置）
+    - 0 的区域: [0, p0]
+    - 1 的区域: [p0, p1]
+    - 未处理区域: [p1, i] (这部分实际上是2，但算法逻辑上不直接处理2)
+    - 待扫描区域: [i, n]
+- 遍历数组：
+    - 当 nums[i] === 1 时：
+      - 根据 p1 的定义，p1 指向的是 0 和 1 区域之后第一个元素的位置
+      - 所以，我们应该把这个 1（nums[i]）和 nums[p1] 交换，然后将 p1 后移
+    - 当 nums[i] === 0 时：
+      - 同理，我们应该首先把这个 0（nums[i]）和 nums[p0] 交换
+      - 此时，原本在 p0 位置的元素被换到了 i 的位置。这个被换出来的元素是什么？
+        - 根据定义，p0 左侧是 0 区域，p0 和 p1 直接是 1 区域
+        - 因此如果 p0 < p1，说明 p1 左侧有 1 存在，也就是被换出来的是 1
+        - 因此还需要把换出来的元素 nums[i] 再次和 nums[p1] 交换
+      - 最后需要把 p0 和 p1 同时后移
+    `,
+    link: "https://leetcode.cn/problems/sort-colors/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ Do not return anything, modify nums in-place instead.
+ */
+function sortColors(nums: number[]): void {
+    let p0 = 0;
+    let p1 = 0;
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] === 1) {
+            [nums[i], nums[p1]] = [nums[p1], nums[i]];
+            p1++;
+        } else if (nums[i] === 0) {
+            [nums[i], nums[p0]] = [nums[p0], nums[i]];
+            if (p0 < p1) {
+                [nums[i], nums[p1]] = [nums[p1], nums[i]];
+            }
+            p0++;
+            p1++;
+        }
+    }
+};`,
+  },
 ];
 
 export default data;
