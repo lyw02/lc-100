@@ -91,12 +91,24 @@ strs[i] 仅包含小写字母
     `,
     difficulty: "中等",
     hint: `
+- 基于哈希表对每个字符串进行字母计数
 - 由于互为字母异位词的两个字符串包含的字母相同，因此两个字符串中的相同字母出现的次数一定是相同的
 - 故可以将每个字母出现的次数使用字符串表示，作为哈希表的键
 - 由于字符串只包含小写字母，因此对于每个字符串，可以使用长度为 26 的数组记录每个字母出现的次数
 `,
     link: "https://leetcode.cn/problems/group-anagrams/description/?envType=study-plan-v2&envId=top-100-liked",
-    code: ``
+    code: `function groupAnagrams(strs: string[]): string[][] {
+    const map = new Map();
+    for (const str of strs) {
+        const count = Array.from({ length: 26 }, () => 0);
+        for (const c of str) {
+            count[c.charCodeAt(0) - "a".charCodeAt(0)]++;
+        }
+        const countStr = count.join(","); // 不能使用空格，否则遇到两位数会混淆
+        map.has(countStr) ? map.get(countStr).push(str) : map.set(countStr, [str]);
+    }
+    return [...map.values()];
+};`
   },
   {
     id: 189,
