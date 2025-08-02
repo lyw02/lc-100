@@ -359,6 +359,85 @@ nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
 };`
   },
   {
+    id: 42,
+    title: "接雨水 trapping-rain-water",
+    category: "双指针",
+    content: `
+给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+
+示例 1：
+
+输入：height = [0,1,0,2,1,0,1,3,2,1,2,1]
+输出：6
+解释：上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。
+
+示例 2：
+
+输入：height = [4,2,0,3,2,5]
+输出：9
+
+提示：
+
+n == height.length
+1 <= n <= 2 * 104
+0 <= height[i] <= 105
+    `,
+    difficulty: "中等",
+    hint: `
+- 对于每一根柱子，它上方能接的雨水，取决于它左侧所有柱子中的最高者和右侧所有柱子中的最高者中，较矮的那个
+    - 设左侧最高柱子为 global_left_max，右侧最高柱子为 global_right_max
+    - 那么第 i 个位置的柱子 height[i] 上方能形成的水柱高度是 min(global_left_max, global_right_max) - height[i]，且最小为 0
+    - 即：water[i] = max(0, min(global_left_max, global_right_max) - height[i])
+    - 注意：最左边和最右边的柱子因为一边没有墙，所以永远无法存水
+- 维护两个指针，left 和 right，分别指向数组的左右两端
+    - 设当前左右最高的柱子为 left_max, right_max
+    - left_max 就是 height[0...left] 中的最大值
+    - right_max 就是 height[right...n-1] 中的最大值
+    - 算法的每一步都试图处理 left 指针和 right 指针指向的两个柱子中高度较低的那个
+    - 如果 height[left] < height[right]
+      - 这说明右边的墙更高，所以处理左指针
+      - 更新 left_max: left_max = max(left_max, height[left])
+      - 计算当前 left 位置能接的雨水并将 left 指针右移
+        - 如何计算 left 位置的雨水呢?
+          - 根据第一部分原理，我们需要 min(global_left_max, global_right_max)
+          - 我们已知 left_max，它就是 left 位置的 global_left_max
+          - 但我们不知道 left 位置的 global_right_max，只有一个从右边过来的 right_max
+          - 但是，当我们处于 height[left] < height[right] 这个条件时：
+            - 我们知道，在 left 指针的右边，至少存在一根高度为 height[right] 的柱子
+            - 同时，left 位置真正的 global_right_max 必然大于或等于 height[right]
+            - 由于 height[left] < height[right]，而 left_max 是基于 height[0...left] 计算的
+            - 所以可以肯定 left_max 是 global_left_max 和 global_right_max 中较小或相等的那一个（即“短板”）
+            - 因此，计算公式从 min(global_left_max, global_right_max) - height[left] 简化为 left_max - height[left]
+    - 如果 height[left] >= height[right]
+      - 这说明左边的墙更高或一样高，所以处理右指针
+      - 更新 right_max: right_max = max(right_max, height[right])
+      - 计算当前 right 位置能接的雨水并将 right 指针左移
+      - 计算水量方法同上，简化为 right_max - height[right]
+`,
+    link: "https://leetcode.cn/problems/trapping-rain-water/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function trap(height: number[]): number {
+    let i = 0;
+    let j = height.length - 1
+    let leftMax = 0;
+    let rightMax = 0;
+    let totalWater = 0;
+    
+    while (i < j) {
+        if (height[i] < height[j]) {
+            leftMax = Math.max(leftMax, height[i]);
+            totalWater += Math.max(0, leftMax - height[i]);
+            i++;
+        } else {
+            rightMax = Math.max(rightMax, height[j]);
+            totalWater += Math.max(0, rightMax - height[j]);
+            j--;
+        }
+    }
+
+    return totalWater;
+};`
+  },
+  {
     id: 189,
     title: "轮转数组 rotate-array",
     category: "普通数组",
