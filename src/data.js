@@ -614,6 +614,82 @@ s 和 p 仅包含小写字母
 };`,
   },
   {
+    id: 560,
+    title: "和为 K 的子数组 find-all-anagrams-in-a-string",
+    category: "子串",
+    content: `
+给你一个整数数组 nums 和一个整数 k ，请你统计并返回 该数组中和为 k 的子数组的个数 。
+
+子数组是数组中元素的连续非空序列。
+
+示例 1：
+
+输入：nums = [1,1,1], k = 2
+输出：2
+
+示例 2：
+
+输入：nums = [1,2,3], k = 3
+输出：2
+
+提示：
+
+1 <= nums.length <= 2 * 104
+-1000 <= nums[i] <= 1000
+-107 <= k <= 107
+    `,
+    difficulty: "中等",
+    hint: `
+- 前缀和 + 哈希表
+- 数组元素不同号，不能用滑动窗口，因为向右滑动不能保证递增。考虑前缀和
+- 核心思路就是用「前缀和 + 哈希表」来把暴力枚举所有子数组的 O(n²) 降到 O(n)
+- 什么是前缀和？
+    - 前缀和 s[i] 表示从数组开头到第 i 个元素这段区间的所有元素之和。
+    - 例如，数组 nums = [1, 2, 3, 4]，它的前缀和序列就是:
+      - s[0] = 1
+      - s[1] = 1 + 2 = 3
+      - s[2] = 1 + 2 + 3 = 6
+      - s[3] = 1 + 2 + 3 + 4 = 10
+    - 有了前缀和，就可以快速算「任意子数组」的和：
+      sum(nums[i...j]) = s[j] - s[i - 1] (若 i = 0，视为 s[-1] = 0)
+- 问题转化：
+    - 要找和为 k 的子数组，就是找所有 (i, j) ，使得 sum(nums[i...j]) = s[j] - s[i - 1] = k
+    - 即 s[i - 1] = s[j] - k
+    - 即对于遍历到的每个 j，只要看看之前有没有出现过前缀和等于 s[j] - k 的位置，就可以知道跟当前 j 配对能凑出多少个子数组
+- 用哈希表记录前缀和出现次数：
+    - 键是「某个前缀和的值」，值是「这个前缀和值出现了多少次」
+`,
+    link: "https://leetcode.cn/problems/subarray-sum-equals-k/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function subarraySum(nums: number[], k: number): number {
+    let res = 0; // 记录和为 k 的子数组个数
+    let s = 0; // 前缀和
+    const map = new Map(); // 哈希表，记录每个前缀和出现的次数
+    map.set(0, 1); // 初始化：前缀和为 0 出现 1 次（空数组）
+    for (const n of nums) {
+        s += n; // 更新当前的前缀和
+
+        // 看看 s - k 这个前缀和在 map 里出现过几次
+        // 每出现一次，就说明有一个之前的位置 i−1 可以跟当前 j 配对，凑成和为 k 的子数组，所以把出现次数加到结果 res 上
+        if (map.has(s - k)) {
+            res += map.get(s - k);
+        }
+        
+        // 把当前前缀和 s 记入 map（出现次数 +1），给后面的 j′ 用
+        if (map.has(s)) {
+            map.set(s, map.get(s) + 1);
+        } else {
+            map.set(s, 1);
+        }
+    }
+
+    return res;
+
+    // 为什么是线性时间？
+    //      我们只遍历一次数组，遍历过程中对 map 的「查找」和「更新」都是 O(1) 平均时间。
+    //      因此总复杂度是 O(n)，比直接枚举所有 (i, j) 的 O(n²) 要快很多
+};`,
+  },
+  {
     id: 189,
     title: "轮转数组 rotate-array",
     category: "普通数组",
