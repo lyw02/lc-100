@@ -779,6 +779,122 @@ s 和 p 仅包含小写字母
 };`,
   },
   {
+    id: 76,
+    title: "最小覆盖子串 minimum-window-substring",
+    category: "子串",
+    content: `
+给你一个字符串 s 、一个字符串 t 。返回 s 中涵盖 t 所有字符的最小子串。如果 s 中不存在涵盖 t 所有字符的子串，则返回空字符串 "" 。
+
+注意：
+
+对于 t 中重复字符，我们寻找的子字符串中该字符数量必须不少于 t 中该字符数量。
+如果 s 中存在这样的子串，我们保证它是唯一的答案。
+
+示例 1：
+
+输入：s = "ADOBECODEBANC", t = "ABC"
+输出："BANC"
+解释：最小覆盖子串 "BANC" 包含来自字符串 t 的 'A'、'B' 和 'C'。
+
+示例 2：
+
+输入：s = "a", t = "a"
+输出："a"
+解释：整个字符串 s 是最小覆盖子串。
+
+示例 3:
+
+输入: s = "a", t = "aa"
+输出: ""
+解释: t 中两个字符 'a' 均应包含在 s 的子串中，
+因此没有符合条件的子字符串，返回空字符串。
+
+提示：
+
+m == s.length
+n == t.length
+1 <= m, n <= 105
+s 和 t 由英文字母组成
+
+进阶：你能设计一个在 o(m+n) 时间内解决此问题的算法吗？
+    `,
+    difficulty: "困难",
+    hint: `
+- 设滑动窗口的左右指针为 i 和 j
+- 扩张窗口：
+    - 不断向右移动 j 指针，将新字符纳入窗口，直到这个窗口满足了包含 t 所有字符的条件
+- 收缩窗口：
+    - 一旦窗口满足条件，我们就记录下这个窗口的长度，并尝试从左侧收缩窗口，即向右移动 i 指针
+    - 每收缩一步，我们都检查窗口是否仍然满足条件
+      - 如果仍然满足，说明我们找到了一个更短的、符合条件的窗口，我们更新记录
+      - 如果不再满足，我们就停止收缩，回到第一步，继续扩张窗口，寻找下一个满足条件的可能
+- 如何检查窗口是否满足条件：类似 438. 找到字符串中所有字母异位词
+    - needs 哈希表：
+      - 用来存储目标字符串 t 中所有字符及其需要的数量。例如，如果 t = "AABC"，那么 needs = {'A': 2, 'B': 1, 'C': 1}
+    - window 哈希表：
+      - 用来存储当前滑动窗口中，我们所关心的字符（即在needs中出现的字符）及其数量
+    - match 计数器：
+      - 记录当前 window 中，有多少种类的字符已经满足了 needs 表中的数量要求
+      - 当 match 的值等于 needs 表中不同字符的总数时，就说明当前窗口已经满足了覆盖 t 的条件
+`,
+    link: "https://leetcode.cn/problems/minimum-window-substring/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function minWindow(s: string, t: string): string {
+    const needs = new Map();
+    const window = new Map();
+
+    for (const c of t) {
+        needs.set(c, (needs.get(c) || 0) + 1);
+    }
+
+    let i = 0;
+    let j = 0;
+    let match = 0;
+
+    let start = 0; // 最终结果子串的起始位置
+    let minLength = Infinity;
+
+    while (j < s.length) {
+        // 扩张窗口
+        const charIn = s[j];
+        j++;
+
+        if (needs.has(charIn)) {
+            window.set(charIn, (window.get(charIn) || 0) + 1);
+            if (window.get(charIn) === needs.get(charIn)) {
+                match++;
+            }
+        }
+
+        // 收缩窗口
+        // 只有当所有需要的字符都满足了条件时才尝试收缩左边界
+        while (match === [...needs.keys()].length) {
+            // 首先更新最小子串结果
+            const curLen = j - i;
+            if (curLen < minLength) {
+                minLength = curLen;
+                start = i;
+            }
+
+            const charOut = s[i];
+            i++;
+
+            if (needs.has(charOut)) {
+                // 如果在移出前刚好是满足需求的数量
+                // 那么移出后，就不再满足需求了，match 数减一
+                if (window.get(charOut) === needs.get(charOut)) {
+                    match--;
+                }
+                window.set(charOut, (window.get(charOut) || 0) - 1)
+            }
+        }
+    }
+
+    // 如果 minLen 还是初始的无穷大，说明没有找到符合条件的子串
+    // 否则，使用记录的 start 和 minLen 截取子串
+    return minLength === Infinity ? "" : s.substring(start, start + minLength);
+};`,
+  },
+  {
     id: 189,
     title: "轮转数组 rotate-array",
     category: "普通数组",
