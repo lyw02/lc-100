@@ -50,7 +50,7 @@ const data = [
             map.set(nums[i], i);
         }
     }
-};`
+};`,
   },
   {
     id: 49,
@@ -108,7 +108,7 @@ strs[i] 仅包含小写字母
         map.has(countStr) ? map.get(countStr).push(str) : map.set(countStr, [str]);
     }
     return [...map.values()];
-};`
+};`,
   },
   {
     id: 128,
@@ -162,7 +162,7 @@ strs[i] 仅包含小写字母
         res = Math.max(res, next - num);
     }
     return res;
-};`
+};`,
   },
   {
     id: 283,
@@ -221,7 +221,7 @@ function moveZeroes(nums: number[]): void {
     for (let i = j; i < nums.length; i++) {
         nums[i] = 0;
     }
-};`
+};`,
   },
   {
     id: 11,
@@ -272,7 +272,7 @@ n == height.length
         height[i] < height[j] ? i++ : j--;
     }
     return maxArea;
-};`
+};`,
   },
   {
     id: 15,
@@ -356,7 +356,7 @@ nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
         }
     }
     return res;
-};`
+};`,
   },
   {
     id: 42,
@@ -435,7 +435,183 @@ n == height.length
     }
 
     return totalWater;
-};`
+};`,
+  },
+  {
+    id: 3,
+    title: "无重复字符的最长子串 longest-substring-without-repeating-characters",
+    category: "滑动窗口",
+    content: `
+给定一个字符串 s ，请你找出其中不含有重复字符的 最长 子串 的长度。
+
+示例 1:
+
+输入: s = "abcabcbb"
+输出: 3 
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+
+示例 2:
+
+输入: s = "bbbbb"
+输出: 1
+解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
+
+示例 3:
+
+输入: s = "pwwkew"
+输出: 3
+解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
+     请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+
+提示：
+
+0 <= s.length <= 5 * 104
+s 由英文字母、数字、符号和空格组成
+    `,
+    difficulty: "中等",
+    hint: `
+- 滑动窗口 + 哈希表
+- 滑动窗口：
+    - 想象一个在字符串 s 上滑动的“窗口”，这个窗口内的子串是始终没有重复字符的。我们的目标是找到这个窗口可能达到的最大宽度
+    - 窗口由两个指针定义：左边界 i 和 右边界 j
+    - 我们不断地尝试将右边界 j 向右移动，以扩大窗口
+    - 如果在这个过程中，新加入的字符与窗口内已有的某个字符重复了，我们就需要将左边界 i 向右移动，直到窗口内不再有重复字符
+      - 也就是说左边界 i 记录的是当前窗口中所有字符上一次出现位置的最大值。因此，无重复的子串实际上是从 i + 1 开始的。因此 i 的初始值为 -1
+    - 在整个过程中，我们记录下窗口的最大宽度，这个最大宽度就是最终的答案
+    - 使用哈希表记录了每个字符（key）及其在字符串中最新出现过的下标（value）
+`,
+    link: "https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function lengthOfLongestSubstring(s: string): number {
+    if (s.length === 1) return 1;
+    const map = new Map();
+    let res = 0;
+    let i = -1;
+    for (let j = 0; j < s.length; j++) {
+        if (map.has(s[j])) {
+            i = Math.max(i, map.get(s[j]));
+        }
+        map.set(s[j], j); // 哈希表记录字符s[j]最后出现的下标
+        res = Math.max(res, j - i);
+    }
+    return res;
+};`,
+  },
+  {
+    id: 438,
+    title: "找到字符串中所有字母异位词 find-all-anagrams-in-a-string",
+    category: "滑动窗口",
+    content: `
+给定两个字符串 s 和 p，找到 s 中所有 p 的 异位词 的子串，返回这些子串的起始索引。不考虑答案输出的顺序。
+
+示例 1:
+
+输入: s = "cbaebabacd", p = "abc"
+输出: [0,6]
+解释:
+起始索引等于 0 的子串是 "cba", 它是 "abc" 的异位词。
+起始索引等于 6 的子串是 "bac", 它是 "abc" 的异位词。
+
+示例 2:
+
+输入: s = "abab", p = "ab"
+输出: [0,1,2]
+解释:
+起始索引等于 0 的子串是 "ab", 它是 "ab" 的异位词。
+起始索引等于 1 的子串是 "ba", 它是 "ab" 的异位词。
+起始索引等于 2 的子串是 "ab", 它是 "ab" 的异位词。
+
+提示:
+
+1 <= s.length, p.length <= 3 * 104
+s 和 p 仅包含小写字母
+    `,
+    difficulty: "中等",
+    hint: `
+- 固定长度的滑动窗口
+- 要判断 s 中一个长度为 p.length 的子串（我们称之为“窗口”）是否是 p 的异位词，我们只需要比较这个窗口和 p 的字符频率表是否完全一致
+- 当窗口向右滑动一格时，我们不需要重新计算整个新窗口的字符频率，只需要：
+    - 减去离开窗口的那个字符的计数
+    - 加上进入窗口的那个字符的计数
+- 实际上，不需要直接比较两个完整的频率表，而是用一个差值数组 count 和一个差异计数器 differ 来进行更高效率的判断
+    - count 数组：
+      - 这是一个长度为 26 的数组，代表 'a' 到 'z' 的 26 个小写字母。它存储的不是字符数量，而是当前窗口内各字符数量与字符串 p 中各字符数量的差值
+      - 即 count[k] = 滑动窗口中 k + 'a' 的数量 - p 中 k + 'a' 的数量
+      - count[k] === 0：表示字符 k + 'a' 在当前窗口和 p 中的数量相等
+      - count[k] > 0：表示字符 k + 'a' 在当前窗口中的数量比 p 中多
+      - count[k] < 0：表示字符 k + 'a' 在当前窗口中的数量比 p 中少
+      - 目标：找到所有让 count 数组所有元素都为 0 的窗口
+    - differ 变量：
+      - 记录了 count 数组中非零元素的个数，即有多少种字符的数量目前是不匹配的
+      - 当 differ === 0 时，说明 count 数组所有元素都为 0，即当前窗口是一个异位词，我们找到了一个解
+      - 通过维护 differ，我们每次滑动窗口后，只需要检查 differ是否为 0，而不需要遍历整个 count 数组
+`,
+    link: "https://leetcode.cn/problems/find-all-anagrams-in-a-string/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function findAnagrams(s: string, p: string): number[] {
+    // 在数组里直接统计滑动窗口和字符串 p 中每种字母数量的差，只要所有差值都为 0（即differ == 0），就说明当前窗口是一个异位词窗口
+    // 维护一个 count 数组：count[c] = 滑动窗口中 c 的数量 - p 中 c 的数量
+    // 维护一个变量 differ，表示有多少个字母目前“数目不一样”
+    // 滑动窗口每次滑动一格，只用处理两个字母：新进窗口的字母、新出窗口的字母，然后及时更新 count 和 differ
+
+    if (s.length < p.length) return [];
+
+    const res = [];
+    const count = new Array(26).fill(0);
+    const A_CODE = "a".charCodeAt(0)
+
+    // 初始化第一个窗口和 p 的差异
+    for (let i = 0; i < p.length; i++) {
+        count[s.charCodeAt(i) - A_CODE]++;
+        count[p.charCodeAt(i) - A_CODE]--;
+    }
+
+    // 计算初始的 differ 值
+    let differ = 0;
+    for (let i = 0; i < 26; i++) {
+        if (count[i] !== 0) {
+            differ++;
+        }
+    }
+
+    // 检查第一个窗口是否匹配
+    if (differ === 0) {
+        res.push(0);
+    }
+
+    // 滑动窗口
+    for (let i = 0; i < s.length - p.length; i++) {
+        // i 是窗口左边界
+        // s[i] 是将要离开窗口的字符
+        // s[i + p.length] 是将要进入窗口的字符
+
+        // a. 处理进入的字符 s[i + p.length]
+        const charInIndex = s.charCodeAt(i + p.length) - A_CODE;
+        if (count[charInIndex] === 0) {
+            // 原本这个字母的数量是匹配的，现在多了一个，不平衡种类的总数 differ 需要 + 1
+            differ++;
+        } else if (count[charInIndex] === -1) {
+            // 在这个新字符进入窗口之前，窗口中的该种字符的数量比 p 中恰好少一个
+            // 一个原本不平衡的字符种类，现在变得平衡了。因此，不平衡种类的总数 differ 需要 - 1
+            differ--;
+        }
+        count[charInIndex]++;
+
+        // b. 处理离开的字符 s[i]
+        const charOutIndex = s.charCodeAt(i) - A_CODE;
+        if (count[charOutIndex] === 0) {
+            differ++;
+        } else if (count[charOutIndex] === 1) {
+            differ--;
+        }
+        count[charOutIndex]--;
+
+        // c. 检查滑动后的窗口是否匹配
+        if (differ === 0) {
+            res.push(i + 1); // 新窗口的起始索引是 i + 1
+        }
+    }
+
+    return res;
+};`,
   },
   {
     id: 189,
