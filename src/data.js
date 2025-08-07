@@ -439,7 +439,8 @@ n == height.length
   },
   {
     id: 3,
-    title: "无重复字符的最长子串 longest-substring-without-repeating-characters",
+    title:
+      "无重复字符的最长子串 longest-substring-without-repeating-characters",
     category: "滑动窗口",
     content: `
 给定一个字符串 s ，请你找出其中不含有重复字符的 最长 子串 的长度。
@@ -1064,6 +1065,34 @@ intervals[i].length == 2
     - 然后将翻转后的数组的[0, (k mod n) - 1], [k mod n, n - 1] 子数组分别翻转即可
 `,
     link: "https://leetcode.cn/problems/rotate-array/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ Do not return anything, modify nums in-place instead.
+ */
+function rotate(nums: number[], k: number): void {
+    // 常规思路
+    // const arr = [];
+    // for (let i = 0; i < nums.length; i++) {
+    //     arr[(i + k) % nums.length] = nums[i];
+    // }
+    // for (let i = 0; i < nums.length; i++) {
+    //     nums[i] = arr[i];
+    // }
+
+    // 数组翻转
+    // 当我们将数组的元素向右移动 k 次后，尾部 k mod n 个元素会移动至数组头部，其余元素向后移动 k mod n 个位置。
+    // 先将所有元素翻转，这样尾部的 k mod n 个元素就被移至数组头部，然后再翻转 [0,k mod n − 1] 区间的元素和 [k mod n,n − 1] 区间的元素即能得到最后的答案。
+    const n = nums.length;
+    reverse(0, n - 1);
+    reverse(0, k % n - 1);
+    reverse(k % n, n - 1);
+    function reverse(start, end) {
+        while (start < end) {
+            [nums[start], nums[end]] = [nums[end], nums[start]];
+            start++;
+            end--;
+        }
+    }
+};`,
   },
   {
     id: 238,
