@@ -895,6 +895,84 @@ s 和 t 由英文字母组成
 };`,
   },
   {
+    id: 53,
+    title: "最大子数组和 maximum-subarray",
+    category: "普通数组",
+    content: `
+给你一个整数数组 nums ，请你找出一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+
+子数组是数组中的一个连续部分。
+
+示例 1：
+
+输入：nums = [-2,1,-3,4,-1,2,1,-5,4]
+输出：6
+解释：连续子数组 [4,-1,2,1] 的和最大，为 6 。
+
+示例 2：
+
+输入：nums = [1]
+输出：1
+示例 3：
+
+输入：nums = [5,4,-1,7,8]
+输出：23
+
+提示：
+
+1 <= nums.length <= 105
+-104 <= nums[i] <= 104
+
+进阶：如果你已经实现复杂度为 O(n) 的解法，尝试使用更为精妙的 分治法 求解。
+    `,
+    difficulty: "中等",
+    hint: `
+- 思路一：动态规划
+    - 定义状态：
+      - dp[i] 代表以 nums[i] 结尾的子数组的最大和
+    - 推导状态转移方程：
+      - 以 nums[i] 结尾的子数组有两种可能：
+        - 1. 只含有 nums[i] 本身。这种情况下，最大和就是 nums[i] 本身
+        - 2. nums[i] 连接在以 nums[i-1] 结尾的最大和子数组后面。这种情况下，最大和就是 dp[i-1] + nums[i]
+      - 因此，状态转移方程：
+        - dp[i] = max(nums[i], dp[i-1] + nums[i])
+    - 初始条件：
+      - dp[0] = nums[0]，因为子数组只包含第一个元素本身
+    - 复杂度：时间 O(n)，空间 O(n)
+- 思路二：滚动数组优化
+    - 在计算 dp[i] 的时候，我们仅仅需要 dp[i-1] 的值，而与 dp[i-2], dp[i-3], ... 这些更早的状态无关
+    - 因此没有必要用一个完整的数组 dp 来存储所有历史状态，只需要一个变量来记录“前一个状态”的值即可，因此可以实现空间优化
+    - 我们用一个变量 currMax 来代替 dp[i]。currMax 在第 i 次循环中，就代表着我们想要计算的 dp[i] 的值
+    - 在计算当前 currMax 时，它需要用到前一步的 currMax（相当于 dp[i-1]）
+    - 即 currMax = max(nums[i], currMax + nums[i]);
+    - 复杂度：时间 O(n)，空间 O(1)
+`,
+    link: "https://leetcode.cn/problems/maximum-subarray/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function maxSubArray(nums: number[]): number {
+    // 思路一
+    dp[i] 代表以元素 nums[i]为结尾的连续子数组最大和
+    const dp = Array.from({ length: nums.length }, () => 0);
+    dp[0] = nums[0];
+    let maxSum = nums[0];
+    for (let i = 1; i < nums.length; i++) {
+        dp[i] = Math.max(nums[i], dp[i - 1] + nums[i]);
+        maxSum = Math.max(maxSum, dp[i]);
+    }
+    return maxSum;
+
+    // 思路二
+    // let maxSum = nums[0]; // 全局最大和，初始设为第一个元素
+    // let currMax = nums[0]; // 以 nums[i] 结尾的最大和，初始设为 nums[0]
+    // for (let i = 1; i < nums.length; i++) {
+    //     // 要么接到前面的子数组后面，要么单独从 nums[i] 重新开始
+    //     currMax = Math.max(currMax + nums[i], nums[i]);
+    //     // 更新全局最大
+    //     maxSum = Math.max(maxSum, currMax);
+    // }
+    // return maxSum;
+};`,
+  },
+  {
     id: 189,
     title: "轮转数组 rotate-array",
     category: "普通数组",
