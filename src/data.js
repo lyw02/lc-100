@@ -1632,7 +1632,6 @@ skipB - 在 listB 中（从头节点开始）跳到交叉节点的节点数
 从各自的表头开始算起，链表 A 为 [4,1,8,4,5]，链表 B 为 [5,6,1,8,4,5]。
 在 A 中，相交节点前有 2 个节点；在 B 中，相交节点前有 3 个节点。
 — 请注意相交节点的值不为 1，因为在链表 A 和链表 B 之中值为 1 的节点 (A 中第二个节点和 B 中第三个节点) 是不同的节点。换句话说，它们在内存中指向两个不同的位置，而链表 A 和链表 B 中值为 8 的节点 (A 中第三个节点，B 中第四个节点) 在内存中指向相同的位置。
- 
 
 示例 2：
 
@@ -1649,7 +1648,6 @@ skipB - 在 listB 中（从头节点开始）跳到交叉节点的节点数
 解释：从各自的表头开始算起，链表 A 为 [2,6,4]，链表 B 为 [1,5]。
 由于这两个链表不相交，所以 intersectVal 必须为 0，而 skipA 和 skipB 可以是任意值。
 这两个链表不相交，因此返回 null 。
- 
 
 提示：
 
@@ -1661,7 +1659,6 @@ listB 中节点数目为 n
 0 <= skipB <= n
 如果 listA 和 listB 没有交点，intersectVal 为 0
 如果 listA 和 listB 有交点，intersectVal == listA[skipA] == listB[skipB]
- 
 
 进阶：你能否设计一个时间复杂度 O(m + n) 、仅用 O(1) 内存的解决方案？
     `,
@@ -1676,6 +1673,42 @@ listB 中节点数目为 n
     - 两指针第一次相遇时即为第一个相交节点
 `,
     link: "https://leetcode.cn/problems/intersection-of-two-linked-lists/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function getIntersectionNode(headA: ListNode | null, headB: ListNode | null): ListNode | null {
+    // 哈希表
+    // const map = new Map();
+    // while (headA) {
+    //     map.set(headA, 1);
+    //     headA = headA.next;
+    // }
+    // while (headB) {
+    //     if (map.has(headB)) {
+    //         return headB;
+    //     }
+    //     headB = headB.next;
+    // }
+    // return null;
+
+    // 双指针
+    let ptrA = headA;
+    let ptrB = headB;
+    while (ptrA !== ptrB) {
+        ptrA = ptrA ? ptrA.next : headB;
+        ptrB = ptrB ? ptrB.next : headA;
+    }
+    return ptrA;
+};`,
   },
   {
     id: 206,
