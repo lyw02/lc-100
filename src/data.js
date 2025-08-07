@@ -1489,14 +1489,13 @@ function rotate(matrix: number[][]): void {
 
 每行的元素从左到右升序排列。
 每列的元素从上到下升序排列。
- 
 
 示例 1：
 
 输入：matrix = [
-                [1,4,7,11,15],
-                [2,5,8,12,19],
-                [3,6,9,16,22],
+                [1, 4, 7, 11,15],
+                [2, 5, 8, 12,19],
+                [3, 6, 9, 16,22],
                 [10,13,14,17,24],
                 [18,21,23,26,30]
               ], target = 5
@@ -1505,14 +1504,13 @@ function rotate(matrix: number[][]): void {
 示例 2：
 
 输入：matrix = [
-                [1,4,7,11,15],
-                [2,5,8,12,19],
-                [3,6,9,16,22],
+                [1, 4, 7, 11,15],
+                [2, 5, 8, 12,19],
+                [3, 6, 9, 16,22],
                 [10,13,14,17,24],
                 [18,21,23,26,30]
               ], target = 20
 输出：false
-
 
 提示：
 
@@ -1530,8 +1528,74 @@ n == matrix[i].length
     - 根据每行每列递增的条件遍历矩阵，超出范围时剪枝
 思路二：
     - 遍历时对每行进行二分查找
+思路三：
+    - Z 字形查找
+    - 从右上角开始，设当前坐标为 (row, col)，初始为 (0, n - 1)
+    - 只要 (row, col) 在矩阵范围内，就获取当前元素 matrix[row][col]
+      - 若 matrix[row][col] === target，说明找到了，直接返回 true
+      - 若 matrix[row][col] > target，说明 target 不可能在当前列，因为当前列下方元素更大，因此左移，col--
+      - 若 matrix[row][col] < target，说明 target 不可能在当前行，因为当前列左边元素更小，因此下移，row++
+    - 如果循环结束还没找到，返回 false
+复杂度分析：
+    - 思路一：时间 O(mn)，空间 O(1)
+    - 思路二：时间 O(mlogn)，空间 O(1)
+    - 思路三：时间 O(m+n)，空间 O(1)
 `,
     link: "https://leetcode.cn/problems/search-a-2d-matrix-ii/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function searchMatrix(matrix: number[][], target: number): boolean {
+    // 思路一
+    // for (let i = 0; i < matrix.length; i++) {
+    //     if (matrix[i][0] === target) return true;
+    //     if (matrix[i][0] < target) {
+    //         for (let j = 1; j < matrix[0].length; j++) {
+    //             if (matrix[i][j] === target) return true;
+    //             if (matrix[i][j] > target) break;
+    //         }
+    //     }
+    // }
+    // return false;
+
+    // 思路二
+    // 对每一行使用二分查找
+    // function search(nums, target) {
+    //     let low = 0;
+    //     let high = nums.length - 1;
+    //     while (low <= high) {
+    //         let mid = Math.floor((high + low) / 2);
+    //         if (nums[mid] == target) {
+    //             return true;
+    //         } else if (nums[mid] > target) {
+    //             high = mid - 1;
+    //         } else {
+    //             low = mid + 1;
+    //         }
+    //     }
+    //     return false;
+    // }
+
+    // for (let i = 0; i < matrix.length; i++) {
+    //     if (matrix[i][0] === target) return true;
+    //     if (matrix[i][0] < target) {
+    //         if (search(matrix[i], target)) return true;
+    //     }
+    // }
+    // return false;
+
+    // 思路三
+    let row = 0;
+    let col = matrix[0].length - 1;
+    while (row < matrix.length && col >= 0) {
+        const cur = matrix[row][col];
+        if (cur === target) {
+            return true;
+        } else if (cur > target) {
+            col--;
+        } else {
+            row++;
+        }
+    }
+    return false;
+};`,
   },
   {
     id: 160,
