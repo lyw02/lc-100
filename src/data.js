@@ -1363,7 +1363,6 @@ n == matrix[i].length
 给定一个 n × n 的二维矩阵 matrix 表示一个图像。请你将图像顺时针旋转 90 度。
 
 你必须在 原地 旋转图像，这意味着你需要直接修改输入的二维矩阵。请不要 使用另一个矩阵来旋转图像。
-
  
 示例 1：
 
@@ -1393,7 +1392,6 @@ n == matrix[i].length
         [16,7,10,11]
       ]
 
-
 提示：
 
 n == matrix.length == matrix[i].length
@@ -1412,8 +1410,75 @@ n == matrix.length == matrix[i].length
         - 对于 i < j 的元素，交换 matrix[i][j] 和 matrix[j][i]
       - 如果不是方阵：
         - 通过补 0 形成方阵
+      - 如果要求逆时针：
+        - 改为先每行倒序再转置
 `,
     link: "https://leetcode.cn/problems/rotate-image/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ Do not return anything, modify matrix in-place instead.
+ */
+function rotate(matrix: number[][]): void {
+    // 辅助数组
+    // const tmp = matrix.map(row => [...row]);
+    // for (let i = 0; i < matrix.length; i++) {
+    //     for (let j = 0; j < matrix.length; j++) {
+    //         matrix[j][matrix.length - 1 - i] = tmp[i][j];
+    //     }
+    // }
+
+    // 先对矩阵求转置，然后每行倒序（如果要求逆时针旋转，则先每行倒序再转置）
+    // 原地求转置的方法（仅限方阵）：对于 i < j 的元素，交换 matrix[i][j] 和 matrix[j][i]
+    const n = matrix.length;
+    for (let i = 0; i < n; i++) {
+        for (let j = i + 1; j < n; j++) {
+            [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];
+        }
+    }
+    for (const row of matrix) {
+        let i = 0;
+        let j = row.length - 1;
+        while (i < j) {
+            [row[i], row[j]] = [row[j], row[i]];
+            i++;
+            j--;
+        }
+    }
+
+    // 如果不是方阵，可以补0成方阵
+    // const m = matrix.length;            // 原矩阵行数
+    // const n = matrix[0]?.length ?? 0;   // 原矩阵列数
+    // const K = Math.max(m, n);           // 目标方阵大小
+
+    // // 1. 补零成 K×K 方阵
+    // // — 对已有的每一行，push 足够多的 0
+    // for (let i = 0; i < m; i++) {
+    //     matrix[i].push(...new Array(K - matrix[i].length).fill(0));
+    // }
+    // // — 如果原行数 < K，还要再 push (K-m) 行全 0
+    // for (let i = m; i < K; i++) {
+    //     matrix.push(new Array(K).fill(0));
+    // }
+
+    // // 2. 原地旋转：先转置，再逐行反转
+    // //   2.1 原地转置 (仅限方阵)
+    // for (let i = 0; i < K; i++) {
+    //     for (let j = i + 1; j < K; j++) {
+    //     [matrix[i][j], matrix[j][i]] = [matrix[j][i], matrix[i][j]];
+    //     }
+    // }
+    // //   2.2 每行倒序
+    // for (let i = 0; i < K; i++) {
+    //     matrix[i].reverse();
+    // }
+
+    // // 3. 裁剪回 m×n → 变成 n×m
+    // //   3.1 先保留前 n 行，其它行 splice 掉
+    // matrix.splice(n);
+    // //   3.2 每行去掉最前面 (K - m) 列的填充值
+    // for (let i = 0; i < matrix.length; i++) {
+    //     matrix[i].splice(0, K - m);
+    // }
+};`,
   },
   {
     id: 240,
