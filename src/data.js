@@ -1290,8 +1290,6 @@ function setZeroes(matrix: number[][]): void {
     content: `
 给你一个 m 行 n 列的矩阵 matrix ，请按照 顺时针螺旋顺序 ，返回矩阵中的所有元素。
 
-
-
 示例 1：
 
 输入：matrix = [
@@ -1310,7 +1308,6 @@ function setZeroes(matrix: number[][]): void {
               ]
 输出：[1,2,3,4,8,12,11,10,9,5,6,7]
 
-
 提示：
 
 m == matrix.length
@@ -1325,6 +1322,38 @@ n == matrix[i].length
 - 遍历到边界后改变对应边界变量的值（收缩边界）
 `,
     link: "https://leetcode.cn/problems/spiral-matrix/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function spiralOrder(matrix: number[][]): number[] {
+    if (matrix.length === 0) return [];
+    const res = [];
+    let l = 0;
+    let r = matrix[0].length - 1;
+    let t = 0;
+    let b = matrix.length - 1;
+
+    while (true) {
+        // l -> r
+        for (let i = l; i < r + 1; i++) res.push(matrix[t][i]);
+        t++;
+        if (t > b) break;
+
+        // t -> b
+        for (let i = t; i < b + 1; i++) res.push(matrix[i][r]);
+        r--;
+        if (l > r) break;
+
+        // r -> l
+        for (let i = r; i > l - 1; i--) res.push(matrix[b][i]);
+        b--;
+        if (t > b) break;
+
+        // b -> t
+        for (let i = b; i > t - 1; i--) res.push(matrix[i][l]);
+        l++;
+        if (l > r) break;
+    }
+
+    return res;
+};`,
   },
   {
     id: 48,
