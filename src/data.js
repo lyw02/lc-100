@@ -1105,24 +1105,21 @@ function rotate(nums: number[], k: number): void {
 
 请 不要使用除法，且在 O(n) 时间复杂度内完成此题。
 
- 
-
 示例 1:
 
 输入: nums = [1,2,3,4]
 输出: [24,12,8,6]
+
 示例 2:
 
 输入: nums = [-1,1,0,-3,3]
 输出: [0,0,9,0,0]
- 
 
 提示：
 
 2 <= nums.length <= 105
 -30 <= nums[i] <= 30
 输入 保证 数组 answer[i] 在  32 位 整数范围内
- 
 
 进阶：你可以在 O(1) 的额外空间复杂度内完成这个题目吗？（ 出于对空间复杂度分析的目的，输出数组 不被视为 额外空间。）
     `,
@@ -1139,6 +1136,28 @@ function rotate(nums: number[], k: number): void {
 然后各行相乘，就是answer每个对应的元素
 `,
     link: "https://leetcode.cn/problems/product-of-array-except-self/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function productExceptSelf(nums: number[]): number[] {
+    if (nums.length === 0) return [];
+    const answer = [];
+    answer[0] = 1;
+    
+    // 下三角，从上往下累乘
+    // answer[i - 1] 保存了「下标 i 前面所有元素的乘积」，等价于一个累乘用的临时变量
+    for (let i = 1; i < nums.length; i++) {
+        answer[i]  = answer[i - 1] * nums[i - 1];
+    }
+    
+    // 上三角，从下往上累乘
+    // tmp是上三角的乘积的累计值，再和answer相乘
+    // 由于需要把这个后缀乘完再乘回原先存好的前缀，所以额外用到了一个 tmp
+    let tmp = 1;
+    for (let i = nums.length - 2; i >= 0; i--) {
+        tmp *= nums[i + 1];
+        answer[i] *= tmp;
+    }
+
+    return answer;
+};`,
   },
   {
     id: 73,
