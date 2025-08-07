@@ -973,6 +973,53 @@ s 和 t 由英文字母组成
 };`,
   },
   {
+    id: 56,
+    title: "合并区间 merge-intervals",
+    category: "普通数组",
+    content: `
+以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。
+
+示例 1：
+
+输入：intervals = [[1,3],[2,6],[8,10],[15,18]]
+输出：[[1,6],[8,10],[15,18]]
+解释：区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6]。
+
+示例 2：
+
+输入：intervals = [[1,4],[4,5]]
+输出：[[1,5]]
+解释：区间 [1,4] 和 [4,5] 可被视为重叠区间。
+
+提示：
+
+1 <= intervals.length <= 104
+intervals[i].length == 2
+0 <= starti <= endi <= 104
+    `,
+    difficulty: "中等",
+    hint: `
+- 首先按照左端点对所有区间进行升序排序
+- 遍历所有区间
+    - 如果结果数组为空或者结果数组中最后一个区间的第二个元素小于当前区间的第一个元素，则将当前区间添加到结果数组
+    - 否则将结果数组最后一个区间的第二个元素更新为当前区间第二个元素和结果数组最后一个区间第二个元素之间的最大值
+`,
+    link: "https://leetcode.cn/problems/merge-intervals/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function merge(intervals: number[][]): number[][] {
+    intervals.sort((a, b) => a[0] - b[0]);
+    const res = [];
+    for (const interval of intervals) {
+        if (res.length === 0 || res[res.length - 1][1] < interval[0]) {
+            // 如果列表为空，或者当前区间与上一区间不重合，直接添加
+            res.push(interval);
+        } else {
+            res[res.length - 1][1] = Math.max(res[res.length - 1][1], interval[1]);
+        }
+    }
+    return res;
+};`,
+  },
+  {
     id: 189,
     title: "轮转数组 rotate-array",
     category: "普通数组",
