@@ -1166,8 +1166,6 @@ function rotate(nums: number[], k: number): void {
     content: `
 给定一个 m x n 的矩阵，如果一个元素为 0 ，则将其所在行和列的所有元素都设为 0 。请使用 原地 算法。
 
- 
-
 示例 1：
 
 输入：matrix = [
@@ -1181,7 +1179,6 @@ function rotate(nums: number[], k: number): void {
         [1,0,1]
       ]
 
-
 示例 2：
 
 输入：matrix = [
@@ -1194,7 +1191,6 @@ function rotate(nums: number[], k: number): void {
         [0,4,5,0],
         [0,3,1,0]
       ]
- 
 
 提示：
 
@@ -1202,11 +1198,10 @@ m == matrix.length
 n == matrix[0].length
 1 <= m, n <= 200
 -231 <= matrix[i][j] <= 231 - 1
- 
 
 进阶：
 
-一个直观的解决方案是使用  O(mn) 的额外空间，但这并不是一个好的解决方案。
+一个直观的解决方案是使用 O(mn) 的额外空间，但这并不是一个好的解决方案。
 一个简单的改进方案是使用 O(m + n) 的额外空间，但这仍然不是最好的解决方案。
 你能想出一个仅使用常量空间的解决方案吗？
     `,
@@ -1228,6 +1223,65 @@ n == matrix[0].length
         - 如果标记变量为true，则将第一列元素置零
 `,
     link: "https://leetcode.cn/problems/set-matrix-zeroes/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ Do not return anything, modify matrix in-place instead.
+ */
+function setZeroes(matrix: number[][]): void {
+    // 常规思路
+    // const rows = [];
+    // const cols = [];
+    // for (let i = 0; i < matrix.length; i++) {
+    //     for (let j = 0; j < matrix[0].length; j++) {
+    //         if (matrix[i][j] === 0) {
+    //             rows.push(i);
+    //             cols.push(j);
+    //         }
+    //     }
+    // }
+    // for (let i = 0; i < matrix.length; i++) {
+    //     for (let j = 0; j < matrix[0].length; j++) {
+    //         if (rows.includes(i) || cols.includes(j)) {
+    //             matrix[i][j] = 0;
+    //         }
+    //     }
+    // }
+
+    // 用矩阵的第一行和第一列代替方法一中的两个标记数组
+    // 使用一个标记变量记录第一列是否原本存在 0
+    // 为了防止每一列的第一个元素被提前更新，我们需要从最后一行开始，倒序地处理矩阵元素
+    let flagCol0 = false;
+
+    // 第一次遍历：打标记
+    for (let i = 0; i < matrix.length; i++) {
+        // 判断第 i 行的第一列是否为 0
+        if (matrix[i][0] === 0) {
+            flagCol0 = true;
+        }
+        // 对该行的其余列（j 从 1 开始）做标记
+        for (let j = 1; j < matrix[0].length; j++) {
+            if (matrix[i][j] === 0) {
+                // 在第 i 行的第一列打标（表示整行要置零）
+                matrix[i][0] = 0;
+                // 在第 j 列的第一行打标（表示整列要置零）
+                matrix[0][j] = 0;
+            }
+        }
+    }
+
+    // 第二次遍历：真正置零（倒序！！）
+    for (let i = matrix.length - 1; i >= 0; i--) {
+        for (let j = 1; j < matrix[0].length; j++) {
+            // 如果第 i 行打了标 OR 第 j 列打了标，就置零
+            if (matrix[i][0] === 0 || matrix[0][j] === 0) {
+                matrix[i][j] = 0;
+            }
+        }
+        // 最后再处理第一列
+        if (flagCol0) {
+            matrix[i][0] = 0;
+        }
+    }
+};`,
   },
   {
     id: 54,
