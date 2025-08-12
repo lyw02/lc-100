@@ -2574,8 +2574,6 @@ function copyRandomList(head: _Node | null): _Node | null {
     content: `
 给你链表的头结点 head ，请将其按 升序 排列并返回 排序后的链表 。
 
- 
-
 示例 1：
 
 输入：head = [4,2,1,3]
@@ -2590,13 +2588,11 @@ function copyRandomList(head: _Node | null): _Node | null {
 
 输入：head = []
 输出：[]
- 
 
 提示：
 
 链表中节点的数目在范围 [0, 5 * 104] 内
 -105 <= Node.val <= 105
- 
 
 进阶：你可以在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序吗？
     `,
@@ -2605,13 +2601,93 @@ function copyRandomList(head: _Node | null): _Node | null {
 - 题目要求时间空间复杂度分别为 O(nlogn) 和 O(1)，根据时间复杂度我们自然想到二分法，从而联想到归并排序
 - 基于递归的归并排序在递归调用时具有 O(logn) 的空间复杂度，因此不能使用递归
 - 因此考虑从底至顶直接合并：
-    - 归并排序本质上时通过二分法得到链表最小单元，再依次向上合并
+    - 归并排序本质上是通过二分法得到链表最小单元，再依次向上合并
     - 每轮合并都有固定的操作长度 intv
       - 第一轮 intv = 1，第二轮 intv = 2, 第三轮 intv = 4...
       - 每轮结束后 intv *= 2，若 intv 大于数组长度则排序完成
     - 使用一个 dummyHead 节点，既可以在每轮合并后找到头节点，也可以在排序时辅助交换指针
     `,
     link: "https://leetcode.cn/problems/sort-list/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+// 归并排序（从底至顶直接合并）
+function sortList(head: ListNode | null): ListNode | null {
+    let length = 0;
+    let cur = head;
+    // 计算链表长度
+    while (cur) {
+        length++;
+        cur = cur.next;
+    }
+
+    let intv = 1; // 当前要合并的子链表长度
+    cur = head;
+    let dummyHead = new ListNode(0, head);
+    while (intv < length) {
+        let pre = dummyHead; // 指向已经合并好的链表尾部，即下一次合并后的插入点
+        let mergeHead = pre.next; // 本轮待处理的起始位置
+        while (mergeHead) {
+            // 切分出第一个子链表 h1
+            let h1 = mergeHead;
+            let i = intv;
+            while (i > 0 && mergeHead) {
+                mergeHead = mergeHead.next;
+                i--;
+            }
+            if (i > 0) break; // 链表剩余元素个数少于 intv, 无需合并环节，直接 break，执行下一轮合并
+
+            // 切分出第二个子链表 h2
+            let h2 = mergeHead;
+            i = intv;
+            while (i > 0 && mergeHead) {
+                mergeHead = mergeHead.next;
+                i--;
+            }
+
+            // 合并两个子链表
+            let l1 = intv; // h1 的理论长度
+            let l2 = intv - i; // h2 的实际长度（可能不足 intv）
+            while (l1 > 0 && l2 > 0) {
+                if (h1.val < h2.val) {
+                    pre.next = h1;
+                    h1 = h1.next;
+                    l1--;
+                } else {
+                    pre.next = h2;
+                    h2 = h2.next;
+                    l2--;
+                }
+                pre = pre.next;
+            }
+
+            // 将剩余部分直接接上
+            l1 > 0 ? pre.next = h1 : pre.next = h2;
+            // 跳过剩余节点
+            while (l1 > 0 || l2 > 0) {
+                pre = pre.next;
+                l1--;
+                l2--;
+            }
+
+            // 链接到下一个待处理区块
+            pre.next = mergeHead;
+        }
+
+        intv *= 2;
+    }
+
+    return dummyHead.next;
+};`,
   },
   {
     id: 146,
