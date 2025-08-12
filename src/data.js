@@ -2394,9 +2394,11 @@ function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
     - 拆解子问题：先把链表看成「前两节点」+「后面剩余部分」，只关心如何交换前两节点；剩余部分交给递归去做
     - 合并子结果：当前层交换完后，将递归返回的新头 swapPairs(newHead.next) 接回原来的第一个节点 head 之后
     - 递归终止条件：当链表为空或只剩一个节点时，无需交换，直接返回
+    - 时间复杂度：O(n)，空间复杂度：O(n)
 思路二：迭代（空间更优）
     - 使用 dummyHead 节点，因为如果头节点需要和下一节点交换，就需要头节点的前驱节点
     - 依次操作指针
+    - 时间复杂度：O(n)，空间复杂度：O(1)
     `,
     link: "https://leetcode.cn/problems/swap-nodes-in-pairs/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `/**
@@ -2452,8 +2454,6 @@ val：一个表示 Node.val 的整数。
 random_index：随机指针指向的节点索引（范围从 0 到 n-1）；如果不指向任何节点，则为  null 。
 你的代码 只 接受原链表的头节点 head 作为传入参数。
 
-
-
 示例 1：
 
 输入：head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
@@ -2468,7 +2468,6 @@ random_index：随机指针指向的节点索引（范围从 0 到 n-1）；如�
 
 输入：head = [[3,null],[3,0],[3,null]]
 输出：[[3,null],[3,0],[3,null]]
- 
 
 提示：
 
@@ -2481,6 +2480,7 @@ Node.random 为 null 或指向链表中的节点。
 思路一：哈希表
     - 遍历链表，使用哈希表记录每一个节点的拷贝，其中键为旧节点，值为新创建的节点，只设置 val
     - 再次遍历，结合哈希表查找构建新节点的 next 和 random 指向
+    - 时间复杂度 O(N)，空间复杂度 O(N)
 思路二：拼接+拆分（理论空间更优，但实际更慢且空间开销更大）
     - 1. 拼接
       - 设原链表为 node1 -> node2 -> ...
@@ -2489,8 +2489,83 @@ Node.random 为 null 或指向链表中的节点。
     - 2. 拆分
       - 使用指针 pre 和 cur 分别指向两个链表的头节点
       - 遍历执行 pre.next = pre.next.next 和 cur.next = cur.next.next 来拆分链表
+      - 时间复杂度 O(N)，空间复杂度 O(1)
     `,
     link: "https://leetcode.cn/problems/copy-list-with-random-pointer/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for _Node.
+ * class _Node {
+ *     val: number
+ *     next: _Node | null
+ *     random: _Node | null
+ * 
+ *     constructor(val?: number, next?: _Node, random?: _Node) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *         this.random = (random===undefined ? null : random)
+ *     }
+ * }
+ */
+
+
+function copyRandomList(head: _Node | null): _Node | null {
+    // 思路一：哈希表
+    if (!head) return null;
+
+    const map = new Map();
+    let cur: _Node | null = head;
+    
+    // 哈希表储存每个节点的拷贝
+    while (cur) {
+        map.set(cur, new _Node(cur.val));
+        cur = cur.next;
+    }
+
+    cur = head;
+
+    while (cur) {
+        map.get(cur).next = cur.next ? map.get(cur.next) : null;
+        map.get(cur).random = cur.random ? map.get(cur.random) : null;
+        cur = cur.next;
+    }
+
+    return map.get(head);
+
+    // 思路二：拼接+拆分
+    // if (!head) return null;
+    
+    // // 拼接链表
+    // let cur = head;
+    // while (cur) {
+    //     const tmp = new _Node(cur.val);
+    //     tmp.next = cur.next;
+    //     cur.next = tmp;
+    //     cur = tmp.next;
+    // }
+
+    // // 构建 next 和 random 指针
+    // cur = head;
+    // while (cur) {
+    //     if (cur.random) {
+    //         cur.next.random = cur.random.next;
+    //     }
+    //     cur = cur.next.next;
+    // }
+
+    // // 拆分链表
+    // const res = head.next;
+    // let pre = head;
+    // cur = head.next;
+    // while (cur.next) {
+    //     pre.next = pre.next.next;
+    //     cur.next = cur.next.next;
+    //     pre = pre.next;
+    //     cur = cur.next;
+    // }
+
+    // pre.next = null; // 原链表尾节点
+    // return res;
+};`,
   },
   {
     id: 148,
