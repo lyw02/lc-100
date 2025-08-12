@@ -2701,8 +2701,6 @@ int get(int key) 如果关键字 key 存在于缓存中，则返回关键字的�
 void put(int key, int value) 如果关键字 key 已经存在，则变更其数据值 value ；如果不存在，则向缓存中插入该组 key-value 。如果插入操作导致关键字数量超过 capacity ，则应该 逐出 最久未使用的关键字。
 函数 get 和 put 必须以 O(1) 的平均时间复杂度运行。
 
- 
-
 示例：
 
 输入
@@ -2722,7 +2720,6 @@ lRUCache.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=
 lRUCache.get(1);    // 返回 -1 (未找到)
 lRUCache.get(3);    // 返回 3
 lRUCache.get(4);    // 返回 4
- 
 
 提示：
 
@@ -2754,6 +2751,126 @@ lRUCache.get(4);    // 返回 4
       - value 属性就是要删除的 key
     `,
     link: "https://leetcode.cn/problems/lru-cache/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `// 方法一
+// 双向链表+哈希表
+// 手动实现双向链表
+// class LRUCache {
+//     map;
+//     capacity;
+//     dummyHead;
+//     dummyTail;
+//     currentSize;
+//     constructor(capacity: number) {
+//         this.capacity = capacity;
+//         this.map = new Map();
+//         this.dummyHead = new _ListNode(0, 0, null, null);
+//         this.dummyTail = new _ListNode(0, 0, null, null); // 尾部是要被移除的节点
+//         this.dummyHead.next = this.dummyTail;
+//         this.dummyTail.prev = this.dummyHead;
+//         this.currentSize = 0;
+//     }
+
+//     get(key: number): number {
+//         if (this.map.has(key)) {
+//             const node = this.map.get(key);
+//             this.moveToHead(node);
+//             return node.value;
+//         } else {
+//             return -1;
+//         }
+//     }
+
+//     put(key: number, value: number): void {
+//         if (this.map.has(key)) {
+//             const node = this.map.get(key);
+//             node.value = value;
+//             this.moveToHead(node);
+//         } else {
+//             const node = new _ListNode(key, value);
+//             this.map.set(key, node);
+//             this.addToHead(node);
+//             this.currentSize++;
+//             if (this.currentSize > this.capacity) {
+//                 const nodeToRemove = this.dummyTail.prev;
+//                 nodeToRemove.prev.next = nodeToRemove.next;
+//                 nodeToRemove.next.prev = nodeToRemove.prev;
+//                 this.map.delete(nodeToRemove.key);
+//                 this.currentSize--;
+//             }
+//         }
+//     }
+
+//     addToHead(node: _ListNode) {
+//         node.prev = this.dummyHead;
+//         node.next = this.dummyHead.next;
+//         this.dummyHead.next.prev = node;
+//         this.dummyHead.next = node;
+//     }
+
+//     moveToHead(node: _ListNode) {
+//         // 先移除再添加到开头
+//         node.prev.next = node.next;
+//         node.next.prev = node.prev;
+//         this.addToHead(node);
+//     }
+// }
+
+// class _ListNode {
+//     key: number;
+//     value: number;
+//     prev: _ListNode | null;
+//     next: _ListNode | null;
+//     constructor(key: number, value: number, prev?: _ListNode | null, next?: _ListNode | null) {
+//         this.key = key;
+//         this.value = value;
+//         this.prev = prev;
+//         this.next = next;
+//     }
+// }
+
+// 方法二
+// 基于 JS Map 迭代器
+class LRUCache {
+  capacity: number;
+  map: Map<number, number> = new Map();
+  constructor(capacity: number) {
+    // 利用迭代器实现
+    this.map = new Map();
+    this.capacity = capacity;
+  }
+
+  get(key: number): number {
+    if (this.map.has(key)) {
+      const value = this.map.get(key)
+      // 重新 set，相当于更新到 map 最后
+      this.map.delete(key)
+      this.map.set(key, value)
+      return value
+    } 
+    return -1
+  }
+
+  put(key: number, value: number): void {
+    // 如果有，就删了再赋值
+    if (this.map.has(key)) {
+      this.map.delete(key)
+    }
+
+    this.map.set(key, value)
+
+    // 判断是不是容量超了，淘汰机制
+    if (this.map.size > this.capacity) {
+      this.map.delete(this.map.keys().next().value) // 利用迭代器的 next() 方法
+    }
+  }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * var obj = new LRUCache(capacity)
+ * var param_1 = obj.get(key)
+ * obj.put(key,value)
+ */`,
   },
   {
     id: 94,
