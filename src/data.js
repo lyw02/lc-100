@@ -2132,8 +2132,16 @@ l1 和 l2 均按 非递减顺序 排列
     `,
     difficulty: "简单",
     hint: `
-- 使用 dummyHead 节点
-- 注意两链表长度不同的情况
+- 思路一：迭代
+    - 使用 dummyHead 节点
+    - 注意两链表长度不同的情况
+    - 时间复杂度：O(n+m)，其中 n 和 m 分别为两个链表的长度；空间复杂度：O(1)
+- 思路二：递归
+    - 当 list1[0] < list2[0] 时：
+        - list = list1[0] + merge(list1[1:], list2)
+    - 否则：
+        - list = list2[0] + merge(list1 + list2[1:])
+    - 时间复杂度：O(n+m)；空间复杂度：O(n+m)
 `,
     link: "https://leetcode.cn/problems/merge-two-sorted-lists/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `/**
@@ -2149,24 +2157,38 @@ l1 和 l2 均按 非递减顺序 排列
  */
 
 function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode | null {
-    const dummyHead = new ListNode(-Infinity);
+    // 迭代
+    // const dummyHead = new ListNode(-Infinity);
 
-    let prev = dummyHead;
+    // let prev = dummyHead;
 
-    while (list1 && list2) {
-        if (list1.val <= list2.val) {
-            prev.next = list1;
-            list1 = list1.next;
-        } else {
-            prev.next = list2;
-            list2 = list2.next
-        }
-        prev = prev.next;
+    // while (list1 && list2) {
+    //     if (list1.val <= list2.val) {
+    //         prev.next = list1;
+    //         list1 = list1.next;
+    //     } else {
+    //         prev.next = list2;
+    //         list2 = list2.next
+    //     }
+    //     prev = prev.next;
+    // }
+
+    // prev.next = list1 ?? list2;
+
+    // return dummyHead.next;
+
+    // 递归
+    if (!list1) {
+        return list2;
+    } else if (!list2) {
+        return list1
+    } else if (list1.val < list2.val) {
+        list1.next = mergeTwoLists(list1.next, list2);
+        return list1;
+    } else {
+        list2.next = mergeTwoLists(list1, list2.next);
+        return list2;
     }
-
-    prev.next = list1 ?? list2;
-
-    return dummyHead.next;
 };
 `,
   },
