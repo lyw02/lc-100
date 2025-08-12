@@ -1815,7 +1815,6 @@ function reverseList(head: ListNode | null): ListNode | null {
     content: `
 给你一个单链表的头节点 head ，请你判断该链表是否为回文链表。如果是，返回 true ；否则，返回 false 。
 
- 
 示例 1：
 
 输入：head = [1,2,2,1]
@@ -1826,12 +1825,10 @@ function reverseList(head: ListNode | null): ListNode | null {
 输入：head = [1,2]
 输出：false
 
-
 提示：
 
 链表中节点数目在范围[1, 105] 内
 0 <= Node.val <= 9
-
 
 进阶：你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
     `,
@@ -1846,6 +1843,77 @@ function reverseList(head: ListNode | null): ListNode | null {
     - 恢复链表（可选）
 `,
     link: "https://leetcode.cn/problems/palindrome-linked-list/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function isPalindrome(head: ListNode | null): boolean {
+    // 将值复制到数组后使用双指针判断
+    // if (!head.next) return true;
+    // const vals = [];
+    // while (head) {
+    //     vals.push(head.val);
+    //     head = head.next;
+    // }
+    // for (let i = 0, j = vals.length - 1; i <= j; i++, j--) {
+    //     if (vals[i] !== vals[j]) return false;
+    // }
+    // return true;
+
+    // 快慢指针
+    // 1. 使用快慢指针找到中间节点
+    // 2. 翻转后半部分链表
+    // 3. 判断是否回文
+    // 4. 恢复链表
+    if (!head.next) return true;
+
+    function reverseList(head) {
+        let cur = head;
+        let pre = null;
+        while (cur.next) {
+            let tmp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = tmp;
+        }
+        cur.next = pre;
+        return cur;
+    }
+
+    // 使用快慢指针找到中间节点
+    let fast = head;
+    let slow = head;
+    while (fast.next && fast.next.next) {
+        fast = fast.next.next;
+        slow = slow.next;
+    }
+
+    // 翻转后半部分链表
+    const firstHalfEnd = slow; // 用于恢复链表
+    const secondHalfStart = reverseList(firstHalfEnd.next);
+
+    // 判断回文
+    let p1 = head;
+    let p2 = secondHalfStart;
+    let res = true;
+    while (res && p2) {
+        if (p1.val !== p2.val) res = false;
+        p1 = p1.next;
+        p2 = p2.next;
+    }
+
+    // 恢复链表
+    // firstHalfEnd.next = reverseList(secondHalfStart);
+    return res;
+};`,
   },
   {
     id: 141,
