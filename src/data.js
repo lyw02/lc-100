@@ -1716,7 +1716,6 @@ function getIntersectionNode(headA: ListNode | null, headB: ListNode | null): Li
     category: "链表",
     content: `
 给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
- 
 
 示例 1：
 
@@ -1732,13 +1731,11 @@ function getIntersectionNode(headA: ListNode | null, headB: ListNode | null): Li
 
 输入：head = []
 输出：[]
- 
 
 提示：
 
 链表中节点的数目范围是 [0, 5000]
 -5000 <= Node.val <= 5000
- 
 
 进阶：链表可以选用迭代或递归方式完成反转。你能否用两种方法解决这道题？
     `,
@@ -1755,6 +1752,61 @@ function getIntersectionNode(headA: ListNode | null, headB: ListNode | null): Li
     - 回溯阶段反转指针
 `,
     link: "https://leetcode.cn/problems/reverse-linked-list/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function reverseList(head: ListNode | null): ListNode | null {
+    // 迭代（双指针）
+    // if (!head) return null;
+    // let pre = null;
+    // let cur = head;
+
+    // while (cur.next) {
+    //     let tmp = cur.next;
+    //     cur.next = pre;
+    //     pre = cur;
+    //     cur = tmp;
+    // }
+
+    // cur.next = pre;
+
+    // return cur;
+
+    // 递归
+    function recur(cur, pre) {
+        if (!cur) return pre;
+        const res = recur(cur.next, cur); // 反转后的头节点
+        cur.next = pre;
+        return res;
+    }
+    return recur(head, null);
+    // 递归过程
+    // 假设链表为 1 → 2 → 3 → null，初始调用 recur(1, null)：
+    // recur(1, null)
+    //     ↳ recur(2, 1)
+    //         ↳ recur(3, 2)
+    //             ↳ recur(null, 3)  // cur=null, pre=3
+    //                 返回 pre=3  （新链表头）
+    //             回到 recur(3,2): cur=3, pre=2
+    //             执行 cur.next = pre：3.next = 2
+    //             返回 res=3     （链表现在是 3→2→?）
+    //         回到 recur(2,1): cur=2, pre=1
+    //         执行 2.next = 1       （此时 3→2→1→?）
+    //         返回 res=3
+    //     回到 recur(1,null): cur=1, pre=null
+    //     执行 1.next = null       （断开原来 1→2 的指向）
+    //     返回 res=3
+    // 最终返回 3→2→1→null
+};`,
   },
   {
     id: 234,
