@@ -2203,8 +2203,6 @@ function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode
 
 你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
 
- 
-
 示例 1：
 
 输入：l1 = [2,4,3], l2 = [5,6,4]
@@ -2220,7 +2218,6 @@ function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode
 
 输入：l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
 输出：[8,9,9,9,0,0,0,1]
- 
 
 提示：
 
@@ -2233,6 +2230,49 @@ function mergeTwoLists(list1: ListNode | null, list2: ListNode | null): ListNode
 - 依次处理，注意进位和长度不相等的情况
 `,
     link: "https://leetcode.cn/problems/add-two-numbers/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | null {
+    let dummyHead = new ListNode();
+    let cur = dummyHead;
+    let carry = 0;
+
+    while (l1 || l2) {
+        const n1 = l1 ? l1.val : 0;
+        const n2 = l2 ? l2.val : 0;
+
+        let sum = n1  + n2 + carry;
+
+        if (sum >= 10) {
+            carry = 1;
+            sum -= 10;
+        } else {
+            carry = 0;
+        }
+
+        cur.next = new ListNode(sum);
+        cur = cur.next
+
+        l1 = l1?.next;
+        l2 = l2?.next;
+    }
+
+    if (carry === 1) {
+        cur.next = new ListNode(1);
+    }
+    
+    return dummyHead.next;
+};`,
   },
   {
     id: 19,
