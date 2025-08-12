@@ -2281,8 +2281,6 @@ function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | nul
     content: `
 给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
 
- 
-
 示例 1：
 
 输入：head = [1,2,3,4,5], n = 2
@@ -2297,7 +2295,6 @@ function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | nul
 
 输入：head = [1,2], n = 1
 输出：[1]
- 
 
 提示：
 
@@ -2305,7 +2302,6 @@ function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | nul
 1 <= sz <= 30
 0 <= Node.val <= 100
 1 <= n <= sz
- 
 
 进阶：你能尝试使用一趟扫描实现吗？
     `,
@@ -2321,6 +2317,49 @@ function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | nul
     - 同时遍历两个指针，当 first 位于最后一个节点时，second 刚好位于 倒数第 n 个节点的前驱节点
 `,
     link: "https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/?envType=study-plan-v2&envId=top-100-liked",
+    code：`/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
+    // let length = 0;
+    // let cur = head;
+    // while (cur) {
+    //     length++;
+    //     cur = cur.next;
+    // }
+
+    // const dummyHead = new ListNode(0, head);
+    // cur = dummyHead;
+    // for (let i = 0; i < length - n; i++) {
+    //     cur = cur.next;
+    // }
+    // cur.next = cur.next.next;
+
+    // return dummyHead.next;
+
+    // 双指针
+    const dummyHead = new ListNode(0, head);
+    let second = dummyHead;
+    let first = dummyHead;
+    for (let i = 0; i < n; i++) {
+        first = first.next;
+    }
+    while (first.next) {
+        first = first.next;
+        second = second.next;
+    }
+    second.next = second.next.next;
+    return dummyHead.next;
+};`,
   },
   {
     id: 24,
