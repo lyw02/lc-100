@@ -2013,7 +2013,6 @@ function hasCycle(head: ListNode | null): boolean {
 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。如果 pos 是 -1，则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。
 
 不允许修改 链表。
- 
 
 示例 1：
 
@@ -2040,14 +2039,12 @@ function hasCycle(head: ListNode | null): boolean {
 输入：head = [1], pos = -1
 输出：返回 null
 解释：链表中没有环。
- 
 
 提示：
 
 链表中节点的数目范围在范围 [0, 104] 内
 -105 <= Node.val <= 105
 pos 的值为 -1 或者链表中的一个有效索引
- 
 
 进阶：你是否可以使用 O(1) 空间解决此题？
     `,
@@ -2062,9 +2059,48 @@ pos 的值为 -1 或者链表中的一个有效索引
       - 由于快指针比慢指针在环中多绕了 n 圈，因此 2s - s = nb，即 s = nb
       - 也就是说，慢指针此时走过的总路程等于 n 个环的周长
       - 我们只需要使慢指针再走 a 步，即可满足 a + mb 的形式，使慢指针走到环入口
-      - 因此，可以令快指针回到原点并变为慢指针，两个慢指针同时移动，下一次相遇时刚好又走了 a 步，到底环入口
+      - 因此，可以令快指针回到原点并变为慢指针，两个慢指针同时移动，下一次相遇时刚好又走了 a 步，到达环入口
 `,
     link: "https://leetcode.cn/problems/linked-list-cycle-ii/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function detectCycle(head: ListNode | null): ListNode | null {
+    // 哈希表
+    // if (!head || !head.next) return null;
+    // const map = new Map();
+    // while (head) {
+    //     if (map.has(head)) return head;
+    //     map.set(head, 1);
+    //     head = head.next;
+    // }
+    // return null;
+
+    // 双指针
+    let fast = head;
+    let slow = head;
+    while (true) {
+        if (!fast || !fast.next || !fast.next.next) return null;
+        fast = fast.next.next;
+        slow = slow.next;
+        if (fast === slow) break;
+    }
+    fast = head;
+    while (slow !== fast) {
+        fast = fast.next;
+        slow = slow.next;
+    }
+    return fast;
+};`,
   },
   {
     id: 21,
