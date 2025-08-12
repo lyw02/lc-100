@@ -1926,8 +1926,6 @@ function isPalindrome(head: ListNode | null): boolean {
 
 如果链表中存在环 ，则返回 true 。 否则，返回 false 。
 
- 
-
 示例 1：
 
 3 -> 2 -> 0 -> -4
@@ -1953,14 +1951,12 @@ function isPalindrome(head: ListNode | null): boolean {
 输入：head = [1], pos = -1
 输出：false
 解释：链表中没有环。
- 
 
 提示：
 
 链表中节点的数目范围是 [0, 104]
 -105 <= Node.val <= 105
 pos 为 -1 或者链表中的一个 有效索引 。
- 
 
 进阶：你能用 O(1)（即，常量）内存解决此问题吗？
     `,
@@ -1972,6 +1968,40 @@ pos 为 -1 或者链表中的一个 有效索引 。
     - 如果有环，那么快慢指针一定会在环中某处相遇
 `,
     link: "https://leetcode.cn/problems/linked-list-cycle/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function hasCycle(head: ListNode | null): boolean {
+    // 常规思路：哈希表
+    // if (head == null || head.next == null) return false;
+    // const set = new Set();
+    // while (head) {
+    //     if (set.has(head)) return true;
+    //     set.add(head);
+    //     head = head.next;
+    // }
+    // return false;
+
+    // 快慢指针
+    if (head == null || head.next == null) return false;
+    let slow = head;
+    let fast = head;
+    while (fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if (slow === fast) return true;
+    }
+    return false;
+};`,
   },
   {
     id: 142,
