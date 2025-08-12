@@ -2368,8 +2368,6 @@ function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
     content: `
 给你一个链表，两两交换其中相邻的节点，并返回交换后链表的头节点。你必须在不修改节点内部的值的情况下完成本题（即，只能进行节点交换）。
 
-
-
 示例 1：
 
 输入：head = [1,2,3,4]
@@ -2385,7 +2383,6 @@ function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
 输入：head = [1]
 输出：[1]
 
-
 提示：
 
 链表中节点的数目在范围 [0, 100] 内
@@ -2398,10 +2395,43 @@ function removeNthFromEnd(head: ListNode | null, n: number): ListNode | null {
     - 合并子结果：当前层交换完后，将递归返回的新头 swapPairs(newHead.next) 接回原来的第一个节点 head 之后
     - 递归终止条件：当链表为空或只剩一个节点时，无需交换，直接返回
 思路二：迭代（空间更优）
-    - 使用 dummyHead 节点，因为如果头节点需要和下一阶段交换，就需要头节点的前驱节点
+    - 使用 dummyHead 节点，因为如果头节点需要和下一节点交换，就需要头节点的前驱节点
     - 依次操作指针
     `,
     link: "https://leetcode.cn/problems/swap-nodes-in-pairs/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function swapPairs(head: ListNode | null): ListNode | null {
+    // 递归
+    // if (!head || !head.next) return head;
+    // const newHead = head.next;
+    // head.next = swapPairs(newHead.next);
+    // newHead.next = head;
+    // return newHead;
+
+    // 迭代，空间更优
+    const dummyHead = new ListNode(0, head);
+    let cur = dummyHead;
+    while (cur.next && cur.next.next) {
+        const node1 = cur.next;
+        const node2 = cur.next.next;
+        cur.next = node2;
+        node1.next = node2.next;
+        node2.next = node1;
+        cur = node1;
+    }
+    return dummyHead.next;
+};`,
   },
   {
     id: 138,
