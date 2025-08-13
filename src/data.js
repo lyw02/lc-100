@@ -2317,7 +2317,7 @@ function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | nul
     - 同时遍历两个指针，当 first 位于最后一个节点时，second 刚好位于 倒数第 n 个节点的前驱节点
 `,
     link: "https://leetcode.cn/problems/remove-nth-node-from-end-of-list/description/?envType=study-plan-v2&envId=top-100-liked",
-    code：`/**
+    code: `/**
  * Definition for singly-linked list.
  * class ListNode {
  *     val: number
