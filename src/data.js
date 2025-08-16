@@ -3621,6 +3621,58 @@ nums 中的所有整数 互不相同
 `,
   },
   {
+    id: 78,
+    title: "子集 subsets",
+    category: "回溯",
+    content: `
+给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
+
+解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
+
+示例 1：
+
+输入：nums = [1,2,3]
+输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
+
+示例 2：
+
+输入：nums = [0]
+输出：[[],[0]]
+
+提示：
+
+1 <= nums.length <= 10
+-10 <= nums[i] <= 10
+nums 中的所有元素 互不相同
+    `,
+    difficulty: "中等",
+    hint: `
+
+    `,
+    link: "https://leetcode.cn/subsets/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function subsets(nums: number[]): number[][] {
+    const res: number[][] = []; // 存储所有子集
+    const state: number[] = []; // 当前正在构建的子集
+
+    function backtrack(cur: number): void {
+        // 每个 state 都是一个解，记录当前子集
+        res.push([...state]);
+
+        // 遍历从 index 开始的所有 choices
+        // choices 为可供选择的元素，范围：[cur, nums.length]
+        for (let i = cur; i < nums.length; i++) {
+            state.push(nums[i]); // 选择 nums[i]
+            backtrack(i + 1); // 递归：考虑下一个元素
+            state.pop(); // 撤销选择
+        }
+    }
+
+    // 从索引 0 开始回溯
+    backtrack(0);
+    return res;
+};`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
