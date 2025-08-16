@@ -3556,6 +3556,71 @@ p 和 q 均存在于给定的二叉树中。
     link: "https://leetcode.cn/lowest-common-ancestor-of-a-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked",
   },
   {
+    id: 46,
+    title: "全排列 permutations",
+    category: "回溯",
+    content: `
+给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。
+
+示例 1：
+
+输入：nums = [1,2,3]
+输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+
+示例 2：
+
+输入：nums = [0,1]
+输出：[[0,1],[1,0]]
+示例 3：
+
+输入：nums = [1]
+输出：[[1]]
+
+提示：
+
+1 <= nums.length <= 6
+-10 <= nums[i] <= 10
+nums 中的所有整数 互不相同
+    `,
+    difficulty: "中等",
+    hint: `
+- 回溯
+- 回溯算法就像是在一个“决策树”上进行深度优先搜索（DFS）
+    - 做选择 (Make a choice)
+    - 向前探索 (Explore)
+    - 撤销选择 (Backtrack)
+- 路径（Path）: 你当前已经做出的选择，也就是当前状态 state
+- 选择列表（Choices）: 你当前可以做的选择，也就是还没有被选择的元素
+- 结束条件（End Condition）: 当路径的长度等于数字的总数时，说明你已经走到底了，找到了一个完整的解
+    `,
+    link: "https://leetcode.cn/permutations/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function permute(nums: number[]): number[][] {
+  const res = [];
+  const selected = Array.from({ length: nums.length }, () => false);
+  const state = []; // 直至目前已被选择的元素
+
+  function backtrace(choices) {
+    if (state.length === choices.length) {
+      res.push([...state]);
+      return;
+    }
+    choices.forEach((choice, i) => {
+      if (!selected[i]) {
+        selected[i] = true;
+        state.push(choice);
+        backtrace(choices);
+        selected[i] = false;
+        state.pop();
+      }
+    })
+  }
+
+  backtrace(nums);
+  return res;
+};
+`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
