@@ -3671,6 +3671,7 @@ nums 中的所有元素 互不相同
     
     function backtrack(start) {
         // 记录解 (isSolution 始终为 true)
+        // 这里必须传入 state 的一个拷贝，否则 res 中保存的将全部是对同一个 state 数组的引用，最后都会变成空数组
         res.push([...state]);
 
         // choices 为可供选择的元素
@@ -3767,6 +3768,88 @@ digits[i] 是范围 ['2', '9'] 的一个数字。
 
     backtrack(0);
     
+    return res;
+};`,
+  },
+  {
+    id: 39,
+    title: "组合总和 combination-sum",
+    category: "回溯",
+    content: `
+给你一个 无重复元素 的整数数组 candidates 和一个目标整数 target ，找出 candidates 中可以使数字和为目标数 target 的 所有 不同组合 ，并以列表形式返回。你可以按 任意顺序 返回这些组合。
+
+candidates 中的 同一个 数字可以 无限制重复被选取 。如果至少一个数字的被选数量不同，则两种组合是不同的。 
+
+对于给定的输入，保证和为 target 的不同组合数少于 150 个。
+
+示例 1：
+
+输入：candidates = [2,3,6,7], target = 7
+输出：[[2,2,3],[7]]
+解释：
+2 和 3 可以形成一组候选，2 + 2 + 3 = 7 。注意 2 可以使用多次。
+7 也是一个候选， 7 = 7 。
+仅有这两种组合。
+
+示例 2：
+
+输入: candidates = [2,3,5], target = 8
+输出: [[2,2,2,2],[2,3,3],[3,5]]
+
+示例 3：
+
+输入: candidates = [2], target = 1
+输出: []
+
+提示：
+
+1 <= candidates.length <= 30
+2 <= candidates[i] <= 40
+candidates 的所有元素 互不相同
+1 <= target <= 40
+    `,
+    difficulty: "中等",
+    hint: `
+- 回溯
+- 当前状态 state: 当前正在构建的数组。还需要记录当前和 currentSum
+- 当前可做的选择 choices: candidates 数组中从 start 位置开始的所有元素
+    - 由于允许重复选择，因此下一个起始索引是 i 而不是 i + 1
+- 结束条件 isSolution: 
+    - 成功找到解: currentSum === target
+    - 剪枝: currentSum > target，由于数组已排序，可以直接剪枝
+- 如何避免组合重复 (如 [2, 2, 3] 和 [2, 3, 2])？
+    - 通过排序确保数组递增
+    `,
+    link: "https://leetcode.cn/combination-sum/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function combinationSum(candidates: number[], target: number): number[][] {
+    const res = [];
+    const state = [];
+    let currentSum = 0;
+
+    candidates.sort((a, b) => a - b);
+    
+    function backtrack(start) {
+        if (currentSum === target) {
+            res.push([...state]);
+        }
+
+        for (let i = start; i < candidates.length; i++) {
+            if (currentSum + candidates[i] > target) {
+                break; // 因为数组已排序，后续元素更大，剪枝
+            }
+
+            state.push(candidates[i]);
+            currentSum += candidates[i];
+
+            backtrack(i);
+            
+            state.pop();
+            currentSum -= candidates[i];
+        }
+    }
+
+    backtrack(0);
+
     return res;
 };`,
   },
