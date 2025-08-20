@@ -3661,7 +3661,7 @@ nums 中的所有元素 互不相同
 - 当前可做的选择 choices: 数组 nums 中还没有被考虑过的元素
     - 为了避免产生重复的组合（例如 [1, 2] 和 [2, 1] 是同一个子集），添加一个规则：
     - 每次只能从当前元素往后的元素中进行选择。可以通过一个 start 索引来控制
-- 结束条件 isSolution: 不需要结束，每次进入 backtrack 函数时，当前 state 都是一个解，应该立即记录
+- 结束条件 isSolution: 每次进入 backtrack 函数时，当前 state 都是一个解，应该立即记录
 - 剪枝：由于使用了 start 索引机制，因此不需要剪枝
     `,
     link: "https://leetcode.cn/subsets/description/?envType=study-plan-v2&envId=top-100-liked",
@@ -3688,6 +3688,85 @@ nums 中的所有元素 互不相同
 
     backtrack(0);
 
+    return res;
+};`,
+  },
+  {
+    id: 17,
+    title: "电话号码的字母组合 letter-combinations-of-a-phone-number",
+    category: "回溯",
+    content: `
+给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
+
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+
+           2 => abc, 3 => def
+4 => ghi,  5 => jkl, 6 => mno
+7 => pqrs, 8 => tuv, 9 => wxyz
+
+示例 1：
+
+输入：digits = "23"
+输出：["ad","ae","af","bd","be","bf","cd","ce","cf"]
+
+示例 2：
+
+输入：digits = ""
+输出：[]
+
+示例 3：
+
+输入：digits = "2"
+输出：["a","b","c"]
+
+提示：
+
+0 <= digits.length <= 4
+digits[i] 是范围 ['2', '9'] 的一个数字。
+    `,
+    difficulty: "中等",
+    hint: `
+- 回溯
+- 当前状态 state: 当前正在构建的字符串
+- 当前可做的选择 choices: 在决策树的某一层，可做的选择就是当前数字对应的所有字母。例如，如果当前处理的数字是 '2'，那么选择就是 ['a', 'b', 'c']
+- 结束条件 isSolution: 当 state 的长度等于输入数字字符串 digits 的长度时，说明已经构建了一个完整的组合，找到了一个解
+    `,
+    link: "https://leetcode.cn/letter-combinations-of-a-phone-number/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function letterCombinations(digits: string): string[] {
+    const res = [];
+    let state = "";
+
+    const map = {
+        '2': 'abc',
+        '3': 'def',
+        '4': 'ghi',
+        '5': 'jkl',
+        '6': 'mno',
+        '7': 'pqrs',
+        '8': 'tuv',
+        '9': 'wxyz'
+    };
+
+    function backtrack(index) {
+        if (state.length === digits.length) {
+            if (state.length > 0) {
+                // 如果不进行判断，当 digits = "" 时，会返回 [""] 而不是 []
+                res.push(state);
+            }
+            return;
+        }
+
+        const choices = map[digits[index]].split("");
+
+        choices.forEach((choice) => {
+            state += choice;
+            backtrack(index + 1);
+            state = state.slice(0, -1);
+        })
+    }
+
+    backtrack(0);
+    
     return res;
 };`,
   },
