@@ -3586,12 +3586,15 @@ nums 中的所有整数 互不相同
     hint: `
 - 回溯
 - 回溯算法就像是在一个“决策树”上进行深度优先搜索（DFS）
-    - 做选择 (Make a choice)
-    - 向前探索 (Explore)
+    - 尝试做出选择，更新状态
+    - 向前探索，进行下一轮选择
     - 撤销选择 (Backtrack)
-- 路径（Path）: 你当前已经做出的选择，也就是当前状态 state
-- 选择列表（Choices）: 你当前可以做的选择，也就是还没有被选择的元素
-- 结束条件（End Condition）: 当路径的长度等于数字的总数时，说明你已经走到底了，找到了一个完整的解
+- 状态 state 是直至目前已被选择的元素 (当前路径)
+- 候选集合 choices 是输入数组中的所有元素
+- 结束条件: 当路径的长度等于数字的总数时，说明已经走到底了，找到了一个完整的解
+- 实现每个元素只被选择一次，引入一个布尔型数组 selected ，其中 selected[i] 表示 choices[i] 是否已被选择，并基于它实现以下剪枝：
+    - 在做出选择 choice[i] 后，我们就将 selected[i] 赋值为 true ，代表它已被选择
+    - 遍历选择列表 choices 时，跳过所有已被选择的节点，即剪枝
     `,
     link: "https://leetcode.cn/permutations/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function permute(nums: number[]): number[][] {
@@ -3599,16 +3602,22 @@ nums 中的所有整数 互不相同
   const selected = Array.from({ length: nums.length }, () => false);
   const state = []; // 直至目前已被选择的元素
 
-  function backtrace(choices) {
+  function backtrack(choices) {
+    // 结束条件
     if (state.length === choices.length) {
       res.push([...state]);
       return;
     }
+    // 遍历所有选择
     choices.forEach((choice, i) => {
+      // 剪枝：不允许重复选择元素
       if (!selected[i]) {
+        // 尝试：做出选择，更新状态
         selected[i] = true;
         state.push(choice);
+        // 进行下一轮选择
         backtrace(choices);
+        // 回退：撤销选择，恢复到之前的状态
         selected[i] = false;
         state.pop();
       }
