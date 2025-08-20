@@ -3591,7 +3591,7 @@ nums 中的所有整数 互不相同
     - 撤销选择 (Backtrack)
 - 状态 state 是直至目前已被选择的元素 (当前路径)
 - 候选集合 choices 是输入数组中的所有元素
-- 结束条件: 当路径的长度等于数字的总数时，说明已经走到底了，找到了一个完整的解
+- 结束条件 isSolution: 当路径的长度等于数字的总数时，说明已经走到底了，找到了一个完整的解
 - 实现每个元素只被选择一次，引入一个布尔型数组 selected ，其中 selected[i] 表示 choices[i] 是否已被选择，并基于它实现以下剪枝：
     - 在做出选择 choice[i] 后，我们就将 selected[i] 赋值为 true ，代表它已被选择
     - 遍历选择列表 choices 时，跳过所有已被选择的节点，即剪枝
@@ -3656,28 +3656,38 @@ nums 中的所有元素 互不相同
     `,
     difficulty: "中等",
     hint: `
-
+- 回溯
+- 当前状态 state: 当前正在构建的子集
+- 当前可做的选择 choices: 数组 nums 中还没有被考虑过的元素
+    - 为了避免产生重复的组合（例如 [1, 2] 和 [2, 1] 是同一个子集），添加一个规则：
+    - 每次只能从当前元素往后的元素中进行选择。可以通过一个 start 索引来控制
+- 结束条件 isSolution: 不需要结束，每次进入 backtrack 函数时，当前 state 都是一个解，应该立即记录
+- 剪枝：由于使用了 start 索引机制，因此不需要剪枝
     `,
     link: "https://leetcode.cn/subsets/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function subsets(nums: number[]): number[][] {
-    const res: number[][] = []; // 存储所有子集
-    const state: number[] = []; // 当前正在构建的子集
-
-    function backtrack(cur: number): void {
-        // 每个 state 都是一个解，记录当前子集
+    const res = [];
+    const state = [];
+    
+    function backtrack(start) {
+        // 记录解 (isSolution 始终为 true)
         res.push([...state]);
 
-        // 遍历从 index 开始的所有 choices
-        // choices 为可供选择的元素，范围：[cur, nums.length]
-        for (let i = cur; i < nums.length; i++) {
-            state.push(nums[i]); // 选择 nums[i]
-            backtrack(i + 1); // 递归：考虑下一个元素
-            state.pop(); // 撤销选择
+        // choices 为可供选择的元素
+        for (let i = start; i < nums.length; i++) {
+            // 尝试
+            state.push(nums[i]);
+            
+            // 下一层决策树
+            backtrack(i + 1);
+            
+            // 回退
+            state.pop();
         }
     }
 
-    // 从索引 0 开始回溯
     backtrack(0);
+
     return res;
 };`,
   },
