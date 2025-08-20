@@ -3854,6 +3854,79 @@ candidates 的所有元素 互不相同
 };`,
   },
   {
+    id: 22,
+    title: "括号生成 generate-parentheses",
+    category: "回溯",
+    content: `
+数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+
+示例 1：
+
+输入：n = 3
+输出：["((()))","(()())","(())()","()(())","()()()"]
+
+示例 2：
+
+输入：n = 1
+输出：["()"]
+
+提示：
+
+1 <= n <= 8
+    `,
+    difficulty: "中等",
+    hint: `
+- 回溯
+- 可以将这个问题想象成在一个长度为 2*n 的字符串上，每个位置可以放置 '(' 或者 ')'
+- 并不是所有组合都是有效的。例如，当 n=2 时，"))(( 就不是一个有效的组合
+- 一个有效的括号组合需要满足两个条件：
+    - 任意时刻，从左到右扫描字符串，左括号的数量必须 大于或等于 右括号的数量
+    - 最终，左括号的总数必须 等于 右括号的总数，都等于 n
+- 这两个条件就是我们回溯过程中的约束，我们可以把它们转化为放置括号的规则：
+    - 规则 1：何时可以放置左括号 ( ？
+        - 只要我们还有剩余的左括号可用（即已放置的左括号数量小于 n），我们就可以放置一个新的左括号
+    - 规则 2：何时可以放置右括号 ) ？
+        - 只有当已放置的右括号数量 严格小于 已放置的左括号数量时，我们才能放置一个右括号
+        - 这确保了每个右括号都有一个对应的左括号在它前面。
+- 当前状态 state: 当前正在构建的字符串、已使用的左括号数量 leftUsed、已使用的右括号数量 rightUsed
+- 当前可做的选择 choices: '(' 或 ')'
+- 结束条件 isSolution: 当构建的字符串长度达到 2 * n 时，说明已经用完了所有括号，形成了一个完整的解
+- 在每一步，我们不再使用 for 循环遍历选择，而是直接用 if 语句判断两个选择是否合法，根据上述规则进行剪枝
+    `,
+    link: "https://leetcode.cn/generate-parentheses/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function generateParenthesis(n: number): string[] {
+    const res = [];
+    let state = "";
+
+    function backtrack(leftUsed, rightUsed) {
+        if (state.length === 2 * n) {
+            res.push(state);
+            return;
+        }
+
+        // 尝试放置左括号
+        // 剪枝条件：如果左括号还没用完
+        if (leftUsed < n) {
+            state += "(";
+            backtrack(leftUsed + 1, rightUsed);
+            state = state.slice(0, -1);
+        }
+
+        // 尝试放置右括号
+        // 剪枝条件：如果已使用的右括号数 < 已使用的左括号数
+        if (rightUsed < leftUsed) {
+            state += ")";
+            backtrack(leftUsed, rightUsed + 1);
+            state = state.slice(0, -1);
+        }
+    }
+
+    backtrack(0, 0);
+
+    return res;
+};`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
