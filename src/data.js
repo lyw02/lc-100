@@ -4262,6 +4262,83 @@ nums 为 无重复元素 的 升序 排列数组
 };`,
   },
   {
+    id: 74,
+    title: "搜索二维矩阵 search-a-2d-matrix",
+    category: "二分查找",
+    content: `
+给你一个满足下述两条属性的 m x n 整数矩阵：
+
+每行中的整数从左到右按非严格递增顺序排列。
+每行的第一个整数大于前一行的最后一个整数。
+给你一个整数 target ，如果 target 在矩阵中，返回 true ；否则，返回 false 。
+
+示例 1：
+
+输入：matrix = [
+                [1, 3, 5, 7],
+                [10,11,16,20],
+                [23,30,34,60]
+            ], target = 3
+输出：true
+
+示例 2：
+
+输入：matrix = [
+                [1, 3, 5, 7],
+                [10,11,16,20],
+                [23,30,34,60]
+            ], target = 13
+输出：false
+
+提示：
+
+m == matrix.length
+n == matrix[i].length
+1 <= m, n <= 100
+-104 <= matrix[i][j], target <= 104
+    `,
+    difficulty: "中等",
+    hint: `
+- 先对第一列进行二分查找
+- 然后对找到的行进行二分查找
+    `,
+    link: "https://leetcode.cn/search-a-2d-matrix/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function searchMatrix(matrix: number[][], target: number): boolean {
+    // 对第一列进行二分查找，找到最后一个 matrix[m][0] <= target 的行
+    let i = 0;
+    let j = matrix.length - 1;
+    while (i <= j) {
+        const m = Math.floor((i + j) / 2);
+        if (matrix[m][0] < target) {
+            i = m + 1;
+        } else if (matrix[m][0] > target) {
+            j = m - 1;
+        } else {
+            return true;
+        }
+    }
+
+    if (i === 0) return false;
+    i -= 1; // i 是第一个 matrix[i][0] > target 的行，所以选择 i-1 行
+
+    // 对选定的行进行二分查找
+    let k = 0;
+    let l = matrix[i].length - 1;
+    while (k <= l) {
+        const m = Math.floor((k + l) / 2);
+        if (matrix[i][m] < target) {
+            k = m + 1;
+        } else if (matrix[i][m] > target) {
+            l = m - 1;
+        } else {
+            return true;
+        }
+    }
+
+    return false;
+};`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
