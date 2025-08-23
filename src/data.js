@@ -4099,6 +4099,117 @@ s 仅由小写英文字母组成
 };`,
   },
   {
+    id: 51,
+    title: "N 皇后 n-queens",
+    category: "回溯",
+    content: `
+按照国际象棋的规则，皇后可以攻击与之处在同一行或同一列或同一斜线上的棋子。
+
+n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+
+给你一个整数 n ，返回所有不同的 n 皇后问题 的解决方案。
+
+每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
+
+示例 1：
+
+输入：n = 4
+输出：[
+        [
+         ".Q..",
+         "...Q",
+         "Q...",
+         "..Q.",
+        ],
+        [
+         "..Q.",
+         "Q...",
+         "...Q",
+         ".Q..",
+        ]
+    ]
+解释：如上图所示，4 皇后问题存在两个不同的解法。
+
+示例 2：
+
+输入：n = 1
+输出：[["Q"]]
+
+提示：
+
+1 <= n <= 9
+    `,
+    difficulty: "中等",
+    hint: `
+- 回溯
+- 每一行必须且只能放置一个皇后。如果我们在一行里不放皇后，那么就不可能放满 N 个。如果在一行里放两个，她们会立即互相攻击
+- 因此，我们不需要在 N×N 的格子里随意选择 N 个位置，而是可以按行来决策：
+    - “第 0 行的皇后放在哪一列？” -> “第 1 行的皇后放在哪一列？” -> ... -> “第 N-1 行的皇后放在哪一列？”
+    - 这正是回溯算法擅长的“决策树”搜索过程
+- 当前状态 state: 当前棋盘的状态
+    - 使用一维数组来简化：queens[row] = col
+- 当前可做的选择 choices: 对于当前正在决策的第 row 行，我们的选择是在 0 到 n-1 的所有列
+- 结束条件 isSolution: 当我们成功地为第 n-1 行也放好了皇后，意味着我们已经放下了 N 个皇后，并且之前的每一步都是合法的。此时，我们找到了一个完整的解决方案
+- 剪枝条件 isValid: 
+    - 列检查：检查之前的行中，是否已经有皇后被放在了 col 列
+    - 斜线检查：对于任意两个皇后，分别在 (row1, col1) 和 (row2, col2)：
+        - 她们在主对角线上 (左上到右下) 的条件是 row1 - col1 === row2 - col2。
+        - 她们在副对角线上 (右上到左下) 的条件是 row1 + col1 === row2 + col2。
+    `,
+    link: "https://leetcode.cn/n-queens/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function solveNQueens(n: number): string[][] {
+    const res = [];
+    const state = []; // state[row] = col 代表皇后放在第 row 行第 col 列
+
+    // 记录列和对角线是否被占用
+    const colSet = new Set();
+    const diag1Set = new Set();
+    const diag2Set = new Set();
+
+    function backtrack(row) {
+        // 结束条件：成功放满了 n 行
+        if (row === n) {
+            const tmp = state.map((col) => {
+                let str = "";
+                for (let i = 0; i < n; i++) {
+                    if (i === col) {
+                        str += "Q";
+                    } else {
+                        str += ".";
+                    }
+                }
+                return str;
+            })
+            res.push([...tmp]);
+        }
+
+        // 遍历当前行的所有列（所有选择）
+        for (let col = 0; col < n; col++) {
+            if (colSet.has(col) || diag1Set.has(row - col) || diag2Set.has(row + col)) {
+                continue;
+            }
+
+            // 做出选择
+            state[row] = col;
+            colSet.add(col);
+            diag1Set.add(row - col);
+            diag2Set.add(row + col);
+
+            // 下一层选择
+            backtrack(row + 1)
+
+            // 回退
+            colSet.delete(col);
+            diag1Set.delete(row - col);
+            diag2Set.delete(row + col);
+        }
+    }
+
+    backtrack(0);
+    return res;
+};`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
