@@ -3927,6 +3927,110 @@ candidates 的所有元素 互不相同
 };`,
   },
   {
+    id: 79,
+    title: "单词搜索 word-search",
+    category: "回溯",
+    content: `
+给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+示例 1：
+
+输入：board = [
+                ["A","B","C","E"],
+                ["S","F","C","S"],
+                ["A","D","E","E"]
+            ], word = "ABCCED"
+输出：true
+
+示例 2：
+
+输入：board = [
+                ["A","B","C","E"],
+                ["S","F","C","S"],
+                ["A","D","E","E"]
+            ], word = "SEE"
+输出：true
+
+示例 3：
+
+输入：board = [
+                ["A","B","C","E"],
+                ["S","F","C","S"],
+                ["A","D","E","E"]
+            ], word = "ABCB"
+输出：false
+
+提示：
+
+m == board.length
+n = board[i].length
+1 <= m, n <= 6
+1 <= word.length <= 15
+board 和 word 仅由大小写英文字母组成
+
+进阶：你可以使用搜索剪枝的技术来优化解决方案，使其在 board 更大的情况下可以更快解决问题？
+    `,
+    difficulty: "中等",
+    hint: `
+- 回溯
+- 当前状态 state:
+    - 当前位置 (row. col)
+    - 我们正在尝试匹配 word 中的第 k 个字符，即 word[k]
+    - 需要使用一个数组记录哪些位置被访问过了
+- 当前可做的选择 choices: 上下左右四个相邻的格子
+- 结束条件 isSolution: 当 k 的索引等于 word 的长度时，意味着我们已经成功匹配了 word 中的所有字符
+- 剪枝条件 isValid:
+    - 当前位置是否越界
+    - 当前位置的字符与 word[k] 是否相同
+    - 当前位置是否未被访问过
+    `,
+    link: "https://leetcode.cn/word-search/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function exist(board: string[][], word: string): boolean {
+    const isSelected = Array.from({ length: board.length }, () => 
+        Array.from({ length: board[0].length }, () => false)
+    );
+
+    function backtrack(row, col, k) {
+        // 剪枝
+        if (row < 0 || row >= board.length || col < 0 || col >= board[0].length // 是否越界
+            || board[row][col] !== word[k] // 字符是否匹配
+            || isSelected[row][col] // 是否已被访问过
+        ) {
+            return false;
+        }
+
+        // 终止条件
+        if (k === word.length - 1) {
+            return true;
+        }
+
+        // 向四个方向做出选择
+        isSelected[row][col] = true;
+        const found = backtrack(row + 1, col, k + 1) || 
+                      backtrack(row, col + 1, k + 1) || 
+                      backtrack(row - 1, col, k + 1) || 
+                      backtrack(row, col - 1, k + 1)
+
+        // 回退
+        isSelected[row][col] = false;
+
+        return found;
+    }
+    
+    for (let row = 0; row < board.length; row++) {
+        for (let col = 0; col < board[0].length; col++) {
+            if (backtrack(row, col, 0)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+};`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
@@ -3936,8 +4040,6 @@ candidates 的所有元素 互不相同
 你只能选择 某一天 买入这只股票，并选择在 未来的某一个不同的日子 卖出该股票。设计一个算法来计算你所能获取的最大利润。
 
 返回你可以从这笔交易中获取的最大利润。如果你不能获取任何利润，返回 0 。
-
- 
 
 示例 1：
 
