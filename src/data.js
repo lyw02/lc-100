@@ -4031,6 +4031,74 @@ board 和 word 仅由大小写英文字母组成
 };`,
   },
   {
+    id: 131,
+    title: "分割回文串 palindrome-partitioning",
+    category: "回溯",
+    content: `
+给你一个字符串 s，请你将 s 分割成一些 子串，使每个子串都是 回文串 。返回 s 所有可能的分割方案。
+
+示例 1：
+
+输入：s = "aab"
+输出：[["a","a","b"],["aa","b"]]
+
+示例 2：
+
+输入：s = "a"
+输出：[["a"]]
+
+提示：
+
+1 <= s.length <= 16
+s 仅由小写英文字母组成
+    `,
+    difficulty: "中等",
+    hint: `
+- 回溯
+- 在这道题里，回溯就是一种“试探”和“选择”的过程。我们站在字符串的某个位置，思考“下一刀切在哪里？”
+- 当前可做的选择 choices: 从当前位置 i 开始，我们可以选择在 i 后面的任意位置 j 切一刀，切出来的子串就是 s.substring(i, j + 1)
+- 当前状态 state: 当前已经切好的并且都是回文的子串
+- 结束条件 isSolution: 当我们切到了字符串的末尾（i 索引等于字符串长度 s.length），说明我们成功地找到了一种完整的分割方案
+- 剪枝条件 isValid: 切出来的这个子串 s.substring(i, j + 1) 必须是回文串。如果不是，则剪枝
+    `,
+    link: "https://leetcode.cn/palindrome-partitioning/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function partition(s: string): string[][] {
+    const res: string[][] = [];
+    const state: string[] = [];
+
+    // 检查子串 s[l...r] 是否为回文串
+    function isPalindrome(l, r) {
+        while (l < r) {
+            if (s[l] !== s[r]) return false;
+            l++;
+            r--;
+        }
+        return true;
+    }
+
+    function backtrack(i) {
+        // 是否为解：已处理完整个字符串
+        if (i === s.length) {
+            res.push([...state]);
+            return;
+        }
+
+        // 遍历选择：尝试从 i 到末尾的子串
+        for (let j = i; j < s.length; j++) {
+            // 剪枝：检查子串 s[i...j] 是否为回文串
+            if (isPalindrome(i, j)) {
+                state.push(s.slice(i, j + 1));
+                backtrack(j + 1);
+                state.pop();
+            }
+        }
+    }
+
+    backtrack(0);
+    return res;
+};`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
