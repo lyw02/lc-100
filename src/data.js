@@ -4492,6 +4492,52 @@ nums 中的每个值都 独一无二
 };`,
   },
   {
+    id: 153,
+    title: "寻找旋转排序数组中的最小值 find-minimum-in-rotated-sorted-array",
+    category: "二分查找",
+    content: `
+
+    `,
+    difficulty: "中等",
+    hint: `
+- 二分查找
+- 首先找到中点 m
+- 如果 nums[i] <= nums[m]，说明 m 左侧一定有序
+    - 这部分最小值是 nums[i]
+    - 旋转点（全局最小值）在 m 右侧
+- 否则说明 m 右侧一定有序
+    - 这部分最小值是 nums[m]
+    - 旋转点（全局最小值）就是 m 或在 m 左侧
+    `,
+    link: "https://leetcode.cn/find-minimum-in-rotated-sorted-array/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function findMin(nums: number[]): number {
+    let i = 0;
+    let j = nums.length - 1;
+
+    let min = Infinity;
+
+    while (i <= j) {
+        const m = Math.floor((i + j) / 2);
+
+        if (nums[m] >= nums[i]) {
+            // 说明 [i...m] 递增，这部分最小值是 nums[i]
+            min = Math.min(min, nums[i]);
+            // 既然左半部分是正常的，那旋转点（也就是全局最小值）一定在右边
+            // 所以我们去右边搜索
+            i = m + 1;
+        } else {
+            // 说明 [m...j] 递增，这部分最小值是 nums[m]
+            min = Math.min(min, nums[m]);
+            // 旋转点（全局最小值）可能就是 nums[m] 或者在它的左边
+            // 所以我们去左边搜索
+            j = m - 1;
+        }
+    }
+
+    return min;
+};`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
