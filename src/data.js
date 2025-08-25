@@ -4415,6 +4415,83 @@ nums 是一个非递减数组
 }`,
   },
   {
+    id: 33,
+    title: "搜索旋转排序数组 search-in-rotated-sorted-array",
+    category: "二分查找",
+    content: `
+整数数组 nums 按升序排列，数组中的值 互不相同 。
+
+在传递给函数之前，nums 在预先未知的某个下标 k（0 <= k < nums.length）上进行了 向左旋转，使数组变为 [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]]（下标 从 0 开始 计数）。例如， [0,1,2,4,5,6,7] 下标 3 上向左旋转后可能变为 [4,5,6,7,0,1,2] 。
+
+给你 旋转后 的数组 nums 和一个整数 target ，如果 nums 中存在这个目标值 target ，则返回它的下标，否则返回 -1 。
+
+你必须设计一个时间复杂度为 O(log n) 的算法解决此问题。
+
+示例 1：
+
+输入：nums = [4,5,6,7,0,1,2], target = 0
+输出：4
+
+示例 2：
+
+输入：nums = [4,5,6,7,0,1,2], target = 3
+输出：-1
+
+示例 3：
+
+输入：nums = [1], target = 0
+输出：-1
+
+提示：
+
+1 <= nums.length <= 5000
+-104 <= nums[i] <= 104
+nums 中的每个值都 独一无二
+题目数据保证 nums 在预先未知的某个下标上进行了旋转
+-104 <= target <= 104
+    `,
+    difficulty: "中等",
+    hint: `
+- 二分查找
+- 首先找到中点 m
+- 如果 nums[0] <= nums[m]，说明 m 左侧一定有序
+    - 根据 nums[0], target, nums[m] 的大小关系判断 target 是否在 m 左侧
+    - 相应移动 i, j 指针
+- 否则说明 m 右侧一定有序
+    - 同理
+    `,
+    link: "https://leetcode.cn/search-in-rotated-sorted-array/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function search(nums: number[], target: number): number {
+    let i = 0;
+    let j = nums.length - 1;
+    while (i <= j) {
+        const m = Math.floor((i + j) / 2);
+        if (nums[m] === target) return m;
+
+        if (nums[0] <= nums[m]) {
+            // m 左侧数组有序
+            if (nums[0] <= target && target < nums[m]) {
+                // target 在 m 左侧
+                j = m - 1;
+            } else {
+                // target 在 m 右侧
+                i = m + 1;
+            }
+        } else {
+            // m 右侧数组有序
+            if (nums[m] < target && target <= nums[nums.length - 1]) {
+                // target 在 m 右侧
+                i = m + 1;
+            } else {
+                // target 在 m 左侧
+                j = m - 1;
+            }
+        }
+    }
+    return -1;
+};`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
