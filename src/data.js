@@ -4339,6 +4339,82 @@ n == matrix[i].length
 };`,
   },
   {
+    id: 34,
+    title: "在排序数组中查找元素的第一个和最后一个位置 find-first-and-last-position-of-element-in-sorted-array",
+    category: "二分查找",
+    content: `
+给你一个按照非递减顺序排列的整数数组 nums，和一个目标值 target。请你找出给定目标值在数组中的开始位置和结束位置。
+
+如果数组中不存在目标值 target，返回 [-1, -1]。
+
+你必须设计并实现时间复杂度为 O(log n) 的算法解决此问题。
+
+示例 1：
+
+输入：nums = [5,7,7,8,8,10], target = 8
+输出：[3,4]
+
+示例 2：
+
+输入：nums = [5,7,7,8,8,10], target = 6
+输出：[-1,-1]
+
+示例 3：
+
+输入：nums = [], target = 0
+输出：[-1,-1]
+
+提示：
+
+0 <= nums.length <= 105
+-109 <= nums[i] <= 109
+nums 是一个非递减数组
+-109 <= target <= 109
+    `,
+    difficulty: "中等",
+    hint: `
+- 两次二分查找
+- 即使找到目标元素，也要移动指针，确保找到边界
+    `,
+    link: "https://leetcode.cn/find-first-and-last-position-of-element-in-sorted-array/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function searchRange(nums: number[], target: number): number[] {
+    let start = -1;
+    let end = -1;
+
+    // 找第一个等于target的位置
+    let i = 0;
+    let j = nums.length - 1;
+    while (i <= j) {
+        const m = Math.floor((i + j) / 2);
+        if (nums[m] < target) {
+            i = m + 1;
+        } else if (nums[m] > target) {
+            j = m - 1;
+        } else {
+            start = m;
+            j = m - 1; // 即使找到目标值，也会继续向左搜索，以确保找到第一个出现的索引
+        }
+    }
+
+    // 最后一个等于target的位置
+    i = 0;
+    j = nums.length - 1;
+    while (i <= j) {
+        const m = Math.floor((i + j) / 2);
+        if (nums[m] < target) {
+            i = m + 1;
+        } else if (nums[m] > target) {
+            j = m - 1;
+        } else {
+            end = m;
+            i = m + 1; // 即使找到目标值，也会继续向右搜索，以确保找到最后一个出现的索引
+        }
+    }
+
+    return [start, end];
+}`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
@@ -4979,12 +5055,10 @@ wordDict 中的所有字符串 互不相同
       - 最终答案将是整个 dp 数组中的最大值，因为最长递增子序列可能在任何一个位置结束
     - 状态转移方程：
       - 要计算 dp[i]，即以 nums[i] 结尾的最长递增子序列的长度，我们必须选择 nums[i] 作为这个子序列的最后一个元素
-      - 那么，它前面的那个元素 nums[j] 必须满足两个条件：
-        - 它在 nums[i] 的前面，即 j < i
-        - 它的值比 nums[i] 小，即 nums[j] < nums[i]，这样才能递增
+      - 那么，它前面的那个元素 nums[j] 必须满足 nums[j] < nums[i]，这样才能递增
       - 如果我们把 nums[i] 接在以 nums[j] 结尾的最长递增子序列的后面，就能形成一个更长的、以 nums[i] 结尾的递增子序列。这个新序列的长度是 dp[j] + 1
       - 为了让 dp[i] 尽可能大，应该遍历所有满足条件的 j（0 <= j < i 且 nums[j] < nums[i]），然后从所有 dp[j] + 1 的结果中取最大值
-      - 因此，得到状态转移方程：dp[i] = max(1, max(dp[j] + 1)) for j in [0, i] && nums[j] < nums[i]
+      - 因此，得到状态转移方程：dp[i] = max(dp[j] + 1) for j in [0, i] && nums[j] < nums[i]
     - 初始条件（边界情况）：
       - 任意 nums[i] 本身就可以构成一个长度为 1 的子序列，因此将 dp 数组的所有元素都初始化为 1
 - 思路二：贪心 + 二分查找 O(nlogn)
