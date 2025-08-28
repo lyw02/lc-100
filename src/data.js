@@ -4751,6 +4751,100 @@ s 仅由括号 '()[]{}' 组成
 };`,
   },
   {
+    id: 155,
+    title: "最小栈 min-stack",
+    category: "栈",
+    content: `
+设计一个支持 push ，pop ，top 操作，并能在常数时间内检索到最小元素的栈。
+
+实现 MinStack 类:
+
+MinStack() 初始化堆栈对象。
+void push(int val) 将元素val推入堆栈。
+void pop() 删除堆栈顶部的元素。
+int top() 获取堆栈顶部的元素。
+int getMin() 获取堆栈中的最小元素。
+
+示例 1:
+
+输入：
+["MinStack","push","push","push","getMin","pop","top","getMin"]
+[[],[-2],[0],[-3],[],[],[],[]]
+
+输出：
+[null,null,null,null,-3,null,0,-2]
+
+解释：
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin();   --> 返回 -3.
+minStack.pop();
+minStack.top();      --> 返回 0.
+minStack.getMin();   --> 返回 -2.
+
+提示：
+
+-231 <= val <= 231 - 1
+pop、top 和 getMin 操作总是在 非空栈 上调用
+push, pop, top, and getMin最多被调用 3 * 104 次
+    `,
+    difficulty: "中等",
+    hint: `
+- 使用两个栈
+    - 一个栈正常记录所有值
+    - 另一个栈作为最小栈：
+        - push(val) 时，若最小栈为空或 val <= 最小栈栈顶值，则同时将值加入最小栈
+        - pop() 时，若栈顶与最小栈栈顶相等（即最小值即将出栈），则同时将最小栈栈顶出栈
+    `,
+    link: "https://leetcode.cn/min-stack/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `class MinStack {
+    stack: number[];
+    minStack: number[]; // 借用一个辅助栈 min_stack，用于存获取 stack 中最小值
+    constructor() {
+        this.stack = [];
+        this.minStack = [];
+    }
+
+    /**
+     * 每当push()新值进来时，如果 小于等于 min_stack 栈顶值，则一起 push() 到 min_stack，即更新了栈顶最小值
+     */
+    push(val: number): void {
+        this.stack.push(val);
+        if (this.minStack.length === 0 || val <= this.minStack[this.minStack.length - 1]) {
+           this. minStack.push(val);
+        }
+    }
+
+    /**
+    * 判断将 pop() 出去的元素值是否是 min_stack 栈顶元素值（即最小值），如果是则将 min_stack 栈顶元素一起 pop()，这样可以保证 min_stack 栈顶元素始终是 stack 中的最小值
+    */
+    pop(): void {
+        if (this.stack.pop() === this.minStack[this.minStack.length - 1]) {
+            this.minStack.pop();
+        }
+    }
+
+    top(): number {
+        return this.stack[this.stack.length - 1];
+    }
+
+    getMin(): number {
+        return this.minStack[this.minStack.length - 1];
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * var obj = new MinStack()
+ * obj.push(val)
+ * obj.pop()
+ * var param_3 = obj.top()
+ * var param_4 = obj.getMin()
+ */`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
