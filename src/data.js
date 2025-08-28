@@ -4496,7 +4496,40 @@ nums 中的每个值都 独一无二
     title: "寻找旋转排序数组中的最小值 find-minimum-in-rotated-sorted-array",
     category: "二分查找",
     content: `
+已知一个长度为 n 的数组，预先按照升序排列，经由 1 到 n 次 旋转 后，得到输入数组。例如，原数组 nums = [0,1,2,4,5,6,7] 在变化后可能得到：
+若旋转 4 次，则可以得到 [4,5,6,7,0,1,2]
+若旋转 7 次，则可以得到 [0,1,2,4,5,6,7]
+注意，数组 [a[0], a[1], a[2], ..., a[n-1]] 旋转一次 的结果为数组 [a[n-1], a[0], a[1], a[2], ..., a[n-2]] 。
 
+给你一个元素值 互不相同 的数组 nums ，它原来是一个升序排列的数组，并按上述情形进行了多次旋转。请你找出并返回数组中的 最小元素 。
+
+你必须设计一个时间复杂度为 O(log n) 的算法解决此问题。
+
+示例 1：
+
+输入：nums = [3,4,5,1,2]
+输出：1
+解释：原数组为 [1,2,3,4,5] ，旋转 3 次得到输入数组。
+
+示例 2：
+
+输入：nums = [4,5,6,7,0,1,2]
+输出：0
+解释：原数组为 [0,1,2,4,5,6,7] ，旋转 4 次得到输入数组。
+
+示例 3：
+
+输入：nums = [11,13,15,17]
+输出：11
+解释：原数组为 [11,13,15,17] ，旋转 4 次得到输入数组。
+
+提示：
+
+n == nums.length
+1 <= n <= 5000
+-5000 <= nums[i] <= 5000
+nums 中的所有整数 互不相同
+nums 原来是一个升序排序的数组，并进行了 1 至 n 次旋转
     `,
     difficulty: "中等",
     hint: `
@@ -4536,6 +4569,108 @@ nums 中的每个值都 独一无二
 
     return min;
 };`,
+  },
+  {
+    id: 153,
+    title: "寻找两个正序数组的中位数 median-of-two-sorted-arrays",
+    category: "二分查找",
+    content: `
+给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
+
+算法的时间复杂度应该为 O(log (m+n)) 。
+
+示例 1：
+
+输入：nums1 = [1,3], nums2 = [2]
+输出：2.00000
+解释：合并数组 = [1,2,3] ，中位数 2
+示例 2：
+
+输入：nums1 = [1,2], nums2 = [3,4]
+输出：2.50000
+解释：合并数组 = [1,2,3,4] ，中位数 (2 + 3) / 2 = 2.5
+
+提示：
+
+nums1.length == m
+nums2.length == n
+0 <= m <= 1000
+0 <= n <= 1000
+1 <= m + n <= 2000
+-106 <= nums1[i], nums2[i] <= 106
+    `,
+    difficulty: "困难",
+    hint: `
+- 要求 log 复杂度，想到二分查找
+- 若两个数组的长度为 m, n，总长度 total，那么：
+    - 若 total 为奇数，中位数为合并后的数组中第 floor(total / 2) 个元素
+    - 若 total 为偶数，中位数为合并后的数组中第 floor(total / 2) 个元素和第 floor(total / 2) + 1 个元素的平均值
+    - 问题转化为要找合并后的数组中第 k 个元素
+- 要找合并后的数组中第 k 个元素，可以先分别找到每个数组的前 floor(k / 2) 个元素
+    - 然后比较它们中最后一个元素，即第 floor(k / 2) 个元素的大小
+    - 较小的那个数组中的前 floor(k / 2) 个元素可以直接排除
+    - 然后更新 k 的值和被排除的数组的首元素指针
+    - 注意考虑边界条件
+    `,
+    link: "https://leetcode.cn/median-of-two-sorted-arrays/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function findMedianSortedArrays(nums1: number[], nums2: number[]): number {
+    const m = nums1.length;
+    const n = nums2.length;
+    const totalLen = m + n;
+
+    if (totalLen % 2 === 1) {
+        // 总长度为奇数，中位数是第 (totalLen / 2) + 1 个元素
+        let midIndex = Math.floor(totalLen / 2);
+        return getKth(midIndex + 1);
+    } else {
+        // 总长度为偶数，中位数是第 (totalLen / 2) 和第 (totalLen / 2) + 1 个元素的平均值
+        let midIndex1 = Math.floor(totalLen / 2 - 1);
+        let midIndex2 = Math.floor(totalLen / 2);
+        return (getKth(midIndex1 + 1) + getKth(midIndex2 + 1)) / 2;
+    }
+
+    function getKth(k: number): number {
+        // 两个数组的起始指针
+        let i = 0;
+        let j = 0;
+
+        while (true) {
+            // 边界条件
+            // 如果 nums1 的指针越界，说明 nums1 的元素已全部排除，直接从 nums2 返回
+            if (i === m) {
+                return nums2[j + k - 1];
+            }
+            // 如果 nums2 的指针越界，说明 nums2 的元素已全部排除，直接从 nums1 返回
+            if (j === n) {
+                return nums1[i + k - 1];
+            }
+            // 如果 k=1，说明要找的就是当前两个数组头元素中较小的那个
+            if (k === 1) {
+                return Math.min(nums1[i], nums2[j]);
+            }
+
+            // 计算 nums1 和 nums2 中用于比较的元素的索引
+            let half = Math.floor(k / 2);
+            let newI = Math.min(i + half, m) - 1;
+            let newJ = Math.min(j + half, n) - 1;
+
+            // 排除不可能包含第 k 小元素的那一部分
+            if (nums1[newI] <= nums2[newJ]) {
+                // nums1[newI] 更小或相等，意味着 nums1 从 i 到 newI 的所有元素都不可能是第 k 小的
+                // 因为即使把这些元素全部算上，再加上 nums2[newJ]，总数也小于 k
+                const excludedCount = newI - i + 1;
+                k -= excludedCount;
+                i = newI + 1;
+            } else {
+                // nums2[newJ] 更小，意味着 nums2 从 j 到 newJ 的所有元素都不可能是第 k 小的
+                const excludedCount = newJ - j + 1;
+                k -= excludedCount;
+                j = newJ + 1;
+            }
+        }
+    }
+};
+`,
   },
   {
     id: 121,
