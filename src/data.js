@@ -4571,7 +4571,7 @@ nums 原来是一个升序排序的数组，并进行了 1 至 n 次旋转
 };`,
   },
   {
-    id: 153,
+    id: 4,
     title: "寻找两个正序数组的中位数 median-of-two-sorted-arrays",
     category: "二分查找",
     content: `
