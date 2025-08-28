@@ -4845,6 +4845,93 @@ push, pop, top, and getMin最多被调用 3 * 104 次
  */`,
   },
   {
+    id: 394,
+    title: "字符串解码 decode-string",
+    category: "栈",
+    content: `
+给定一个经过编码的字符串，返回它解码后的字符串。
+
+编码规则为: k[encoded_string]，表示其中方括号内部的 encoded_string 正好重复 k 次。注意 k 保证为正整数。
+
+你可以认为输入字符串总是有效的；输入字符串中没有额外的空格，且输入的方括号总是符合格式要求的。
+
+此外，你可以认为原始数据不包含数字，所有的数字只表示重复的次数 k ，例如不会出现像 3a 或 2[4] 的输入。
+
+测试用例保证输出的长度不会超过 105。
+
+示例 1：
+
+输入：s = "3[a]2[bc]"
+输出："aaabcbc"
+
+示例 2：
+
+输入：s = "3[a2[c]]"
+输出："accaccacc"
+
+示例 3：
+
+输入：s = "2[abc]3[cd]ef"
+输出："abcabccdcdcdef"
+
+示例 4：
+
+输入：s = "abc3[cd]xyz"
+输出："abccdcdcdxyz"
+
+提示：
+
+1 <= s.length <= 30
+s 由小写英文字母、数字和方括号 '[]' 组成
+s 保证是一个 有效 的输入。
+s 中所有整数的取值范围为 [1, 300] 
+    `,
+    difficulty: "中等",
+    hint: `
+- 可以把字符串中的 [ 看作是进入一个更深层次的信号，而 ] 则是从当前层次返回上一层的信号
+- 遇到 [ 时：这表示我们要开始处理一个新的、被括号包裹的子问题。在进入这个子问题之前，我们必须保存当前的状态，即：
+    - 括号外的重复次数（比如 3[a... 中的 3）
+    - 括号外已经拼接好的字符串（比如 a2[c] 中的 a）
+    - 然后，我们清空变量，开始计算这个新括号内的字符串
+- 遇到 ] 时：这表示一个子问题已经处理完毕。我们需要：
+    - 取出（弹出）之前保存的状态（重复次数和上层字符串）
+    - 将当前括号内计算出的字符串按次数重复
+    - 将重复后的结果拼接到上层的字符串后面，从而完成一次“解码”和“返回”
+- 这个“保存状态”和“取出状态”的过程，符合栈后进先出的特性。
+- 遍历字符串
+    - 使用一个字符串拼接数字
+    - 使用一个字符串拼接字符
+    - 遇到左括号时：
+        - 使用栈记录当前的数字和上一层字符
+        - 重置两个字符串
+    - 遇到右括号时：
+        - 弹出栈顶并拼接字符串
+        - 新字符串为：上层字符串 + 重复次数 * 当前字符串
+    `,
+    link: "https://leetcode.cn/decode-string/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function decodeString(s: string): string {
+    const stack = [];
+    let res = "";
+    let mul = "";
+
+    for (const c of s) {
+        if (/\d/.test(c)) {
+            mul += c;
+        } else if (/[a-z]/.test(c)) {
+            res += c;
+        } else if (c === "[") {
+            stack.push([parseInt(mul), res]);
+            res = "";
+            mul = "";
+        } else if (c === "]") {
+            let [curMul, lastRes] = stack.pop();
+            res = lastRes + res.repeat(curMul);
+        }
+    }
+    return res;
+};`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
