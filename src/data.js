@@ -4673,6 +4673,84 @@ nums2.length == n
 `,
   },
   {
+    id: 20,
+    title: "有效的括号 valid-parentheses",
+    category: "栈",
+    content: `
+给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+
+有效字符串需满足：
+
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+每个右括号都有一个对应的相同类型的左括号。
+
+示例 1：
+
+输入：s = "()"
+
+输出：true
+
+示例 2：
+
+输入：s = "()[]{}"
+
+输出：true
+
+示例 3：
+
+输入：s = "(]"
+
+输出：false
+
+示例 4：
+
+输入：s = "([])"
+
+输出：true
+
+示例 5：
+
+输入：s = "([)]"
+
+输出：false
+
+提示：
+
+1 <= s.length <= 104
+s 仅由括号 '()[]{}' 组成
+    `,
+    difficulty: "简单",
+    hint: `
+- 借助栈来判断
+    - 如果是左括号：直接入栈
+    - 如果是右括号：弹出栈顶并进行比较
+- 借助哈希表快速判断是左括号还是右括号
+    `,
+    link: "https://leetcode.cn/valid-parentheses/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function isValid(s: string): boolean {
+    if (s.length % 2 === 1) {
+        return false;
+    }
+    const pairs = new Map([
+        ['(', ')'],
+        ['[', ']'],
+        ['{', '}']
+    ]);
+    const stack = [];
+    for (let char of s) {
+        if (!pairs.has(char)) {
+            if (pairs.get(stack.pop()) !== char) {
+                return false;
+            }
+        } else {
+            stack.push(char);
+        }
+    }
+    return stack.length === 0;
+};`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
