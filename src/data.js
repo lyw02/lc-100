@@ -4932,6 +4932,64 @@ s 中所有整数的取值范围为 [1, 300]
 };`,
   },
   {
+    id: 739,
+    title: "每日温度 daily-temperatures",
+    category: "栈",
+    content: `
+给定一个整数数组 temperatures ，表示每天的温度，返回一个数组 answer ，其中 answer[i] 是指对于第 i 天，下一个更高温度出现在几天后。如果气温在这之后都不会升高，请在该位置用 0 来代替。
+
+示例 1:
+
+输入: temperatures = [73,74,75,71,69,72,76,73]
+输出: [1,1,4,2,1,1,0,0]
+
+示例 2:
+
+输入: temperatures = [30,40,50,60]
+输出: [1,1,1,0]
+
+示例 3:
+
+输入: temperatures = [30,60,90]
+输出: [1,1,0]
+
+提示：
+
+1 <= temperatures.length <= 105
+30 <= temperatures[i] <= 100
+    `,
+    difficulty: "中等",
+    hint: `
+- 单调栈
+- 核心问题：对于数组中的每一个元素（当天的温度），我们需要找到它右边第一个比它大的元素，并计算它们之间的索引差（天数）
+- 当我们从左到右遍历温度数组时，对于当前遍历到的温度 T[i]，它的作用是什么？
+    - 它的作用是为之前那些还在“等待”一个更高温度的日子找到答案
+- 哪些日子是“还在等待”的呢？
+    - 是那些我们已经遍历过，但它们右边（到目前i-1为止）还没有出现比它们更热的日子的索引
+- 我们正在处理的这些“等待中”的日子，它们的温度一定是从早到晚递减的（例如 [75, 71, 69]）
+    - 因为如果不是递减的（比如是 [..., 71, 75, ...]），那么当 75 出现时，71 的等待就已经结束了，它根本不会进入“等待”序列
+- 因此，可以使用单调栈来满足这种后进先出的、并且内部元素具有某种单调性的特点
+    - 遍历温度，若栈为空且当前温度大于栈顶索引对应的温度，则弹出栈顶并计算索引差（天数差）
+    - 否则直接入栈
+    `,
+    link: "https://leetcode.cn/daily-temperatures/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function dailyTemperatures(temperatures: number[]): number[] {
+    // 存储下标的单调栈，从栈底到栈顶的下标对应的温度列表中的温度依次递减。
+    // 如果一个下标在单调栈里，则表示尚未找到下一次温度更高的下标。
+    const stack = [];
+    const res = Array.from({ length: temperatures.length }, () => 0);
+    for (let i = 0; i < temperatures.length; i++) {   
+        // 找到温度更高的下标后，将小于该温度的对应下标依次出栈。
+        while (stack.length > 0 && temperatures[i] > temperatures[stack[stack.length - 1]]) {
+            const prevIndex = stack.pop();
+            res[prevIndex] = i - prevIndex;
+        }
+        stack.push(i);
+    }
+    return res;
+};`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
@@ -4953,7 +5011,6 @@ s 中所有整数的取值范围为 [1, 300]
 输入：prices = [7,6,4,3,1]
 输出：0
 解释：在这种情况下, 没有交易完成, 所以最大利润为 0。
- 
 
 提示：
 
