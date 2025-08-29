@@ -4990,6 +4990,111 @@ s 中所有整数的取值范围为 [1, 300]
 };`,
   },
   {
+    id: 84,
+    title: "柱状图中最大的矩形 largest-rectangle-in-histogram",
+    category: "栈",
+    content: `
+给定 n 个非负整数，用来表示柱状图中各个柱子的高度。每个柱子彼此相邻，且宽度为 1 。
+
+求在该柱状图中，能够勾勒出来的矩形的最大面积。
+
+示例 1:
+
+输入：heights = [2,1,5,6,2,3]
+输出：10
+解释：最大的矩形为图中红色区域，面积为 10
+
+示例 2：
+
+输入： heights = [2,4]
+输出： 4
+
+提示：
+
+1 <= heights.length <=105
+0 <= heights[i] <= 104
+    `,
+    difficulty: "困难",
+    hint: `
+- 思路一：暴力（超时）
+    - 对于每一个 height[i]，求能够向左和向右延伸的最大宽度
+    - 复杂度：
+        - 时间：O(n^2)
+        - 空间：O(1)
+- 思路二：栈（空间换时间）
+    - 在思路一中，对于每个柱子 i，我们需要找到：
+        - 左边第一个比它矮的柱子 left_i
+        - 右边第一个比它矮的柱子 right_i
+        - 可以使用单调栈来高效地找出这两个边界
+    - 使用一个栈来维护一个单调递增的柱子索引序列。也就是说，栈中存储的是柱子的索引，并且这些索引对应的柱子高度是严格递增的
+        - 当一个新元素准备入栈时：
+            - 如果新元素比栈顶元素高，那么它不会破坏单调递增的性质，直接入栈
+            - 如果新元素比栈顶元素矮，说明栈顶元素的右边界找到了，就是当前这个新元素。此时，我们就可以开始计算以栈顶元素为高的矩形面积了
+    - 
+    `,
+    link: "https://leetcode.cn/largest-rectangle-in-histogram/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `function largestRectangleArea(heights: number[]): number {
+    if (heights.length === 1) return heights[0];
+
+    let res = 0; // 存储最终结果，即最大面积
+    const stack = [];
+
+    for (let i = 0; i < heights.length; i++) {
+
+        // 当前遍历到的柱子 i 比栈顶索引对应的柱子要矮
+        // 当这个条件成立时，就说明我们找到了栈顶柱子的右边界（即第一个比它矮的柱子），这个右边界就是当前的索引 i
+        while (stack.length !== 0 && heights[i] < heights[stack[stack.length - 1]]) {
+
+            // 弹出栈顶元素，获取其高度
+            let curHeight = heights[stack.pop()];
+            // 处理高度重复的情况
+            while (stack.length !== 0 && curHeight === heights[stack[stack.length - 1]]) {
+                stack.pop();
+            }
+
+            // 确定宽度
+            let curWidth;
+            if (stack.length === 0) {
+                // 如果栈为空，说明左边没有比它更矮的了，宽度从开头一直到 i
+                curWidth = i;
+            } else {
+                // 如果栈不为空，新的栈顶就是其左边界
+                curWidth = i - stack[stack.length - 1] - 1;
+            }
+
+            // 计算面积并更新最大值
+            res = Math.max(res, curHeight * curWidth);
+        }
+
+        // 这个 while 循环会一直执行，直到当前柱子 i 不再比新的栈顶矮（维持单调），或者栈为空
+        // 之后，将当前柱子 i 的索引入栈，继续维持栈的单调递增性质
+        stack.push(i);
+    }
+
+    // 当 for 循环结束后，栈中可能还剩下一些索引
+    // 这些索引对应的柱子，它们的高度是一路递增过来的，意味着它们的右边再也没有比它们更矮的柱子了
+    while (stack.length !== 0) {
+        let curHeight = heights[stack.pop()];
+        while (stack.length !== 0 && curHeight === heights[stack[stack.length - 1]]) {
+            stack.pop();
+        }
+
+        let curWidth;
+        if (stack.length === 0) {
+            // 右边界是数组末尾，左边界是数组开头
+            curWidth = heights.length;
+        } else {
+            // 右边界是数组末尾，左边界是新的栈顶
+            curWidth = heights.length - stack[stack.length - 1] - 1;
+        }
+
+        res = Math.max(res, curHeight * curWidth);
+    }
+
+    return res;
+};`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
