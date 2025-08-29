@@ -5095,6 +5095,294 @@ s 中所有整数的取值范围为 [1, 300]
 };`,
   },
   {
+    id: 215,
+    title: "数组中的第K个最大元素 kth-largest-element-in-an-array",
+    category: "堆",
+    content: `
+给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。
+
+请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
+
+你必须设计并实现时间复杂度为 O(n) 的算法解决此问题。
+
+示例 1:
+
+输入: [3,2,1,5,6,4], k = 2
+输出: 5
+
+示例 2:
+
+输入: [3,2,3,1,2,4,5,5,6], k = 4
+输出: 4
+
+提示：
+
+1 <= k <= nums.length <= 105
+-104 <= nums[i] <= 104
+    `,
+    difficulty: "中等",
+    hint: `
+- 思路一：快速选择
+    - 要严格达到 O(n) 的时间复杂度，最经典的算法是快速选择，它是快速排序算法的变体
+    - 快速排序的核心是 partition (划分) 操作：
+        - 随机选取一个基准值 pivot，然后将数组重新排列，使得所有小于 pivot 的元素都在它左边，所有大于 pivot 的元素都在它右边
+        - 完成一次 partition 后，这个 pivot 就处在了它最终排序后应该在的位置
+    - 快速选择算法正是利用了这一特性：
+        - 我们想找的是第 k 大的元素。在一个长度为 n 的升序数组中，这对应着索引为 n - k 的元素。我们的目标就是找到这个索引位置上的正确数字
+        - 在数组中随机选择一个 pivot，并执行 partition 操作。操作结束后，pivot 会被放置在索引 p 处
+        - 比较索引 p 和我们的目标索引 n - k：
+            - 如果 p === n - k，那么 nums[p] 就是我们要找的第 k 大的元素，直接返回
+            - 如果 p < n - k，说明我们找的元素在 pivot 的右边。我们只需要在右边的子数组中继续递归查找
+            - 如果 p > n - k，说明我们找的元素在 pivot 的左边。我们只需要在左边的子数组中继续递归查找
+        - 由于我们每次都只对其中一个子数组进行递归，而不是像快速排序那样对两个子数组都进行递归，这大大降低了时间复杂度
+    - 复杂度分析
+        - 平均情况（期望时间复杂度）: 
+            - 每次 partition 操作我们都期望能将数组的规模缩小一半
+            - 因此，总的操作次数大约是 n + n/2 + n/4 + ...，这是一个等比数列，其和收敛于 2n。所以平均时间复杂度是 O(n)。
+        - 最坏情况:
+            - 如果每次选择的 pivot 都是当前子数组的最小值或最大值，会导致划分极其不均，每次只把问题规模减小1。此时算法会退化成 O(n^2)
+            - 通过随机化 pivot的选择，可以使最坏情况在实际应用中几乎不可能发生
+- 思路二：堆排序（不是严格 O(n)）
+    - 创建一个容量为 k 的小顶堆，即维护一个始终只包含“目前为止最大的 k 个元素”的集合
+    - 首先，将数组的前 k 个元素放入小顶堆中
+    - 接着，从数组的第 k+1 个元素开始遍历，将每个新元素 num 与堆顶元素（也就是当前这 k 个数中最小的那个）进行比较：
+        - 如果 num 比堆顶元素大：
+            - 说明 num 比当前“Top K”集合中的最小者还要大，它有资格进入这个集合。弹出堆顶，并将 num 入堆
+        - 如果 num 小于或等于堆顶元素：
+            - 说明 num 没有资格进入“Top K”集合，直接忽略
+    - 当遍历完整个数组后，这个小顶堆里剩下的，就是整个数组中最大的 k 个数。而堆顶的元素，正是这 k 个数中最小的一个，也就是我们最终要找的第 k 大的元素
+    - 复杂度分析：
+        - 时间复杂度：O(nlogk)
+            - 我们需要遍历 n 个元素
+            - 对于每个元素，最多进行一次堆操作（推入或弹出再推入）
+            - 堆的大小始终不超过 k，所以每次操作的时间复杂度是 O(logk)
+        - 空间复杂度：O(k)
+            - 因为堆里最多只存储 k 个元素
+    `,
+    link: "https://leetcode.cn/kth-largest-element-in-an-array/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * 思路一：快速选择
+ */
+function findKthLargest(nums: number[], k: number): number {
+    let left = 0;
+    let right = nums.length - 1;
+    const targetIndex = nums.length - k;
+
+    while (left <= right) {
+
+        // 使用二路切分
+        // const pivotIndex = partition(nums, left, right);
+        // if (pivotIndex === targetIndex) {
+        //     return nums[pivotIndex];
+        // } else if (pivotIndex > targetIndex) {
+        //     right = pivotIndex - 1;
+        // } else {
+        //     left = pivotIndex + 1;
+        // }
+
+        // 使用三路切分
+        const [lt, gt] = partition(nums, left, right);
+        if (lt <= targetIndex && targetIndex <= gt) {
+            // 如果目标索引落在“等于 pivot”的区间内，直接返回 pivot 值
+            return nums[lt];
+        } else if (targetIndex < lt) {
+            // 目标在左侧“小于 pivot”的区间
+            right = lt - 1;
+        } else {
+            // 目标在右侧“大于 pivot”的区间
+            left = gt + 1;
+        }
+    }
+
+};
+
+function swap(nums: number[], i: number, j: number): void {
+    [nums[i], nums[j]] = [nums[j], nums[i]];
+}
+
+// 常规二路切分：将数组分为小于 pivot 的元素和大于等于 pivot 的元素
+// 在数组重复元素极多时会退化为 O(n^2) 导致超时
+// left 和 right 为数组左右边界
+// function partition(nums: number[], left: number, right: number): number {
+//     const pivotIndex = left + Math.floor(Math.random() * (right - left + 1));
+//     const pivot = nums[pivotIndex];
+
+//     // 将 pivot 移动到最右侧方便处理
+//     swap(nums, right, pivotIndex);
+
+//     // 下一个小于 pivot 的元素的存放位置
+//     let nextLeftIndex = left;
+//     for (let i = left; i < right; i++) {
+//         if (nums[i] < pivot) {
+//             swap(nums, i, nextLeftIndex);
+//             nextLeftIndex++;
+//         }
+//     }
+
+//     // 恢复 pivot 的位置
+//     swap(nums, right, nextLeftIndex);
+
+//     // 返回 pivot 的位置
+//     return nextLeftIndex;
+// }
+
+
+// 优化：三路切分，将数组分为小于、等于、大于 pivot 的三部分（类似荷兰国旗问题）
+// 返回一个元组 [lt, gt]，表示等于 pivot 的区间的左右边界
+function partition(nums: number[], left: number, right: number): [number, number] {
+    const pivotIndex = left + Math.floor(Math.random() * (right - left + 1));
+    swap(nums, left, pivotIndex); // 将 pivot 换到区间的开始位置
+    const pivot = nums[left];
+
+    let lt = left;     // [left...lt-1] < pivot
+    let i = left + 1;  // 当前考察的元素，[lt...i-1] == pivot
+    let gt = right;    // [gt+1...right] > pivot
+
+    while (i <= gt) {
+        if (nums[i] < pivot) {
+            swap(nums, i, lt);
+            lt++;
+            i++;
+        } else if (nums[i] > pivot) {
+            swap(nums, i, gt);
+            gt--; // 注意：i 不需要增加，因为从 gt 换过来的元素 nums[i] 还没有被考察
+        } else {
+            i++;
+        }
+    }
+
+    // 返回等于 pivot 的区间的边界 [lt, gt]
+    return [lt, gt];
+}
+
+/**
+ * 思路二：堆排序
+ */
+function findKthLargest(nums: number[], k: number): number {
+    const minHeap = new MinHeap();
+
+    for (const num of nums) {
+        if (minHeap.size() < k) {
+            // 若堆未满，则直接入堆
+            minHeap.push(num);
+        } else {
+            // 若堆已满，则比较当前元素与堆顶元素
+            // 若当前元素大于堆顶元素（即当前堆中最小元素），则将堆顶出堆，当前元素入堆
+            if (num > minHeap.peek()) {
+                minHeap.pop();
+                minHeap.push(num);
+            }
+        }
+    }
+
+    return minHeap.peek();
+}
+
+class MinHeap {
+    private heap: number[];
+
+    constructor() {
+        this.heap = [];
+    }
+
+    peek(): number {
+        return this.heap[0];
+    }
+
+    // 元素入堆
+    // 给定元素 val ，我们首先将其添加到堆底
+    // 添加之后，由于 val 可能小于堆中其他元素，堆的成立条件可能已被破坏
+    // 因此需要修复从插入节点到根节点的路径上的各个节点，称为堆化
+    // 从入堆节点开始，从底至顶执行堆化：
+    //      比较插入节点与其父节点的值，如果插入节点更大，则将它们交换
+    //      然后继续执行此操作，从底至顶修复堆中的各个节点，直至越过根节点或遇到无须交换的节点时结束
+    push(val: number): void {
+        this.heap.push(val);
+        this.siftUp(this.size() - 1);
+    }
+
+    // 堆顶元素出堆
+    // 首先将堆顶元素与堆底元素交换，并将堆底删除
+    // 然后从根节点开始，从顶至底执行堆化：
+    //      将根节点的值与其两个子节点的值进行比较，将最大的子节点与根节点交换
+    //      然后循环执行此操作，直到越过叶节点或遇到无须交换的节点时结束。
+    pop(): number {
+        this.swap(0, this.size() - 1);
+        const val = this.heap.pop();
+        this.siftDown(0);
+        return val;
+    }
+
+    size(): number {
+        return this.heap.length;
+    }
+
+    // 获取父节点索引
+    private parent(i: number): number {
+        return Math.floor((i - 1) / 2);
+    }
+
+    // 获左子节点索引
+    private left(i: number): number {
+        return 2 * i + 1;
+    }
+
+    // 获右子节点索引
+    private right(i: number): number {
+        return 2 * i + 2;
+    }
+
+    // 从指定节点开始，从底至顶执行堆化
+    private siftUp(i: number): void {
+        while (true) {
+            const p = this.parent(i);
+
+            // 越过根节点或节点无需修复时终止堆化
+            if (p < 0 || this.heap[i] >= this.heap[p]) { 
+                break; 
+            }
+
+            this.swap(i, p);
+
+            // 继续向上堆化
+            i = p;
+        }
+    }
+
+    // 从指定节点开始，从顶至底执行堆化
+    private siftDown(i: number): void {
+        while (true) {
+            const l = this.left(i);
+            const r = this.right(i);
+
+            // 越过叶子节点或节点无需修复时终止堆化
+            if (l >= this.size() && r >= this.size()) {
+                break;
+            }
+
+            let min = l;
+            if (r < this.size() && this.heap[r] < this.heap[min]) {
+                min = r;
+            }
+
+            if (this.heap[i] <= this.heap[min]) {
+                break;
+            }
+
+            this.swap(i, min);
+
+            // 继续向下堆化
+            i = min;
+        }
+    }
+
+    private swap(i: number, j: number): void {
+        [this.heap[i], this.heap[j]] = [this.heap[j], this.heap[i]];
+    }
+}
+`,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
