@@ -5383,6 +5383,65 @@ class MinHeap {
 `,
   },
   {
+    id: 295,
+    title: "数据流的中位数 find-median-from-data-stream",
+    category: "堆",
+    content: `
+中位数是有序整数列表中的中间值。如果列表的大小是偶数，则没有中间值，中位数是两个中间值的平均值。
+
+例如 arr = [2,3,4] 的中位数是 3 。
+例如 arr = [2,3] 的中位数是 (2 + 3) / 2 = 2.5 。
+实现 MedianFinder 类:
+
+MedianFinder() 初始化 MedianFinder 对象。
+
+void addNum(int num) 将数据流中的整数 num 添加到数据结构中。
+
+double findMedian() 返回到目前为止所有元素的中位数。与实际答案相差 10-5 以内的答案将被接受。
+
+示例 1：
+
+输入
+["MedianFinder", "addNum", "addNum", "findMedian", "addNum", "findMedian"]
+[[], [1], [2], [], [3], []]
+输出
+[null, null, null, 1.5, null, 2.0]
+
+解释
+MedianFinder medianFinder = new MedianFinder();
+medianFinder.addNum(1);    // arr = [1]
+medianFinder.addNum(2);    // arr = [1, 2]
+medianFinder.findMedian(); // 返回 1.5 ((1 + 2) / 2)
+medianFinder.addNum(3);    // arr[1, 2, 3]
+medianFinder.findMedian(); // return 2.0
+提示:
+
+-105 <= num <= 105
+在调用 findMedian 之前，数据结构中至少有一个元素
+最多 5 * 104 次调用 addNum 和 findMedian
+    `,
+    difficulty: "困难",
+    hint: `
+- 使用两个堆
+- 大顶堆存储较小的一半（堆顶最大），小顶堆存储较大的一半（堆顶最小）
+- 中位数可以通过两个堆顶的元素得到
+- 设大顶堆 A 中有 m 个元素，小顶堆 B 中有 n 个元素，添加新元素时：
+    - 若 m === n：
+        - 此时需要向 A 中添加元素
+        - 首先向 B 中添加元素，然后将 B 的堆顶元素添加到 A
+    - 若 m !== n：
+        - 此时需要向 B 中添加元素
+        - 首先向 A 中添加元素，然后将 A 的堆顶元素添加到 B
+- 计算中位数：
+    - 若 m === n：
+        - 说明总元素个数为偶数，中位数为两个堆顶的平均值
+    - 若 m !== n：
+        - 说明总元素个数为奇数，中位数为大顶堆 A 的堆顶
+    `,
+    link: "https://leetcode.cn/problems/find-median-from-data-stream/?envType=study-plan-v2&envId=top-100-liked",
+    code: ``,
+  },
+  {
     id: 121,
     title: "买卖股票的最佳时机 best-time-to-buy-and-sell-stock",
     category: "贪心算法",
