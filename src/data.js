@@ -3088,7 +3088,6 @@ function invertTree(root: TreeNode | null): TreeNode | null {
     content: `
 给你一个二叉树的根节点 root ， 检查它是否轴对称。
 
-
 示例 1：
 
      1
@@ -3103,12 +3102,10 @@ function invertTree(root: TreeNode | null): TreeNode | null {
 输入：root = [1,2,2,null,3,null,3]
 输出：false
 
-
 提示：
 
 树中节点数目在范围 [1, 1000] 内
 -100 <= Node.val <= 100
- 
 
 进阶：你可以运用递归和迭代两种方法解决这个问题吗？
     `,
@@ -3122,6 +3119,55 @@ function invertTree(root: TreeNode | null): TreeNode | null {
     - 将他们的子节点按照相反顺序插入队列
     `,
     link: "https://leetcode.cn/problems/symmetric-tree/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+// 递归
+function isSymmetric(root: TreeNode | null): boolean {
+    if (!root) return true;
+    return check(root.left, root.right);
+};
+
+function check(left: TreeNode | null, right: TreeNode | null): boolean {
+    if (!left && !right) return true;
+    if (!left || !right || left.val !== right.val) return false;
+    return check(left.left, right.right) && check(right.left, left.right);
+}
+
+// 迭代
+function isSymmetric(root: TreeNode | null): boolean {
+    if (!root) return true;
+    return check(root, root);
+};
+
+function check(u: TreeNode, v: TreeNode): boolean {
+    const queue = [u, v];
+    while (queue.length) {
+        u = queue.shift();
+        v = queue.shift();
+
+        if (!u && !v) continue;
+        if ((!u || !v) || (u.val !== v.val)) return false;
+        
+        queue.push(u.left);
+        queue.push(v.right);
+
+        queue.push(u.right);
+        queue.push(v.left);
+    }
+    return true;
+}`,
   },
   {
     id: 543,
