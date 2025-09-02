@@ -2954,7 +2954,7 @@ function inorderTraversal(root: TreeNode | null): number[] {
         root = root.right;
     }
     return res;
-};`
+};`,
   },
   {
     id: 104,
@@ -2964,8 +2964,6 @@ function inorderTraversal(root: TreeNode | null): number[] {
 给定一个二叉树 root ，返回其最大深度。
 
 二叉树的 最大深度 是指从根节点到最远叶子节点的最长路径上的节点数。
-
- 
 
 示例 1：
 
@@ -2989,6 +2987,41 @@ function inorderTraversal(root: TreeNode | null): number[] {
     - 每遍历一层，计数 + 1
     `,
     link: "https://leetcode.cn/problems/maximum-depth-of-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function maxDepth(root: TreeNode | null): number {
+    // DFS
+    if (!root) return 0;
+    return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+
+    // BFS
+    // if (!root) return 0;
+    // let count = 0;
+    // let queue = [root];
+    // while (queue.length) {
+    //     const tmp = [];
+    //     for (const node of queue) {
+    //         if (node.left) tmp.push(node.left);
+    //         if (node.right) tmp.push(node.right);
+    //     }
+    //     queue = tmp;
+    //     count++;
+    // }
+    // return count;
+};
+`,
   },
   {
     id: 226,
@@ -4381,7 +4414,8 @@ n == matrix[i].length
   },
   {
     id: 34,
-    title: "在排序数组中查找元素的第一个和最后一个位置 find-first-and-last-position-of-element-in-sorted-array",
+    title:
+      "在排序数组中查找元素的第一个和最后一个位置 find-first-and-last-position-of-element-in-sorted-array",
     category: "二分查找",
     content: `
 给你一个按照非递减顺序排列的整数数组 nums，和一个目标值 target。请你找出给定目标值在数组中的开始位置和结束位置。
