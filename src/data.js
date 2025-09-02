@@ -3180,8 +3180,6 @@ function check(u: TreeNode, v: TreeNode): boolean {
 
 两节点之间路径的 长度 由它们之间边数表示。
 
- 
-
 示例 1：
 
      1
@@ -3196,7 +3194,6 @@ function check(u: TreeNode, v: TreeNode): boolean {
 
 输入：root = [1,2]
 输出：1
- 
 
 提示：
 
@@ -3212,6 +3209,35 @@ function check(u: TreeNode, v: TreeNode): boolean {
 - 使用全局变量记录当前最长路径，递归过程中修改该变量
     `,
     link: "https://leetcode.cn/problems/diameter-of-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function diameterOfBinaryTree(root: TreeNode | null): number {
+    let res = 0; // 经过的节点数
+
+    function depth(root: TreeNode) {
+        if (!root) return 0;
+        const depthL = depth(root.left);
+        const depthR = depth(root.right);
+        res = Math.max(res, depthL + depthR + 1);
+        return Math.max(depthL, depthR) + 1
+    }
+
+    depth(root);
+
+    return res - 1; // 路径长度为 经过的节点数 - 1
+};`,
   },
   {
     id: 102,
