@@ -3030,7 +3030,6 @@ function maxDepth(root: TreeNode | null): number {
     content: `
 给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
 
-
 示例 1：
 
       4                    4
@@ -3049,7 +3048,6 @@ function maxDepth(root: TreeNode | null): number {
 
 输入：root = []
 输出：[]
- 
 
 提示：
 
@@ -3061,6 +3059,27 @@ function maxDepth(root: TreeNode | null): number {
 - 递归左右子树，交换左右子树的位置
     `,
     link: "https://leetcode.cn/problems/invert-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function invertTree(root: TreeNode | null): TreeNode | null {
+    if (!root) return root;
+    const tmp = root.left;
+    root.left = invertTree(root.right);
+    root.right = invertTree(tmp);
+    return root;
+};`,
   },
   {
     id: 101,
