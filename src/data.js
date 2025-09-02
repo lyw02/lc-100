@@ -3246,7 +3246,6 @@ function diameterOfBinaryTree(root: TreeNode | null): number {
     content: `
 给你二叉树的根节点 root ，返回其节点值的 层序遍历 。 （即逐层地，从左到右访问所有节点）。
 
-
 示例 1：
 
    3
@@ -3266,7 +3265,6 @@ function diameterOfBinaryTree(root: TreeNode | null): number {
 输入：root = []
 输出：[]
 
-
 提示：
 
 树中节点数目在范围 [0, 2000] 内
@@ -3283,6 +3281,60 @@ function diameterOfBinaryTree(root: TreeNode | null): number {
     - 递归左右子节点
     `,
     link: "https://leetcode.cn/problems/binary-tree-level-order-traversal/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function levelOrder(root: TreeNode | null): number[][] {
+    // BFS
+    if (!root) return [];
+    let queue = [root];
+    const res = [];
+    while (queue.length > 0) {
+        const tmp = [];
+        const levelSize = queue.length;
+        for (let i = 0; i < levelSize; i++) {
+            const node = queue.shift();
+            tmp.push(node.val);
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+        }
+        res.push(tmp);
+    }
+    return res;
+
+    // DFS
+    const res: number[][] = [];
+
+    function dfs(node: TreeNode | null, level: number): void {
+        if (!node) return;
+
+        if (level === res.length) {
+            res.push([]);
+        }
+        
+        res[level].push(node.val);
+
+        dfs(node.left, level + 1);
+        dfs(node.right, level + 1);
+    }
+
+    if (root) {
+        dfs(root, 0);
+    }
+
+    return res;
+};`,
   },
   {
     id: 108,
