@@ -3524,7 +3524,6 @@ function isValidBST(root: TreeNode | null): boolean {
     content: `
 给定一个二叉搜索树的根节点 root ，和一个整数 k ，请你设计一个算法查找其中第 k 小的元素（从 1 开始计数）。
 
-
 示例 1：
 
 输入：root = [3,1,4,null,2], k = 1
@@ -3534,7 +3533,6 @@ function isValidBST(root: TreeNode | null): boolean {
 
 输入：root = [5,3,6,2,4,null,null,1], k = 3
 输出：3
- 
 
 提示：
 
@@ -3542,22 +3540,57 @@ function isValidBST(root: TreeNode | null): boolean {
 1 <= k <= n <= 104
 0 <= Node.val <= 104
 
-
 进阶：如果二叉搜索树经常被修改（插入/删除操作）并且你需要频繁地查找第 k 小的值，你将如何优化算法？
     `,
     difficulty: "中等",
     hint: `
-利用二叉搜索树中序遍历有序的性质
-思路一：递归
+- 利用二叉搜索树中序遍历有序的性质
+- 问题等价于找到中序遍历序列中的第 k 个元素
+- 思路一：递归
     - 首先递归左子树
+        - 这保证了会首先访问到树中最小的元素
+        - 如果左子树中找到了目标节点，则层层返回
     - 然后处理当前根节点。在访问当前节点时，k 表示“还剩多少节点需要访问”
-      - 若此时 k 为 0 ，说明当前节点是第 k 小的节点，提前返回
-      - 递减 k 的值
-      - 若此时 k 为 0 ，说明当前节点是第 k 小的节点，保存 k 的值
+        - 由于我们已经完整地遍历完一个节点的左子树并回到了该节点，就意味着我们按从小到大的顺序访问了一个节点。因此，我们将计数器 k 减 1
+        - 若此时 k 为 0 ，说明当前节点是第 k 小的节点，返回当前节点的值
     - 最后递归右子树
-进阶解法：待更新
+        - 如果右子树中找到了目标节点，则层层返回
+- 进阶解法：待更新
     `,
     link: "https://leetcode.cn/problems/kth-smallest-element-in-a-bst/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function kthSmallest(root: TreeNode | null, k: number): number {
+    function dfs(root: TreeNode | null): number | null {
+        if (!root) return null;
+
+        const left = dfs(root.left);
+        if (left !== null) return left;  // 这里不能使用 if (left) 来判断，因为 0 是一个 falsy 值
+
+        k--;
+        if (k === 0) return root.val;
+
+        const right = dfs(root.right);
+        if (right !== null) return right;
+
+        return null;
+    }
+    return dfs(root)!;
+};
+
+`,
   },
   {
     id: 199,
