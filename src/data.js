@@ -3589,7 +3589,6 @@ function kthSmallest(root: TreeNode | null, k: number): number {
     }
     return dfs(root)!;
 };
-
 `,
   },
   {
@@ -3598,8 +3597,6 @@ function kthSmallest(root: TreeNode | null, k: number): number {
     category: "二叉树",
     content: `
 给定一个二叉树的 根节点 root，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
-
- 
 
 示例 1：
 
@@ -3612,7 +3609,6 @@ function kthSmallest(root: TreeNode | null, k: number): number {
   1
 2    3
   5    4
-
 
 示例 2：
 
@@ -3639,8 +3635,6 @@ function kthSmallest(root: TreeNode | null, k: number): number {
 
 输出：[]
 
- 
-
 提示:
 
 二叉树的节点个数的范围是 [0,100]
@@ -3652,6 +3646,35 @@ function kthSmallest(root: TreeNode | null, k: number): number {
 - 使用 levelSize 变量记录每层的宽度，当遍历到每层的最后一个时添加到结果
     `,
     link: "https://leetcode.cn/problems/binary-tree-right-side-view/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function rightSideView(root: TreeNode | null): number[] {
+    if (!root) return [];
+    const queue = [root];
+    const res = [];
+    while (queue.length > 0) {
+        const levelSize = queue.length;
+        for (let i = 0; i < levelSize; i++) {
+            const node = queue.shift();
+            if (node.left) queue.push(node.left);
+            if (node.right) queue.push(node.right);
+            if (i === levelSize - 1) res.push(node.val);
+        }
+    }
+    return res;
+};`,
   },
   {
     id: 114,
