@@ -3421,7 +3421,6 @@ function dfs(nums: number[], left: number, right: number) {
 节点的左子树只包含 小于 当前节点的数。
 节点的右子树只包含 大于 当前节点的数。
 所有左子树和右子树自身必须也是二叉搜索树。
- 
 
 示例 1：
 
@@ -3440,7 +3439,6 @@ function dfs(nums: number[], left: number, right: number) {
 输入：root = [5,1,4,null,null,3,6]
 输出：false
 解释：根节点的值是 5 ，但是右子节点的值是 4 。
- 
 
 提示：
 
@@ -3460,6 +3458,64 @@ function dfs(nums: number[], left: number, right: number) {
     - 同样使用一个变量 pre 用于比较节点大小，检查是否严格递增
     `,
     link: "https://leetcode.cn/problems/validate-binary-search-tree/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function isValidBST(root: TreeNode | null): boolean {
+    // DFS
+    // const list = [];
+    // function dfs(root) {
+    //     if (!root) return;
+    //     dfs(root.left);
+    //     list.push(root.val)
+    //     dfs(root.right);
+    // }
+    // dfs(root);
+    // for (let i = 0; i < list.length - 1; i++) {
+    //     if (list[i + 1] <= list[i]) return false;
+    // }
+    // return true;
+
+    // DFS 优化
+    let pre = -Infinity;
+    function dfs(root) {
+        if (!root) return true;
+        if (!dfs(root.left)) return false; // 左
+        if (root.val <= pre) return false; // 中
+        pre = root.val;
+        return dfs(root.right); // 右
+    }
+    return dfs(root);
+
+    // 迭代
+    let pre = -Infinity;
+    const stack = [];
+    while (root || stack.length) {
+        while (root) {
+            stack.push(root);
+            root = root.left;
+        }
+        root = stack.pop();
+        if (root.val > pre) {
+            pre = root.val;
+        } else {
+            return false;
+        }
+        root = root.right;
+    }
+    return true;
+};`,
   },
   {
     id: 230,
