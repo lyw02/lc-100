@@ -3857,7 +3857,6 @@ function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
 
 路径 不需要从根节点开始，也不需要在叶子节点结束，但是路径方向必须是向下的（只能从父节点到子节点）。
 
-
 示例 1：
 
         10
@@ -3873,7 +3872,6 @@ function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
 
 输入：root = [5,4,8,11,null,13,4,7,2,null,null,5,1], targetSum = 22
 输出：3
-
 
 提示:
 
@@ -3912,6 +3910,54 @@ function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
   - 在递归返回前，需要在哈希表中撤销当前节点的影响，即将当前前缀和对应的记录 - 1 或删除
     `,
     link: "https://leetcode.cn/path-sum-iii/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+// 类似于 560 “和为 k 的子数组” 问题
+function pathSum(root: TreeNode | null, targetSum: number): number {
+    if (!root) return 0;
+
+    const map = new Map(); // 哈希表，记录前缀和的出现次数
+    map.set(0, 1); // 前缀和为 0 出现 1 次（空路径）
+
+    function dfs(node, currSum) {
+        // node：当前节点。
+        // currSum：从根到当前节点（不包括当前节点值）的路径前缀和。
+
+        if (!node) return 0;
+
+        currSum += node.val; // 更新当前前缀和
+
+        // 检查是否有前缀和 currSum - targetSum, 如果存在, 说明从某个祖先节点到当前节点的路径和是 targetSum 。
+        // map.get(currSum - targetSum) 表示有多少条路径以当前节点为终点，和为 targetSum，加到 res 中。
+        let res = map.get(currSum - targetSum) || 0; 
+        
+        map.set(currSum, (map.get(currSum) || 0) + 1); // 更新哈希表，记录当前前缀和的次数
+
+        // 递归处理左右子树
+        res += dfs(node.left, currSum);
+        res += dfs(node.right, currSum);
+        
+        // 回溯, 移除当前前缀和的记录 (在递归返回前，撤销当前节点对哈希表的影响)
+        map.set(currSum, map.get(currSum) - 1);
+        if (map.get(currSum) === 0) map.delete(currSum);
+        
+        return res;
+    }
+
+    return dfs(root, 0);
+};`,
   },
   {
     id: 236,
@@ -3948,7 +3994,6 @@ function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
 
 输入：root = [1,2], p = 1, q = 2
 输出：1
- 
 
 提示：
 
@@ -3975,6 +4020,44 @@ p 和 q 均存在于给定的二叉树中。
   - 若上面左子树和右子树的递归结果都不为 null ，说明 p 和 q ，位于左右两侧，直接返回 root
     `,
     link: "https://leetcode.cn/lowest-common-ancestor-of-a-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+// 若 root 是 p,q 的 最近公共祖先 ，则只可能为以下情况之一：
+// 1. p 和 q 在 root 的子树中，且分列 root 的 异侧（即分别在左、右子树中）；
+// 2. p=root ，且 q 在 root 的左或右子树中；
+// 3. q=root ，且 p 在 root 的左或右子树中；
+function lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
+	if (root === null || root === p || root === q) return root;
+
+    // 递归的返回值可能是：
+    // 1. null：子树中没有 p 或 q。
+    // 2. p 或 q：子树中找到了 p 或 q。
+    // 3. 某个节点：子树中找到的 p 和 q 的 LCA。
+    const left = lowestCommonAncestor(root.left, p, q);
+    const right = lowestCommonAncestor(root.right, p, q);
+
+    // 这两行处理了 p 和 q 都在同一侧子树的情况，或者只有一侧子树包含目标节点。
+    // 如果 left === null，说明左子树中没有 p 或 q，所以 LCA（如果存在）一定在右子树中，返回 right。反之亦然。
+    if (left === null) return right;
+    if (right === null) return left;
+
+    // 如果 left 和 right 都不为 null，说明：
+    // 左子树中找到一个目标节点（p 或 q），右子树中找到另一个目标节点。
+    // 这意味着 p 和 q 分居在当前节点的左右子树中，因此当前节点 root 就是它们的最近公共祖先。
+    return root;
+};`,
   },
   {
     id: 46,
