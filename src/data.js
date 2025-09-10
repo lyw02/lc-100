@@ -3774,7 +3774,6 @@ function flatten(root: TreeNode | null): void {
     content: `
 给定两个整数数组 preorder 和 inorder ，其中 preorder 是二叉树的先序遍历， inorder 是同一棵树的中序遍历，请构造二叉树并返回其根节点。
 
-
 示例 1:
 
   3
@@ -3783,11 +3782,11 @@ function flatten(root: TreeNode | null): void {
 
 输入: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
 输出: [3,9,20,null,null,15,7]
+
 示例 2:
 
 输入: preorder = [-1], inorder = [-1]
 输出: [-1]
- 
 
 提示:
 
@@ -3812,6 +3811,42 @@ inorder 保证 为二叉树的中序遍历序列
     - 递归终止条件：l > r
     `,
     link: "https://leetcode.cn/construct-binary-tree-from-preorder-and-inorder-traversal/description/?envType=study-plan-v2&envId=top-100-liked",
+    code: `/**
+ * Definition for a binary tree node.
+ * class TreeNode {
+ *     val: number
+ *     left: TreeNode | null
+ *     right: TreeNode | null
+ *     constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *     }
+ * }
+ */
+
+function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
+    const inorderMap = new Map(); // 使用哈希表存储中序遍历的值与索引的映射
+    for (let i = 0; i < inorder.length; i++) {
+        inorderMap.set(inorder[i], i);
+    }
+
+    // 建立根节点 node ： 节点值为 preorder[root] 。
+    // 划分左右子树： 查找根节点在中序遍历 inorder 中的索引 i 。
+    // 构建左右子树： 开启左右子树递归。
+    function dfs(i: number, l: number, r: number): TreeNode | null {
+        // i: 根节点在前序遍历中的索引
+        // l, r: 中序遍历的左右边界
+        if (l > r) return null;
+        const root = new TreeNode(preorder[i]);
+        let m = inorderMap.get(preorder[i]); // 根节点在中序遍历中的索引
+        root.left = dfs(i + 1, l, m - 1);
+        root.right = dfs(i + 1 + m - l, m + 1, r);
+        return root;
+    }
+
+    return dfs(0, 0, inorder.length - 1);
+};`,
   },
   {
     id: 437,
