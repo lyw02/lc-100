@@ -3203,10 +3203,8 @@ function check(u: TreeNode, v: TreeNode): boolean {
     difficulty: "简单",
     hint: `
 - 递归
-- 递归时使用经过的节点数便于计算，最后的路径长度为经过的节点数 - 1
-- 对于任一节点，以该节点为根节点的子树的最长路径（节点数）为左子树最大深度 + 右子树最大深度 + 1
-- 使用递归遍历每个节点，计算以该节点为根节点的子树的最长路径
-- 使用全局变量记录当前最长路径，递归过程中修改该变量
+- 直径为左子树深度 + 右子树深度
+- 使用外部变量记录当前最大直径
     `,
     link: "https://leetcode.cn/problems/diameter-of-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `/**
@@ -3224,19 +3222,24 @@ function check(u: TreeNode, v: TreeNode): boolean {
  */
 
 function diameterOfBinaryTree(root: TreeNode | null): number {
-    let res = 0; // 经过的节点数
+    let res = 0; // 最大直径
 
     function depth(root: TreeNode) {
         if (!root) return 0;
         const depthL = depth(root.left);
         const depthR = depth(root.right);
-        res = Math.max(res, depthL + depthR + 1);
+
+        // 更新最大直径：左子树深度 + 右子树深度
+        res = Math.max(res, depthL + depthR);
+
+        // 返回该节点的最大深度
+        // 由于根节点本身也有深度，因此 + 1
         return Math.max(depthL, depthR) + 1
     }
 
     depth(root);
 
-    return res - 1; // 路径长度为 经过的节点数 - 1
+    return res;
 };`,
   },
   {
