@@ -3726,7 +3726,7 @@ function rightSideView(root: TreeNode | null): number[] {
     - 将当前节点的右子节点赋给前驱节点，然后将当前节点的左子节点赋给右子节点，然后将左子节点设为 null
     - 然后依次处理下一个节点（即右子树的根节点）
     `,
-    link: "https://leetcode.cn/flatten-binary-tree-to-linked-list/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `/**
  * Definition for a binary tree node.
  * class TreeNode {
@@ -3810,7 +3810,7 @@ inorder 保证 为二叉树的中序遍历序列
     - 中序遍历中子树左右边界的索引范围 l 和 r
     - 递归终止条件：l > r
     `,
-    link: "https://leetcode.cn/construct-binary-tree-from-preorder-and-inorder-traversal/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `/**
  * Definition for a binary tree node.
  * class TreeNode {
@@ -3909,7 +3909,7 @@ function buildTree(preorder: number[], inorder: number[]): TreeNode | null {
   - 递归左右子树
   - 在递归返回前，需要在哈希表中撤销当前节点的影响，即将当前前缀和对应的记录 - 1 或删除
     `,
-    link: "https://leetcode.cn/path-sum-iii/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/path-sum-iii/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `/**
  * Definition for a binary tree node.
  * class TreeNode {
@@ -4019,7 +4019,7 @@ p 和 q 均存在于给定的二叉树中。
   - 若上面左子树的递归结果为 null ，说明左子树没有 p 或 q ，于是返回上面右子树的递归结果。反之亦然
   - 若上面左子树和右子树的递归结果都不为 null ，说明 p 和 q ，位于左右两侧，直接返回 root
     `,
-    link: "https://leetcode.cn/lowest-common-ancestor-of-a-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `/**
  * Definition for a binary tree node.
  * class TreeNode {
@@ -4100,7 +4100,7 @@ nums 中的所有整数 互不相同
     - 在做出选择 choice[i] 后，我们就将 selected[i] 赋值为 true ，代表它已被选择
     - 遍历选择列表 choices 时，跳过所有已被选择的节点，即剪枝
     `,
-    link: "https://leetcode.cn/permutations/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/permutations/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function permute(nums: number[]): number[][] {
   const res = [];
   const selected = Array.from({ length: nums.length }, () => false);
@@ -4168,7 +4168,7 @@ nums 中的所有元素 互不相同
 - 结束条件 isSolution: 每次进入 backtrack 函数时，当前 state 都是一个解，应该立即记录
 - 剪枝：由于使用了 start 索引机制，因此不需要剪枝
     `,
-    link: "https://leetcode.cn/subsets/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/subsets/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function subsets(nums: number[]): number[][] {
     const res = [];
     const state = [];
@@ -4236,7 +4236,7 @@ digits[i] 是范围 ['2', '9'] 的一个数字。
 - 当前可做的选择 choices: 在决策树的某一层，可做的选择就是当前数字对应的所有字母。例如，如果当前处理的数字是 '2'，那么选择就是 ['a', 'b', 'c']
 - 结束条件 isSolution: 当 state 的长度等于输入数字字符串 digits 的长度时，说明已经构建了一个完整的组合，找到了一个解
     `,
-    link: "https://leetcode.cn/letter-combinations-of-a-phone-number/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/letter-combinations-of-a-phone-number/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function letterCombinations(digits: string): string[] {
     const res = [];
     let state = "";
@@ -4324,7 +4324,7 @@ candidates 的所有元素 互不相同
 - 如何避免组合重复 (如 [2, 2, 3] 和 [2, 3, 2])？
     - 通过排序确保数组递增
     `,
-    link: "https://leetcode.cn/combination-sum/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/combination-sum/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function combinationSum(candidates: number[], target: number): number[][] {
     const res = [];
     const state = [];
@@ -4397,7 +4397,7 @@ candidates 的所有元素 互不相同
 - 结束条件 isSolution: 当构建的字符串长度达到 2 * n 时，说明已经用完了所有括号，形成了一个完整的解
 - 在每一步，我们不再使用 for 循环遍历选择，而是直接用 if 语句判断两个选择是否合法，根据上述规则进行剪枝
     `,
-    link: "https://leetcode.cn/generate-parentheses/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/generate-parentheses/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function generateParenthesis(n: number): string[] {
     const res = [];
     let state = "";
@@ -4490,7 +4490,7 @@ board 和 word 仅由大小写英文字母组成
     - 当前位置的字符与 word[k] 是否相同
     - 当前位置是否未被访问过
     `,
-    link: "https://leetcode.cn/word-search/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/word-search/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function exist(board: string[][], word: string): boolean {
     const isSelected = Array.from({ length: board.length }, () => 
         Array.from({ length: board[0].length }, () => false)
@@ -4565,7 +4565,7 @@ s 仅由小写英文字母组成
 - 结束条件 isSolution: 当我们切到了字符串的末尾（i 索引等于字符串长度 s.length），说明我们成功地找到了一种完整的分割方案
 - 剪枝条件 isValid: 切出来的这个子串 s.substring(i, j + 1) 必须是回文串。如果不是，则剪枝
     `,
-    link: "https://leetcode.cn/palindrome-partitioning/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/palindrome-partitioning/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function partition(s: string): string[][] {
     const res: string[][] = [];
     const state: string[] = [];
@@ -4660,7 +4660,7 @@ n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，�
         - 她们在主对角线上 (左上到右下) 的条件是 row1 - col1 === row2 - col2。
         - 她们在副对角线上 (右上到左下) 的条件是 row1 + col1 === row2 + col2。
     `,
-    link: "https://leetcode.cn/n-queens/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/n-queens/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function solveNQueens(n: number): string[][] {
     const res = [];
     const state = []; // state[row] = col 代表皇后放在第 row 行第 col 列
@@ -4748,7 +4748,7 @@ nums 为 无重复元素 的 升序 排列数组
     hint: `
 - 二分查找
     `,
-    link: "https://leetcode.cn/search-insert-position/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/search-insert-position/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function searchInsert(nums: number[], target: number): number {
     let i = 0;
     let j = nums.length - 1;
@@ -4806,7 +4806,7 @@ n == matrix[i].length
 - 先对第一列进行二分查找
 - 然后对找到的行进行二分查找
     `,
-    link: "https://leetcode.cn/search-a-2d-matrix/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/search-a-2d-matrix/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function searchMatrix(matrix: number[][], target: number): boolean {
     // 对第一列进行二分查找，找到最后一个 matrix[m][0] <= target 的行
     let i = 0;
@@ -4881,7 +4881,7 @@ nums 是一个非递减数组
 - 两次二分查找
 - 即使找到目标元素，也要移动指针，确保找到边界
     `,
-    link: "https://leetcode.cn/find-first-and-last-position-of-element-in-sorted-array/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function searchRange(nums: number[], target: number): number[] {
     let start = -1;
     let end = -1;
@@ -4965,7 +4965,7 @@ nums 中的每个值都 独一无二
 - 否则说明 m 右侧一定有序
     - 同理
     `,
-    link: "https://leetcode.cn/search-in-rotated-sorted-array/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/search-in-rotated-sorted-array/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function search(nums: number[], target: number): number {
     let i = 0;
     let j = nums.length - 1;
@@ -5047,7 +5047,7 @@ nums 原来是一个升序排序的数组，并进行了 1 至 n 次旋转
     - 这部分最小值是 nums[m]
     - 旋转点（全局最小值）就是 m 或在 m 左侧
     `,
-    link: "https://leetcode.cn/find-minimum-in-rotated-sorted-array/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/find-minimum-in-rotated-sorted-array/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function findMin(nums: number[]): number {
     let i = 0;
     let j = nums.length - 1;
@@ -5117,7 +5117,7 @@ nums2.length == n
     - 然后更新 k 的值和被排除的数组的首元素指针
     - 注意考虑边界条件
     `,
-    link: "https://leetcode.cn/median-of-two-sorted-arrays/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/median-of-two-sorted-arrays/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function findMedianSortedArrays(nums1: number[], nums2: number[]): number {
     const m = nums1.length;
     const n = nums2.length;
@@ -5232,7 +5232,7 @@ s 仅由括号 '()[]{}' 组成
     - 如果是右括号：弹出栈顶并进行比较
 - 借助哈希表快速判断是左括号还是右括号
     `,
-    link: "https://leetcode.cn/valid-parentheses/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/valid-parentheses/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function isValid(s: string): boolean {
     if (s.length % 2 === 1) {
         return false;
@@ -5303,7 +5303,7 @@ push, pop, top, and getMin最多被调用 3 * 104 次
         - push(val) 时，若最小栈为空或 val <= 最小栈栈顶值，则同时将值加入最小栈
         - pop() 时，若栈顶与最小栈栈顶相等（即最小值即将出栈），则同时将最小栈栈顶出栈
     `,
-    link: "https://leetcode.cn/min-stack/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/min-stack/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `class MinStack {
     stack: number[];
     minStack: number[]; // 借用一个辅助栈 min_stack，用于存获取 stack 中最小值
@@ -5413,7 +5413,7 @@ s 中所有整数的取值范围为 [1, 300]
         - 弹出栈顶并拼接字符串
         - 新字符串为：上层字符串 + 重复次数 * 当前字符串
     `,
-    link: "https://leetcode.cn/decode-string/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/decode-string/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function decodeString(s: string): string {
     const stack = [];
     let res = "";
@@ -5477,7 +5477,7 @@ s 中所有整数的取值范围为 [1, 300]
     - 遍历温度，若栈为空且当前温度大于栈顶索引对应的温度，则弹出栈顶并计算索引差（天数差）
     - 否则直接入栈
     `,
-    link: "https://leetcode.cn/daily-temperatures/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/daily-temperatures/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function dailyTemperatures(temperatures: number[]): number[] {
     // 存储下标的单调栈，从栈底到栈顶的下标对应的温度列表中的温度依次递减。
     // 如果一个下标在单调栈里，则表示尚未找到下一次温度更高的下标。
@@ -5537,7 +5537,7 @@ s 中所有整数的取值范围为 [1, 300]
             - 如果新元素比栈顶元素矮，说明栈顶元素的右边界找到了，就是当前这个新元素。此时，我们就可以开始计算以栈顶元素为高的矩形面积了
     - 
     `,
-    link: "https://leetcode.cn/largest-rectangle-in-histogram/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/largest-rectangle-in-histogram/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `function largestRectangleArea(heights: number[]): number {
     if (heights.length === 1) return heights[0];
 
@@ -5664,7 +5664,7 @@ s 中所有整数的取值范围为 [1, 300]
         - 空间复杂度：O(k)
             - 因为堆里最多只存储 k 个元素
     `,
-    link: "https://leetcode.cn/kth-largest-element-in-an-array/description/?envType=study-plan-v2&envId=top-100-liked",
+    link: "https://leetcode.cn/problems/kth-largest-element-in-an-array/description/?envType=study-plan-v2&envId=top-100-liked",
     code: `/**
  * 思路一：快速选择
  */
