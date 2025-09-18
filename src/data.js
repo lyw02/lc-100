@@ -3222,19 +3222,14 @@ function check(u: TreeNode, v: TreeNode): boolean {
  */
 
 function diameterOfBinaryTree(root: TreeNode | null): number {
-    let res = 0; // 最大直径
+    let res = 0;
 
-    function depth(root: TreeNode) {
+    function depth(root) {
         if (!root) return 0;
         const depthL = depth(root.left);
         const depthR = depth(root.right);
-
-        // 更新最大直径：左子树深度 + 右子树深度
         res = Math.max(res, depthL + depthR);
-
-        // 返回该节点的最大深度
-        // 由于根节点本身也有深度，因此 + 1
-        return Math.max(depthL, depthR) + 1
+        return Math.max(depthL, depthR) + 1;
     }
 
     depth(root);
