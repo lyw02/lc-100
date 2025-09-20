@@ -19,7 +19,7 @@ const ItemList = ({ item }) => {
         {/* 点击标题区域可以打开链接 */}
         <div onClick={handleTitleClick} className="title-area">
           {/* <span className="category-tag">{item.category}</span> */}
-          <h3 className="item-title">{item.title}</h3>
+          <h3 className="item-title">{item.id} {item.title}{item.isHot100 !== false && " 🔥"}</h3>
         </div>
         <button onClick={() => setShowDifficulty(!showDifficulty)}>
           {showDifficulty ? item.difficulty : "展开难度"}
